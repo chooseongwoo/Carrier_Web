@@ -1,0 +1,32 @@
+name: '🛠️ Refac'
+description: '리팩토링 작업에 대한 이슈를 작성하세요!'
+labels: '🛠️ Refac'
+body:
+  - type: textarea
+    attributes:
+      label: 🛠️ 개요
+      description: 리팩토링의 목적과 배경에 대해 작성해 주세요.
+      placeholder: '코드 가독성 향상, 중복 제거 등.'
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: 🔍 현재 상황
+      description: 현재 코드 상태와 개선해야 할 점을 적어 주세요.
+      placeholder: |
+        예:
+        - 반복되는 로직이 많음.
+        - 네이밍 컨벤션이 일관되지 않음.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: ✅ 해야 할 일
+      description: 리팩토링 작업의 세부 계획을 작성해 주세요.
+      placeholder: ◻︎ 불필요한 함수 제거
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: 🙋🏻 덧붙일 말
+      description: 더 하고 싶은 말이 있다면 작성해 주세요.
