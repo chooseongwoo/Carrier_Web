@@ -1,4 +1,3 @@
-import React from 'react';
 import { container } from './App.css';
 
 const App = () => {
