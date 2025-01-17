@@ -1,7 +1,7 @@
-import React from 'react';
+import { container } from './App.css';
 
 const App = () => {
-  return <div>Test</div>;
+  return <div className={container}></div>;
 };
 
 export default App;

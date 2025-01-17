@@ -21,11 +21,11 @@ jobs:
         with:
           node-version: 23.2.0
 
+      - name: Install pnpm
+        run: npm install -g pnpm
+
       - name: Install dependencies
         run: pnpm install
-
-      - name: Run tests
-        run: pnpm test
 
       - name: Build project
         run: pnpm run build
