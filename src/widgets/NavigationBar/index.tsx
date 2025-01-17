@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import * as s from './style.css';
-import { Alarm, Calendar, Diary, Mail } from './ui';
+import { Alarm, Calendar, Diary, Mail } from 'widgets/NavigationBar/ui';
 
 const NavigationBar = () => {
   const navigate = useNavigate();
