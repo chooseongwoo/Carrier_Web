@@ -3,7 +3,7 @@ import { font } from 'shared/styles/font.css';
 import theme from 'shared/styles/theme.css';
 
 export const ToDoListContainer = style({
-  width: '268px',
+  width: '292px',
   minHeight: '278px',
   padding: '8px 12px',
   display: 'flex',
