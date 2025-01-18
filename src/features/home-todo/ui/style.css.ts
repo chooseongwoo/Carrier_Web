@@ -3,8 +3,6 @@ import { font } from 'shared/styles/font.css';
 import theme from 'shared/styles/theme.css';
 
 export const ToDoListContainer = style({
-  width: '292px',
-  minHeight: '278px',
   padding: '8px 12px',
   display: 'flex',
   flexDirection: 'column',
@@ -24,6 +22,7 @@ export const ToDoListHeader = style({
 });
 
 export const ToDoListTitle = style({
+  color: theme.gray[600],
   fontFamily: 'Pretendard',
   fontSize: font.H5.fontSize,
   fontWeight: font.H5.fontWeight,
@@ -55,13 +54,13 @@ export const ToDoListMain = style({
   gap: '2px',
 });
 
-export const ToDOListItem = style({
+export const ToDoListItem = style({
   display: 'flex',
   alignItems: 'center',
   gap: '10px',
 });
 
-export const ToDOListItemText = style({
+export const ToDoListItemText = style({
   color: theme.black,
   fontFamily: 'Pretendard',
   fontSize: font.p1.fontSize,

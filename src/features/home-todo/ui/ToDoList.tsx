@@ -36,11 +36,11 @@ const ToDoList = () => {
         {todoItems.map((item) => (
           <div
             key={item.id}
-            className={s.ToDOListItem}
+            className={s.ToDoListItem}
             onClick={() => handleToggle(item.id)}
           >
             {item.checked ? <BtnToDoChecked /> : <BtnToDoNormal />}
-            <span className={s.ToDOListItemText}>{item.text}</span>
+            <span className={s.ToDoListItemText}>{item.text}</span>
           </div>
         ))}
       </div>
