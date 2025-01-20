@@ -55,7 +55,7 @@ const MiniCalendar = () => {
       days.push(
         <div
           key={`prev-${i}`}
-          className={s.MiNiCalenadrEmptyDay}
+          className={s.MiniCalendarEmptyDay}
           style={{
             color:
               isSunday && selectedDate !== prevEndOfMonth - i
@@ -92,7 +92,7 @@ const MiniCalendar = () => {
       days.push(
         <div
           key={`next-${i}`}
-          className={s.MiNiCalenadrEmptyDay}
+          className={s.MiniCalendarEmptyDay}
           style={{ color: isSunday && selectedDate !== i ? 'red' : undefined }}
         >
           {i}
@@ -109,7 +109,7 @@ const MiniCalendar = () => {
         <button onClick={handlePrevMonth}>
           <LeftArrow />
         </button>
-        <div className={s.MiniCalenadrTitle}>
+        <div className={s.MiniCalendarTitle}>
           {currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월
         </div>
         <button onClick={handleNextMonth}>
@@ -120,7 +120,7 @@ const MiniCalendar = () => {
         {['일', '월', '화', '수', '목', '금', '토'].map((day, index) => (
           <div
             key={`week-${index}`}
-            className={s.MiniCalenadrWeek}
+            className={s.MiniCalendarWeek}
             style={{ color: index === 0 ? 'red' : undefined }}
           >
             {day}

@@ -17,7 +17,7 @@ export const MiniCalendarHeader = style({
   alignItems: 'center',
 });
 
-export const MiniCalenadrTitle = style({
+export const MiniCalendarTitle = style({
   color: theme.black,
   textAlign: 'center',
   fontFamily: 'Pretendard',
@@ -34,7 +34,7 @@ export const MiniCalendarGrid = style({
   justifyItems: 'center',
 });
 
-export const MiniCalenadrWeek = style({
+export const MiniCalendarWeek = style({
   width: '24px',
   textAlign: 'center',
   color: theme.black,
@@ -66,7 +66,7 @@ export const MiniCalendarSelectedDay = style({
   ...font.H5,
 });
 
-export const MiNiCalenadrEmptyDay = style({
+export const MiniCalendarEmptyDay = style({
   width: '24px',
   textAlign: 'center',
   color: theme.black,
