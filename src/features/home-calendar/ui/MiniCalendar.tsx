@@ -14,11 +14,12 @@ const MiniCalendar = () => {
 
     const startOfMonth = new Date(year, month, 1);
     const endOfMonth = new Date(year, month + 1, 0);
+    const prevEndOfMonth = new Date(year, month, 0);
 
     return {
       startWeek: startOfMonth.getDay(),
       daysInMonth: endOfMonth.getDate(),
-      prevEndOfMonth: new Date(year, month, 0).getDate(),
+      prevEndOfMonth: prevEndOfMonth.getDate(),
     };
   }, [currentDate]);
 
