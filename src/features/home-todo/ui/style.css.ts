@@ -24,10 +24,7 @@ export const ToDoListHeader = style({
 export const ToDoListTitle = style({
   color: theme.gray[600],
   fontFamily: 'Pretendard',
-  fontSize: font.H5.fontSize,
-  fontWeight: font.H5.fontWeight,
-  lineHeight: font.H5.lineHeight,
-  fontStyle: 'normal',
+  ...font.H5,
 });
 
 export const ToDoListSetDate = style({
@@ -40,10 +37,7 @@ export const ToDoListSetDate = style({
 export const ToDoListDateTitle = style({
   color: theme.gray[600],
   fontFamily: 'Pretendard',
-  fontSize: font.p2.fontSize,
-  fontWeight: font.p2.fontWeight,
-  lineHeight: font.p2.lineHeight,
-  fontStyle: 'normal',
+  ...font.p2,
 });
 
 export const ToDoListMain = style({
@@ -63,8 +57,5 @@ export const ToDoListItem = style({
 export const ToDoListItemText = style({
   color: theme.black,
   fontFamily: 'Pretendard',
-  fontSize: font.p1.fontSize,
-  fontWeight: font.p1.fontWeight,
-  lineHeight: font.p1.lineHeight,
-  fontStyle: 'normal',
+  ...font.p1,
 });

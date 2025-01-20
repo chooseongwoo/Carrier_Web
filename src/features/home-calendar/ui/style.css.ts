@@ -21,10 +21,8 @@ export const MiniCalenadrTitle = style({
   color: theme.black,
   textAlign: 'center',
   fontFamily: 'Pretendard',
-  fontSize: font.H5.fontSize,
+  ...font.H4,
   fontWeight: '500',
-  lineHeight: '160%',
-  fontStyle: 'normal',
 });
 
 export const MiniCalendarGrid = style({
@@ -41,21 +39,15 @@ export const MiniCalenadrWeek = style({
   textAlign: 'center',
   color: theme.black,
   fontFamily: 'Pretendard',
-  fontSize: font.H5.fontSize,
-  fontWeight: font.H5.fontWeight,
-  lineHeight: font.H5.lineHeight,
-  fontStyle: 'normal',
+  ...font.H5,
 });
 
 export const MiniCalendarDay = style({
   width: '24px',
   textAlign: 'center',
   color: theme.black,
-  fontFamily: 'Pretendard',
-  fontSize: font.p1.fontSize,
+  ...font.p1,
   fontWeight: '500',
-  lineHeight: font.p1.lineHeight,
-  fontStyle: 'normal',
 });
 
 export const MiniCalendarSelectedDay = style({
@@ -71,11 +63,7 @@ export const MiniCalendarSelectedDay = style({
   color: theme.white,
 
   backgroundColor: theme.blue[400],
-  fontFamily: 'Pretendard',
-  fontSize: font.p1.fontSize,
-  fontWeight: '500',
-  lineHeight: font.p1.lineHeight,
-  fontStyle: 'normal',
+  ...font.H5,
 });
 
 export const MiNiCalenadrEmptyDay = style({
@@ -84,8 +72,6 @@ export const MiNiCalenadrEmptyDay = style({
   color: theme.black,
   opacity: 0.3,
   fontFamily: 'Pretendard',
-  fontSize: font.p1.fontSize,
+  ...font.p1,
   fontWeight: '500',
-  lineHeight: font.p1.lineHeight,
-  fontStyle: 'normal',
 });

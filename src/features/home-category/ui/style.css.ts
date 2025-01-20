@@ -14,8 +14,5 @@ export const CategoryContainer = style({
 export const CategoryTitle = style({
   color: theme.gray[600],
   fontFamily: 'Pretendard',
-  fontSize: font.H5.fontSize,
-  fontWeight: font.H5.fontWeight,
-  lineHeight: font.H5.lineHeight,
-  fontStyle: 'normal',
+  ...font.H5,
 });
