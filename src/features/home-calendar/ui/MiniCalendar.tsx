@@ -8,36 +8,19 @@ const MiniCalendar = () => {
     new Date().getDate()
   );
 
-  const { startWeek, daysInMonth, prevEndOfMonth } = useMemo(
-    () => ({
-      startOfMonth: new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth(),
-        1
-      ),
-      endOfMonth: new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth() + 1,
-        0
-      ),
-      startWeek: new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth(),
-        1
-      ).getDay(),
-      daysInMonth: new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth() + 1,
-        0
-      ).getDate(),
-      prevEndOfMonth: new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth(),
-        0
-      ).getDate(),
-    }),
-    [currentDate]
-  );
+  const { startWeek, daysInMonth, prevEndOfMonth } = useMemo(() => {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+
+    const startOfMonth = new Date(year, month, 1);
+    const endOfMonth = new Date(year, month + 1, 0);
+
+    return {
+      startWeek: startOfMonth.getDay(),
+      daysInMonth: endOfMonth.getDate(),
+      prevEndOfMonth: new Date(year, month, 0).getDate(),
+    };
+  }, [currentDate]);
 
   const handlePrevMonth = () => {
     setCurrentDate(
