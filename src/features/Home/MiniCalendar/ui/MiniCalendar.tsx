@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react';
 import { Arrow } from 'shared/icons';
 import * as s from './style.css';
 
+const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
+
 const MiniCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<number | null>(
@@ -111,7 +113,7 @@ const MiniCalendar = () => {
         </button>
       </div>
       <div className={s.MiniCalendarGrid}>
-        {['일', '월', '화', '수', '목', '금', '토'].map((day, index) => (
+        {WEEKDAYS.map((day, index) => (
           <div
             key={`week-${index}`}
             className={s.MiniCalendarWeek}
