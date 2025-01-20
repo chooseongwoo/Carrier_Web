@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Arrow } from 'shared/icons';
 import * as s from './style.css';
 
@@ -8,26 +8,36 @@ const MiniCalendar = () => {
     new Date().getDate()
   );
 
-  const startOfMonth = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth(),
-    1
+  const { startWeek, daysInMonth, prevEndOfMonth } = useMemo(
+    () => ({
+      startOfMonth: new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        1
+      ),
+      endOfMonth: new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() + 1,
+        0
+      ),
+      startWeek: new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        1
+      ).getDay(),
+      daysInMonth: new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() + 1,
+        0
+      ).getDate(),
+      prevEndOfMonth: new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        0
+      ).getDate(),
+    }),
+    [currentDate]
   );
-
-  const endOfMonth = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth() + 1,
-    0
-  );
-
-  const startWeek = startOfMonth.getDay();
-  const daysInMonth = endOfMonth.getDate();
-
-  const prevEndOfMonth = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth(),
-    0
-  ).getDate();
 
   const handlePrevMonth = () => {
     setCurrentDate(
@@ -47,7 +57,7 @@ const MiniCalendar = () => {
     setSelectedDate(day);
   };
 
-  const renderDays = () => {
+  const renderDays = useMemo(() => {
     const days = [];
 
     for (let i = startWeek - 1; i >= 0; i--) {
@@ -101,7 +111,7 @@ const MiniCalendar = () => {
     }
 
     return days;
-  };
+  }, [startWeek, daysInMonth, prevEndOfMonth, selectedDate]);
 
   return (
     <div className={s.MiniCalendarContainer}>
@@ -126,7 +136,7 @@ const MiniCalendar = () => {
             {day}
           </div>
         ))}
-        {renderDays()}
+        {renderDays}
       </div>
     </div>
   );
