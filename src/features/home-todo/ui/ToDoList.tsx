@@ -1,10 +1,5 @@
 import { useState } from 'react';
-import {
-  LeftArrow,
-  RightArrow,
-  BtnToDoNormal,
-  BtnToDoChecked,
-} from 'shared/icons';
+import { Arrow, BtnToDoNormal, BtnToDoChecked } from 'shared/icons';
 import * as s from './style.css';
 
 const ToDoList = () => {
@@ -27,9 +22,9 @@ const ToDoList = () => {
       <div className={s.ToDoListHeader}>
         <div className={s.ToDoListTitle}>해야할 것</div>
         <div className={s.ToDoListSetDate}>
-          <LeftArrow />
+          <Arrow direction="left" />
           <div className={s.ToDoListDateTitle}>2025.01.07</div>
-          <RightArrow />
+          <Arrow direction="right" />
         </div>
       </div>
       <div className={s.ToDoListMain}>

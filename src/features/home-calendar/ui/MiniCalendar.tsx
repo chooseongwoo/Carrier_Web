@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { LeftArrow, RightArrow } from 'shared/icons';
+import { Arrow } from 'shared/icons';
 import * as s from './style.css';
 
 const MiniCalendar = () => {
@@ -107,13 +107,13 @@ const MiniCalendar = () => {
     <div className={s.MiniCalendarContainer}>
       <div className={s.MiniCalendarHeader}>
         <button onClick={handlePrevMonth}>
-          <LeftArrow />
+          <Arrow direction="left" />
         </button>
         <div className={s.MiniCalendarTitle}>
           {currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월
         </div>
         <button onClick={handleNextMonth}>
-          <RightArrow />
+          <Arrow direction="right" />
         </button>
       </div>
       <div className={s.MiniCalendarGrid}>
