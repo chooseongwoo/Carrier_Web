@@ -2,8 +2,14 @@ import { useState } from 'react';
 import { Arrow, BtnToDoNormal, BtnToDoChecked } from 'shared/icons';
 import * as s from './style.css';
 
+interface TodoItem {
+  id: number;
+  text: string;
+  checked: boolean;
+}
+
 const ToDoList = () => {
-  const [todoItems, setTodoItems] = useState([
+  const [todoItems, setTodoItems] = useState<TodoItem[]>([
     { id: 1, text: '미래랑 산책가기', checked: false },
     { id: 2, text: '하니 산책시키기', checked: true },
     { id: 3, text: '베이스 치기', checked: false },
