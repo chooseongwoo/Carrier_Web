@@ -1,7 +1,7 @@
-import MiniCalendar from 'features/Home/MiniCalendar/MiniCalendar';
-import Display from 'features/Home/Display/Display';
-import ToDoList from 'features/Home/Todo/ToDoList';
-import Category from 'features/Home/Category/Category';
+import MiniCalendar from 'features/Home/MiniCalendar';
+import Display from 'features/Home/Display';
+import ToDoList from 'features/Home/Todo';
+import Category from 'features/Home/Category';
 import * as s from './style.css';
 
 const SideBar = () => {
