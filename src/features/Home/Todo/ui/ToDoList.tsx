@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Arrow, BtnToDoNormal, BtnToDoChecked } from 'shared/icons';
+import { Arrow } from 'shared/icons';
+import { BtnToDoNormal, BtnToDoChecked } from './';
 import * as s from './style.css';
 
 interface TodoItem {
