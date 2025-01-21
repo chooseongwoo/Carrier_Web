@@ -1,4 +1,4 @@
-const BtnPlus = () => {
+const BtnCategoryPlus = () => {
   return (
     <svg
       width="24"
@@ -18,4 +18,4 @@ const BtnPlus = () => {
   );
 };
 
-export default BtnPlus;
+export default BtnCategoryPlus;

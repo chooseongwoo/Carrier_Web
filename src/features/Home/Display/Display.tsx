@@ -1,5 +1,5 @@
-import * as s from './style.css';
 import { useState } from 'react';
+import * as s from './ui/style.css';
 
 const Display = () => {
   const [scheduleSelected, setScheduleSelected] = useState(false);

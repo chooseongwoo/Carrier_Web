@@ -1,6 +1,5 @@
-import * as s from './style.css';
-import BtnCategoryPlus from './BtnCategoryPlus';
-import BtnCategoryItem from './BtnCategoryItem';
+import * as s from './ui/style.css';
+import { BtnCategoryPlus, BtnCategoryItem } from './ui';
 
 const Category = () => {
   return (
