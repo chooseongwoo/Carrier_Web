@@ -1,5 +1,4 @@
 import * as s from './style.css';
-import { BtnDisplay } from 'shared/icons';
 import { useState } from 'react';
 
 const Display = () => {
@@ -18,14 +17,21 @@ const Display = () => {
     <div className={s.DisplayContainer}>
       <div className={s.DisplayObject}>
         <div className={s.DisplayTitle}>일정 표시</div>
-        <BtnDisplay
-          selected={scheduleSelected}
+        <div
+          className={s.DisplayBtnLayout({ isActive: scheduleSelected })}
           onClick={toggleScheduleSelected}
-        />
+        >
+          <div className={s.DisplayBtnObject}></div>
+        </div>
       </div>
       <div className={s.DisplayObject}>
         <div className={s.DisplayTitle}>할 일 표시</div>
-        <BtnDisplay selected={todoSelected} onClick={toggleTodoSelected} />
+        <div
+          className={s.DisplayBtnLayout({ isActive: todoSelected })}
+          onClick={toggleTodoSelected}
+        >
+          <div className={s.DisplayBtnObject}></div>
+        </div>
       </div>
     </div>
   );
