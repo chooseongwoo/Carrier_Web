@@ -1,6 +1,12 @@
-import { style } from '@vanilla-extract/css';
+import { style, keyframes } from '@vanilla-extract/css';
 import { font } from 'shared/styles/font.css';
 import theme from 'shared/styles/theme.css';
+
+const upDownAnimation = keyframes({
+  '0%': { transform: 'translateY(0)' },
+  '50%': { transform: 'translateY(-50px)' },
+  '100%': { transform: 'translateY(0)' },
+});
 
 export const container = style({
   position: 'relative',
@@ -49,22 +55,42 @@ export const shape = style({
   position: 'absolute',
 });
 
-export const Asterisk = style({
-  top: '5%',
-  left: '8%',
-});
+export const Asterisk = style([
+  shape,
+  {
+    top: '5%',
+    left: '8%',
+    animation: `${upDownAnimation} 3s infinite`,
+    animationDelay: '0s',
+  },
+]);
 
-export const Cube = style({
-  right: '10%',
-  top: '10%',
-});
+export const Cube = style([
+  shape,
+  {
+    right: '10%',
+    top: '10%',
+    animation: `${upDownAnimation} 3s infinite`,
+    animationDelay: '0.5s',
+  },
+]);
 
-export const Sphere = style({
-  bottom: '5%',
-  left: '6%',
-});
+export const Sphere = style([
+  shape,
+  {
+    bottom: '5%',
+    left: '6%',
+    animation: `${upDownAnimation} 3s infinite`,
+    animationDelay: '1s',
+  },
+]);
 
-export const MobiusStrip = style({
-  bottom: '5%',
-  right: '2%',
-});
+export const MobiusStrip = style([
+  shape,
+  {
+    bottom: '5%',
+    right: '2%',
+    animation: `${upDownAnimation} 3s infinite`,
+    animationDelay: '1.5s',
+  },
+]);
