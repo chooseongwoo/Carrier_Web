@@ -1,20 +1,19 @@
-import {
-  AppTitle,
-  Google,
-  Asterisk,
-  Cube,
-  MobiusStrip,
-  Sphere,
-} from 'pages/Login/ui';
+import { AppTitle, Google } from 'pages/Login/ui';
 import * as s from './style.css';
+import {
+  LandingAsterisk,
+  LandingCube,
+  LandingMobiusStrip,
+  LandingSphere,
+} from 'shared/icons';
 
 const Login = () => {
   return (
     <main className={s.container}>
-      <img src={Asterisk} className={`${s.shape} ${s.Asterisk}`} />
-      <img src={Cube} className={`${s.shape} ${s.Cube}`} />
-      <img src={Sphere} className={`${s.shape} ${s.Sphere}`} />
-      <img src={MobiusStrip} className={`${s.shape} ${s.MobiusStrip}`} />
+      <img src={LandingAsterisk} className={`${s.shape} ${s.Asterisk}`} />
+      <img src={LandingCube} className={`${s.shape} ${s.Cube}`} />
+      <img src={LandingSphere} className={`${s.shape} ${s.Sphere}`} />
+      <img src={LandingMobiusStrip} className={`${s.shape} ${s.MobiusStrip}`} />
       <div className={s.center}>
         <AppTitle />
         <p className={s.explain}>오늘의 작은 계획이 내일의 큰 꿈으로,</p>
