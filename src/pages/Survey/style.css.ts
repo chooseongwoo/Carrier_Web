@@ -1,7 +1,6 @@
 import { style, keyframes } from '@vanilla-extract/css';
 import { font } from 'shared/styles/font.css';
 import theme from 'shared/styles/theme.css';
-import { globalStyle } from '@vanilla-extract/css';
 
 const upDownAnimation = keyframes({
   '0%': { transform: 'translateY(0)' },
