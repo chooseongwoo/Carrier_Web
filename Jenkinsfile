@@ -20,9 +20,13 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: env.BRANCH_NAME ?: 'main',
-                    credentialsId: 'github-token',
-                    url: 'https://github.com/Jing5s/Carrier_Web'
+                script {
+                    githubChecks(
+                        name: 'Jenkins CI',
+                        status: 'in_progress'
+                    )
+                }
+                checkout scm
             }
         }
         
@@ -52,10 +56,16 @@ pipeline {
     
     post {
         success {
-            setBuildStatus("Jenkins CI", "Build succeeded", "SUCCESS")
+            githubChecks(
+                name: 'Jenkins CI',
+                conclusion: 'success'
+            )
         }
         failure {
-            setBuildStatus("Jenkins CI", "Build failed", "FAILURE")
+            githubChecks(
+                name: 'Jenkins CI',
+                conclusion: 'failure'
+            )
         }
     }
 }
