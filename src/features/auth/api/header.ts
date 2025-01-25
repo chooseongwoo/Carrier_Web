@@ -8,7 +8,5 @@ export const accessToken = () => ({
 });
 
 export const refreshToken = () => ({
-  headers: {
-    token: Storage.getItem(TOKEN.REFRESH),
-  },
+  token: Storage.getItem(TOKEN.REFRESH),
 });
