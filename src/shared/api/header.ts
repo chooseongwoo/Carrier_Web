@@ -1,7 +1,7 @@
-import { TOKEN } from 'shared/constants/token.constant';
+import { TOKEN } from 'shared/constants';
 import { Storage } from 'shared/lib/storage';
 
-export const accessToken = () => ({
+export const authorization = () => ({
   headers: {
     accessToken: Storage.getItem(TOKEN.ACCESS),
   },
