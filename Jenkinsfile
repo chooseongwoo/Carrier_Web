@@ -52,10 +52,16 @@ pipeline {
     
     post {
         success {
-            setBuildStatus("Jenkins CI", "Build succeeded", "SUCCESS")
+            githubChecks(
+                name: 'Jenkins CI',
+                conclusion: 'success'
+            )
         }
         failure {
-            setBuildStatus("Jenkins CI", "Build failed", "FAILURE")
+            githubChecks(
+                name: 'Jenkins CI',
+                conclusion: 'failure'
+            )
         }
     }
 }
