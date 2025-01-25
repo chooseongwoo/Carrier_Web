@@ -1,5 +1,5 @@
 {
-  "include": ["src"],
+  "include": ["src/**/*.{ts,tsx}"],
   "compilerOptions": {
     "jsx": "react-jsx",
     "esModuleInterop": true,
@@ -8,25 +8,17 @@
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "allowJs": true,
     "noEmit": true,
     "strict": true,
-    "baseUrl": "./src",
-    "paths": {
-      "@/*": ["*"]
-    }
+    "baseUrl": "./src"
   },
   "references": [
-    {
-      "path": [
-        "./tsconfig.app.json",
-        "./tsconfig.node.json",
-        "./another-tsconfig"
-      ]
-    }
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
   ]
 }
