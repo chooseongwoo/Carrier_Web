@@ -9,7 +9,7 @@ export const customAxios = axios.create({
 });
 
 const refresh = async () => {
-  const { data } = await customAxios.put('/auth/reissue', null, refreshToken());
+  const { data } = await customAxios.post('/auth/reissue', refreshToken());
   Storage.setItem(TOKEN.ACCESS, data.accessToken);
   return data.accessToken;
 };
