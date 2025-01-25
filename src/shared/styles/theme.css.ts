@@ -24,6 +24,11 @@ const theme = createGlobalTheme(':root', {
     800: '#323131',
     900: '#1E1E20',
   },
+  red: {
+    100: '#FFDDDD',
+    200: '#FFB4B4',
+    500: '#EE3A3A',
+  },
   white: '#FFFFFF',
   black: '#171719',
 });
