@@ -55,17 +55,19 @@ pipeline {
     }
     
     post {
-        success {
-            githubChecks(
-                name: 'Jenkins CI',
-                conclusion: 'success'
-            )
-        }
-        failure {
-            githubChecks(
-                name: 'Jenkins CI',
-                conclusion: 'failure'
-            )
-        }
+    success {
+        githubStatus(
+            context: 'continuous-integration/jenkins',
+            description: 'The build succeeded!',
+            status: 'SUCCESS'
+        )
     }
+    failure {
+        githubStatus(
+            context: 'continuous-integration/jenkins',
+            description: 'The build failed!',
+            status: 'FAILURE'
+        )
+    }
+}
 }
