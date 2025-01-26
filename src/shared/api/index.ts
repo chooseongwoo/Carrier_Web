@@ -18,6 +18,11 @@ customAxios.interceptors.response.use(
   (response) => response,
   async (error) => {
     const request = error.config;
+    request.retryCount = request.retryCount || 0 + 1;
+
+    if (request.retryCount > 3) {
+      return Promise.reject(error);
+    }
 
     if (!request.sent) {
       request.sent = true;
