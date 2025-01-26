@@ -11,6 +11,9 @@ const ReactQueryProviders = ({ children }: React.PropsWithChildren) => {
           refetchOnMount: false,
           retry: 1,
         },
+        mutations: {
+          retry: 1,
+        },
       },
     })
   );
