@@ -3,9 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "main": "./out/main/index.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "start": "electron-vite && preview && dev",
+    "prebuild": "electron-vite build",
     "preview": "vite preview",
     "prepare": "husky",
     "commitlint": "commitlint --config commitlint.config.ts",
