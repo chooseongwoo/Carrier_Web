@@ -1,12 +1,12 @@
-import { contextBridge } from "electron";
-import { electronAPI } from "@electron-toolkit/preload";
+import { contextBridge } from 'electron';
+import { electronAPI } from '@electron-toolkit/preload';
 const api = {};
 if (process.contextIsolated) {
   try {
-    contextBridge.exposeInMainWorld("electron", electronAPI);
-    contextBridge.exposeInMainWorld("api", api);
+    contextBridge.exposeInMainWorld('electron', electronAPI);
+    contextBridge.exposeInMainWorld('api', api);
   } catch (error) {
-    console.error("Failed to expose Electron API in the renderer:", error);
+    console.error('Failed to expose Electron API in the renderer:', error);
     console.error(error);
   }
 } else {
