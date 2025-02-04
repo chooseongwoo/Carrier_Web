@@ -49,6 +49,10 @@ export const category = style({
   },
 });
 
+export const selected = style({
+  background: `${theme.gray[100]}`,
+});
+
 export const categoryText = style({
   color: '#000',
   ...font.p1,
