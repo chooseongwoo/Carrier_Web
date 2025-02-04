@@ -1,12 +1,10 @@
 import * as s from './style.css';
 import { Arrow } from 'shared/icons';
-import { useState } from 'react';
 import { Business, Recieved, Save, Sent, Spam, Trash } from 'pages/Mail/ui';
-import { useSelectedMenu } from 'pages/Mail/hooks';
+import { useMenuState } from 'pages/Mail/hooks';
 
 const Sidebar = () => {
-  const [isOpened, setIsOpened] = useState(false);
-  const { selectedMenu, selectMenu } = useSelectedMenu();
+  const { selectedMenu, selectMenu, isOpened, toggleOpened } = useMenuState();
 
   const sidebarMenu = [
     { title: '임시 보관함', icon: <Save />, label: 'save' },
@@ -35,7 +33,7 @@ const Sidebar = () => {
             className={`${s.arrowBox} ${isOpened ? s.opened : s.closed}`}
             onClick={(e) => {
               e.stopPropagation();
-              setIsOpened(!isOpened);
+              toggleOpened();
             }}
           >
             <Arrow size={20} direction="right" />
