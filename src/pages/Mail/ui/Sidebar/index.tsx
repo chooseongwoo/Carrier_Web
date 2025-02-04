@@ -2,13 +2,18 @@ import * as s from './style.css';
 import { Arrow } from 'shared/icons';
 import { Business, Recieved, Save, Sent, Spam, Trash } from 'pages/Mail/ui';
 import { useMenuState } from 'pages/Mail/hooks';
+import theme from 'shared/styles/theme.css';
 
 const Sidebar = () => {
   const { selectedMenu, selectMenu, isOpened, toggleOpened } = useMenuState();
 
   const sidebarMenu = [
     { title: '임시 보관함', icon: <Save />, label: 'save' },
-    { title: '보낸 메일함', icon: <Sent />, label: 'sent' },
+    {
+      title: '보낸 메일함',
+      icon: <Sent fill={theme.blue[500]} />,
+      label: 'sent',
+    },
     { title: '휴지통', icon: <Trash />, label: 'trash' },
   ];
 

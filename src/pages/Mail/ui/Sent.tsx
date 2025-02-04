@@ -1,4 +1,8 @@
-const Sent = () => {
+interface SentProps {
+  fill: string;
+}
+
+const Sent = ({ fill }: SentProps) => {
   return (
     <svg
       width="24"
@@ -11,7 +15,7 @@ const Sent = () => {
         <path
           id="Vector"
           d="M6.00004 12L3.26904 3.125C9.80191 5.025 15.9624 8.02646 21.485 12C15.9627 15.9735 9.80257 18.9749 3.27004 20.875L6.00004 12ZM6.00004 12H13.5"
-          stroke="#2E5EFC"
+          stroke={fill}
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
