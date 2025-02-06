@@ -1,4 +1,4 @@
-import { style } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 import { font } from 'shared/styles/font.css';
 import theme from 'shared/styles/theme.css';
 
@@ -6,6 +6,7 @@ export const container = style({
   position: 'absolute',
   width: '37rem',
   height: '37rem',
+  maxHeight: '37rem',
   borderRadius: '20px',
   display: 'flex',
   flexDirection: 'column',
@@ -70,4 +71,32 @@ export const sent = style({
   ':hover': {
     background: `${theme.blue[500]}`,
   },
+});
+
+export const editorContainer = style({
+  flexGrow: 1,
+  overflow: 'hidden',
+});
+
+export const editor = style({
+  height: '100%',
+});
+
+globalStyle(`${container} .ql-container`, {
+  flexGrow: 1,
+  height: '100% !important',
+  overflowY: 'auto',
+  overflowX: 'hidden',
+  border: 'none',
+});
+
+globalStyle(`${container} .ql-editor`, {
+  minHeight: '100%',
+  maxHeight: '100%',
+  overflowY: 'auto',
+  overflowX: 'hidden',
+  whiteSpace: 'pre-wrap',
+  wordBreak: 'break-word',
+  padding: '12px 16px',
+  marginBottom: '10px',
 });
