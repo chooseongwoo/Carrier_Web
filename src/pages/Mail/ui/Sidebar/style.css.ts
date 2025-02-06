@@ -54,7 +54,7 @@ export const selected = style({
 });
 
 export const categoryText = style({
-  color: '#000',
+  color: `${theme.black}`,
   ...font.p1,
 });
 

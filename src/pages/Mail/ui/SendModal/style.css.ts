@@ -10,7 +10,7 @@ export const container = style({
   borderRadius: '20px',
   display: 'flex',
   flexDirection: 'column',
-  background: `${theme.white}`,
+  background: theme.white,
   boxShadow: '0px 4px 32px 0px rgba(88, 88, 88, 0.25)',
 });
 
@@ -18,7 +18,7 @@ export const header = style({
   display: 'flex',
   alignItems: 'center',
   padding: '10px 16px',
-  background: `${theme.gray[100]}`,
+  background: theme.gray[100],
   borderRadius: '20px 20px 0 0',
 });
 
@@ -36,18 +36,17 @@ export const inputContainer = style({
 });
 
 export const label = style({
-  color: `${theme.gray[600]}`,
+  color: theme.gray[600],
   ...font.p1,
 });
 
 export const input = style({
-  color: '#000',
+  color: theme.black,
   ...font.p1,
   flexGrow: 1,
 });
 
 export const footer = style({
-  marginTop: 'auto',
   padding: '20px',
   display: 'flex',
   justifyContent: 'flex-end',
@@ -56,47 +55,97 @@ export const footer = style({
 });
 
 export const icon = style({
+  position: 'relative',
   padding: '16px',
   borderRadius: '8px',
   cursor: 'pointer',
   ':hover': {
-    background: `${theme.gray[100]}`,
+    background: theme.gray[100],
   },
 });
 
 export const sent = style({
   display: 'flex',
   alignItems: 'center',
-  background: `${theme.blue[500]}`,
+  background: theme.blue[500],
   ':hover': {
-    background: `${theme.blue[500]}`,
+    background: theme.blue[500],
   },
 });
 
 export const editorContainer = style({
   flexGrow: 1,
-  overflow: 'hidden',
+  overflowY: 'auto',
+  display: 'flex',
+  flexDirection: 'column',
+});
+
+export const textEditor = style({
+  height: '210px',
 });
 
 export const editor = style({
   height: '100%',
 });
 
+export const fileList = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '4px',
+  padding: '10px 16px',
+});
+
+export const fileItem = style({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: '5px 8px',
+  borderRadius: '8px',
+  background: theme.gray[50],
+  cursor: 'pointer',
+});
+
+export const fileName = style({
+  ...font.p1,
+  color: theme.black,
+});
+
+export const fileBytes = style({
+  ...font.p1,
+  color: theme.blue[500],
+});
+
+export const fileInput = style({
+  position: 'absolute',
+  width: '100%',
+  height: '100%',
+  opacity: 0,
+  cursor: 'pointer',
+});
+
+export const fileDeleteBtn = style({
+  cursor: 'pointer',
+});
+
 globalStyle(`${container} .ql-container`, {
-  flexGrow: 1,
-  height: '100% !important',
-  overflowY: 'auto',
-  overflowX: 'hidden',
+  height: '100%',
+  overflow: 'hidden',
+  border: 'none',
+});
+
+globalStyle(`${container} .ql-container.ql-snow`, {
   border: 'none',
 });
 
 globalStyle(`${container} .ql-editor`, {
-  minHeight: '100%',
-  maxHeight: '100%',
+  height: '100%',
   overflowY: 'auto',
-  overflowX: 'hidden',
   whiteSpace: 'pre-wrap',
   wordBreak: 'break-word',
   padding: '12px 16px',
-  marginBottom: '10px',
+  ...font.p1,
+});
+
+globalStyle(`${container} .ql-toolbar`, {
+  display: 'none',
 });
