@@ -7,29 +7,38 @@ import { useState } from 'react';
 const mailData = [
   {
     id: 1,
-    from: '보낸이름',
+    sender: '보낸이름',
+    Recipient: '받는이름',
     title: '보안알림',
     description:
       'macOS에 Google 계정 액세스 권한이 부여됨 chltjdgns1009@gmail.com 액세스 권한을 부여한 적이 없다면 이 활동을 확인하고 계정을 보호하세요.',
     date: '2025.01.12.',
+    RecipientEmail: 'dltmdgus1412@gmail.com',
+    senderEmail: 'notifications@github.com',
     read: false,
   },
   {
     id: 2,
-    from: '추성우',
+    sender: '추성우',
+    Recipient: 'seonghoon07/Kotlin_study',
     title: '[seonghoon07/Kotlin_study] 하지마 (Issue #1)',
     description:
       '— Reply to this email directly, view it on GitHub, or unsubscribe. You are receiving this because you are subscribed to this thread.',
     date: '2025.01.12.',
+    RecipientEmail: 'Kotlin_study@noreply.github.com',
+    senderEmail: 'notifications@github.com',
     read: true,
   },
   {
     id: 3,
-    from: 'PAYCO',
+    sender: 'PAYCO',
+    Recipient: '받는이름',
     title: 'PAYCO 전자금융거래 이용약관 개정 안내',
     description:
       'PAYCO 전자금융거래 이용약관 개정 안내 PAYCO 서비스를 이용해주시는 회원 여러분께 감사드리며, 전자금융거래 이용약관 개정 안내 드립니다. 1. 개정약관 시행일 : 2025년 2월 17일',
     date: '2025.01.12.',
+    RecipientEmail: 'dltmdgus1412@gmail.com',
+    senderEmail: 'notifications@github.com',
     read: true,
   },
 ];
@@ -37,7 +46,6 @@ const mailData = [
 const Content = () => {
   const { selectedMenu } = useMenuState();
   const [selectedMail, setSelectedMail] = useState(0);
-  console.log(selectedMail);
   return (
     <div className={s.container}>
       <header className={s.header}>
@@ -68,7 +76,7 @@ const Content = () => {
             >
               {data.read ? '' : <div className={s.mailList_readState} />}
               <div className={s.mailList_header}>
-                <div className={s.mailList_Sender}>{data.from}</div>
+                <div className={s.mailList_Sender}>{data.sender}</div>
                 <div
                   className={`${s.mailList_Date} ${
                     selectedMail === data.id
@@ -99,10 +107,24 @@ const Content = () => {
                 </div>
                 <div className={s.description_info}>
                   <div className={s.description_sender}>
-                    {mailData.find((mail) => mail.id === selectedMail)?.from}
+                    {mailData.find((mail) => mail.id === selectedMail)?.sender}{' '}
+                    &lt;
+                    {
+                      mailData.find((mail) => mail.id === selectedMail)
+                        ?.senderEmail
+                    }
+                    &#62;
                   </div>
-                  <div className={s.description_date}>
-                    {mailData.find((mail) => mail.id === selectedMail)?.date}
+                  <div className={s.description_Recipient}>
+                    {
+                      mailData.find((mail) => mail.id === selectedMail)
+                        ?.Recipient
+                    }{' '}
+                    &lt;
+                    {
+                      mailData.find((mail) => mail.id === selectedMail)
+                        ?.RecipientEmail
+                    }
                   </div>
                 </div>
               </div>

@@ -142,7 +142,7 @@ export const mailList_description = style({
 
 export const content_description = style({
   height: 'calc(100vh - 72px)',
-  padding: '32px',
+  padding: '20px',
   flex: 1,
 });
 
@@ -150,30 +150,31 @@ export const description_header = style({
   display: 'flex',
   flexDirection: 'column',
   gap: '8px',
-  marginBottom: '24px',
+  marginBottom: '20px',
 });
 
 export const description_title = style({
-  ...font.H3,
+  ...font.H2,
+  fontWeight: '500',
+  marginBottom: '16px',
 });
 
 export const description_info = style({
   display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
+  flexDirection: 'column',
+  alignItems: 'start',
+  justifyContent: 'center',
 });
 
 export const description_sender = style({
   ...font.H4,
 });
 
+export const description_Recipient = style({});
+
 export const description_date = style({
   ...font.p2,
   color: theme.gray[500],
 });
 
-export const description_content = style({
-  ...font.p1,
-  lineHeight: '1.6',
-});
+export const description_content = style({});
