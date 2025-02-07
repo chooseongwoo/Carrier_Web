@@ -17976,12 +17976,10 @@ const ReactQueryProviders = ({ children }) => {
     ],
   });
 };
-clientExports
-  .createRoot(document.getElementById('root'))
-  .render(
-    /* @__PURE__ */ jsxRuntimeExports.jsx(ReactQueryProviders, {
-      children: /* @__PURE__ */ jsxRuntimeExports.jsx(BrowserRouter, {
-        children: /* @__PURE__ */ jsxRuntimeExports.jsx(App, {}),
-      }),
-    })
-  );
+clientExports.createRoot(document.getElementById('root')).render(
+  /* @__PURE__ */ jsxRuntimeExports.jsx(ReactQueryProviders, {
+    children: /* @__PURE__ */ jsxRuntimeExports.jsx(BrowserRouter, {
+      children: /* @__PURE__ */ jsxRuntimeExports.jsx(App, {}),
+    }),
+  })
+);

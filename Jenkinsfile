@@ -80,7 +80,7 @@ pipeline {
                         summary: 'Build failed',
                         text: '''
                             ❌ Build failed
-                            Please check the build logs for more details
+                            Please check the build logs for more details 
                         ''',
                         status: 'completed',
                         conclusion: 'failure'
