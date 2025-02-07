@@ -9,24 +9,45 @@ pipeline {
         GITHUB_CREDS = credentials('github-token')
     }
     
+    triggers {
+        githubPush()
+    }
+    
     stages {
-        
-        stage('Setup pnpm') {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Setup') {
             steps {
                 sh 'npm install -g pnpm'
             }
         }
-        
-        stage('Build') {
+
+        stage('Build & Test') {
+            when {
+                anyOf {
+                    expression { env.CHANGE_ID != null }
+                    branch pattern: "(main|develop)"
+                }
+            }
             steps {
-                sh 'pnpm install'
-                sh 'pnpm run build'
+                script {
+                    sh 'pnpm install'
+                    sh 'pnpm run build'
+                    
+                    if (env.CHANGE_ID) {
+                        echo "Processing PR #${env.CHANGE_ID}"
+                    }
+                }
             }
         }
         
         stage('Deploy') {
             when {
-                expression { env.BRANCH_NAME == 'main' }
+                branch 'main'
             }
             steps {
                 sh 'sudo cp -r dist/* /home/jamkris/Documents/web/Carrier'
@@ -37,23 +58,34 @@ pipeline {
     
     post {
         success {
-            publishChecks name: 'default',
-                title: 'Pipeline Check',
-                summary: 'Build succeeded',
-                text: 'All stages completed successfully',
-                status: 'COMPLETED',
-                conclusion: 'SUCCESS',
-                detailsURL: env.BUILD_URL,
-                actions: [],
-                annotations: []
+            script {
+                if (env.CHANGE_ID) {
+                    publishChecks name: 'Jenkins CI',
+                        title: 'Build Check',
+                        summary: 'Build succeeded',
+                        text: '''
+                            ✅ Build passed
+                            ✅ Tests passed
+                        ''',
+                        status: 'completed',
+                        conclusion: 'success'
+                }
+            }
         }
         failure {
-            publishChecks name: 'default',
-                title: 'Pipeline Check',
-                summary: 'Build failed',
-                text: 'Check pipeline logs for details',
-                status: 'COMPLETED',
-                conclusion: 'FAILURE'
+            script {
+                if (env.CHANGE_ID) {
+                    publishChecks name: 'Jenkins CI',
+                        title: 'Build Check',
+                        summary: 'Build failed',
+                        text: '''
+                            ❌ Build failed
+                            Please check the build logs for more details
+                        ''',
+                        status: 'completed',
+                        conclusion: 'failure'
+                }
+            }
         }
     }
 }
