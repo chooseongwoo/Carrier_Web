@@ -31,6 +31,9 @@ pipeline {
                 anyOf {
                     expression { env.CHANGE_ID != null }
                     expression { env.CHANGE_TARGET != null && env.CHANGE_BRANCH != null }
+                    branch 'feat/*'
+                    branch 'hotfix/*'
+                    branch 'develop/*'
                 }
             }
             steps {
