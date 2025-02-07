@@ -1,11 +1,3 @@
-void setBuildStatus(context, message, state) {
-    step([
-        $class: "GitHubCommitStatusSetter",
-        contextSource: [$class: "ManuallyEnteredCommitContextSource", context: context],
-        statusResultSource: [$class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]]]
-    ])
-}
-
 pipeline {
     agent any
     
@@ -18,17 +10,6 @@ pipeline {
     }
     
     stages {
-        stage('Checkout') {
-            steps {
-                script {
-                    githubChecks(
-                        name: 'Jenkins CI',
-                        status: 'in_progress'
-                    )
-                }
-                checkout scm
-            }
-        }
         
         stage('Setup pnpm') {
             steps {
