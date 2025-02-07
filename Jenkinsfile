@@ -58,34 +58,23 @@ pipeline {
     
     post {
         success {
-            script {
-                if (env.CHANGE_ID) {
-                    publishChecks name: 'Jenkins CI',
-                        title: 'Build Check',
-                        summary: 'Build succeeded',
-                        text: '''
-                            ✅ Build passed
-                            ✅ Tests passed
-                        ''',
-                        status: 'completed',
-                        conclusion: 'success'
-                }
-            }
+            publishChecks name: 'default',
+            title: 'Pipeline Check',
+            summary: 'Build succeeded',
+            text: 'All stages completed successfully',
+            status: 'COMPLETED',
+            conclusion: 'SUCCESS',
+            detailsURL: env.BUILD_URL,
+            actions: [],
+            annotations: []
         }
         failure {
-            script {
-                if (env.CHANGE_ID) {
-                    publishChecks name: 'Jenkins CI',
-                        title: 'Build Check',
-                        summary: 'Build failed',
-                        text: '''
-                            ❌ Build failed
-                            Please check the build logs for more details
-                        ''',
-                        status: 'completed',
-                        conclusion: 'failure'
-                }
-            }
+            publishChecks name: 'default',
+            title: 'Pipeline Check',
+            summary: 'Build failed',
+            text: 'Check pipeline logs for details',
+            status: 'COMPLETED',
+            conclusion: 'FAILURE'
         }
     }
 }
