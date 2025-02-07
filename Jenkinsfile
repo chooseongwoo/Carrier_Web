@@ -29,8 +29,8 @@ pipeline {
         stage('Build & Test') {
             when {
                 anyOf {
-                    changeRequest()
-                    branch pattern: "(main|develop)", comparator: "REGEXP"
+                    expression { env.CHANGE_ID != null }
+                    expression { env.CHANGE_TARGET != null && env.CHANGE_BRANCH != null }
                 }
             }
             steps {
@@ -59,7 +59,7 @@ pipeline {
     post {
         success {
             script {
-                if (changeRequest()) {
+                if (env.CHANGE_ID) {
                     publishChecks name: 'Jenkins CI',
                         title: 'Build Check',
                         summary: 'Build succeeded',
@@ -68,13 +68,13 @@ pipeline {
                             ✅ Tests passed
                         ''',
                         status: 'completed',
-                        conclusion: 'SUCCESS'
+                        conclusion: 'success'
                 }
             }
         }
         failure {
             script {
-                if (changeRequest()) {
+                if (env.CHANGE_ID) {
                     publishChecks name: 'Jenkins CI',
                         title: 'Build Check',
                         summary: 'Build failed',
@@ -83,7 +83,7 @@ pipeline {
                             Please check the build logs for more details
                         ''',
                         status: 'completed',
-                        conclusion: 'FAILURE'
+                        conclusion: 'failure'
                 }
             }
         }
