@@ -175,7 +175,10 @@ export const description_sender = style({
   ...font.H4,
 });
 
-export const description_Recipient = style({});
+export const description_Recipient = style({
+  ...font.p1,
+  color: theme.gray[600],
+});
 
 export const description_date = style({
   ...font.p2,
