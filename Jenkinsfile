@@ -31,9 +31,9 @@ pipeline {
                 anyOf {
                     expression { env.CHANGE_ID != null }
                     expression { env.CHANGE_TARGET != null && env.CHANGE_BRANCH != null }
-                    branch 'feat/*'
-                    branch 'hotfix/*'
-                    branch 'develop/*'
+                    expression { env.BRANCH_NAME =~ /^feat\/.*/ }
+                    expression { env.BRANCH_NAME =~ /^hotfix\/.*/ }
+                    expression { env.BRANCH_NAME =~ /^develop\/.*/ }
                 }
             }
             steps {
