@@ -1,8 +1,8 @@
 import { useMenuState } from 'pages/Mail/hooks';
-import TrashcnaIcon from '../TrashcnaIcon';
 import WriteIcon from '../WriteIcon';
 import * as s from './style.css';
 import { useState } from 'react';
+import TrashcanIcon from '../TrashcanIcon';
 
 const mailData = [
   {
@@ -61,7 +61,7 @@ const Content = () => {
             <WriteIcon />
           </div>
           <div className={s.mailOption_delete}>
-            <TrashcnaIcon />
+            <TrashcanIcon />
           </div>
         </div>
       </header>
