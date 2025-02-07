@@ -1,11 +1,3 @@
-void setBuildStatus(context, message, state) {
-    step([
-        $class: "GitHubCommitStatusSetter",
-        contextSource: [$class: "ManuallyEnteredCommitContextSource", context: context],
-        statusResultSource: [$class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]]]
-    ])
-}
-
 pipeline {
     agent any
     
@@ -18,17 +10,6 @@ pipeline {
     }
     
     stages {
-        stage('Checkout') {
-            steps {
-                script {
-                    githubChecks(
-                        name: 'Jenkins CI',
-                        status: 'in_progress'
-                    )
-                }
-                checkout scm
-            }
-        }
         
         stage('Setup pnpm') {
             steps {
@@ -55,19 +36,24 @@ pipeline {
     }
     
     post {
-    success {
-        githubStatus(
-            context: 'continuous-integration/jenkins',
-            description: 'The build succeeded!',
-            status: 'SUCCESS'
-        )
+        success {
+            publishChecks name: 'default',
+                title: 'Pipeline Check',
+                summary: 'Build succeeded',
+                text: 'All stages completed successfully',
+                status: 'COMPLETED',
+                conclusion: 'SUCCESS',
+                detailsURL: env.BUILD_URL,
+                actions: [],
+                annotations: []
+        }
+        failure {
+            publishChecks name: 'default',
+                title: 'Pipeline Check',
+                summary: 'Build failed',
+                text: 'Check pipeline logs for details',
+                status: 'COMPLETED',
+                conclusion: 'FAILURE'
+        }
     }
-    failure {
-        githubStatus(
-            context: 'continuous-integration/jenkins',
-            description: 'The build failed!',
-            status: 'FAILURE'
-        )
-    }
-}
 }
