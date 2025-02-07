@@ -29,8 +29,8 @@ pipeline {
         stage('Build & Test') {
             when {
                 anyOf {
-                    expression { env.CHANGE_ID != null }
-                    expression { env.CHANGE_TARGET != null && env.CHANGE_BRANCH != null }
+                    changeRequest()
+                    branch pattern: "(main|develop)", comparator: "REGEXP"
                 }
             }
             steps {
@@ -59,7 +59,7 @@ pipeline {
     post {
         success {
             script {
-                if (env.CHANGE_ID) {
+                if (changeRequest()) {
                     publishChecks name: 'Jenkins CI',
                         title: 'Build Check',
                         summary: 'Build succeeded',
@@ -74,7 +74,7 @@ pipeline {
         }
         failure {
             script {
-                if (env.CHANGE_ID) {
+                if (changeRequest()) {
                     publishChecks name: 'Jenkins CI',
                         title: 'Build Check',
                         summary: 'Build failed',
