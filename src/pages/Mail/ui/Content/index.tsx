@@ -46,6 +46,7 @@ const mailData = [
 const Content = () => {
   const { selectedMenu } = useMenuState();
   const [selectedMail, setSelectedMail] = useState(0);
+  const selectedMailData = mailData.find((mail) => mail.id === selectedMail);
   return (
     <div className={s.container}>
       <header className={s.header}>
@@ -99,32 +100,20 @@ const Content = () => {
           ))}
         </div>
         <div className={s.content_description}>
-          {selectedMail !== 0 && (
+          {selectedMail !== 0 && selectedMailData && (
             <>
               <div className={s.description_header}>
                 <div className={s.description_title}>
-                  {mailData.find((mail) => mail.id === selectedMail)?.title}
+                  {selectedMailData.title}
                 </div>
                 <div className={s.description_info}>
                   <div className={s.description_sender}>
-                    {mailData.find((mail) => mail.id === selectedMail)?.sender}{' '}
-                    &lt;
-                    {
-                      mailData.find((mail) => mail.id === selectedMail)
-                        ?.senderEmail
-                    }
-                    &#62;
+                    {selectedMailData.sender} &lt;{selectedMailData.senderEmail}
+                    &gt;
                   </div>
                   <div className={s.description_Recipient}>
-                    {
-                      mailData.find((mail) => mail.id === selectedMail)
-                        ?.Recipient
-                    }{' '}
-                    &lt;
-                    {
-                      mailData.find((mail) => mail.id === selectedMail)
-                        ?.RecipientEmail
-                    }
+                    {selectedMailData.Recipient} &lt;
+                    {selectedMailData.RecipientEmail}&gt;
                   </div>
                 </div>
               </div>
