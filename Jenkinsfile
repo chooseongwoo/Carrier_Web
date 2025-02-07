@@ -30,7 +30,7 @@ pipeline {
             when {
                 anyOf {
                     expression { env.CHANGE_ID != null }
-                    branch pattern: "(main|develop)"
+                    expression { env.CHANGE_TARGET != null && env.CHANGE_BRANCH != null }
                 }
             }
             steps {
