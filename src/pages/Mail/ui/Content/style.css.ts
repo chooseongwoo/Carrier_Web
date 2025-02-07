@@ -47,12 +47,14 @@ export const mailOption_addPlan = style({
 export const mailOption_write = style({
   width: '48px',
   height: '48px',
-  backgroundColor: theme.gray[50],
   borderRadius: '8px',
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'center',
   alignItems: 'center',
+  ':hover': {
+    backgroundColor: theme.gray[50],
+  },
 });
 
 export const mailOption_delete = style({
@@ -62,6 +64,9 @@ export const mailOption_delete = style({
   flexDirection: 'row',
   justifyContent: 'center',
   alignItems: 'center',
+  ':hover': {
+    backgroundColor: theme.gray[50],
+  },
 });
 
 export const content = style({
