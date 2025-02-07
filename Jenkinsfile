@@ -68,7 +68,7 @@ pipeline {
                             ✅ Tests passed
                         ''',
                         status: 'completed',
-                        conclusion: 'success'
+                        conclusion: 'SUCCESS'
                 }
             }
         }
@@ -83,7 +83,7 @@ pipeline {
                             Please check the build logs for more details
                         ''',
                         status: 'completed',
-                        conclusion: 'failure'
+                        conclusion: 'FAILURE'
                 }
             }
         }
