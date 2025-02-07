@@ -37,16 +37,23 @@ pipeline {
     
     post {
         success {
-            githubChecks(
-                name: 'Jenkins CI',
-                conclusion: 'success'
-            )
+            publishChecks name: 'default',
+                title: 'Pipeline Check',
+                summary: 'Build succeeded',
+                text: 'All stages completed successfully',
+                status: 'COMPLETED',
+                conclusion: 'SUCCESS',
+                detailsURL: env.BUILD_URL,
+                actions: [],
+                annotations: []
         }
         failure {
-            githubChecks(
-                name: 'Jenkins CI',
-                conclusion: 'failure'
-            )
+            publishChecks name: 'default',
+                title: 'Pipeline Check',
+                summary: 'Build failed',
+                text: 'Check pipeline logs for details',
+                status: 'COMPLETED',
+                conclusion: 'FAILURE'
         }
     }
 }
