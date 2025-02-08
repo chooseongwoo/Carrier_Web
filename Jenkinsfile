@@ -1,3 +1,19 @@
+properties([
+    pipelineTriggers([
+        githubPush(),
+        [
+            $class: 'GitHubPRTrigger',
+            spec: 'H/5 * * * *',
+            triggerMode: 'HEAVY_HOOKS',
+            events: [
+                commentCreated(),
+                pullRequestOpened(),
+                pullRequestCommit()
+            ]
+        ]
+    ])
+])
+
 pipeline {
     agent any
     
@@ -7,10 +23,6 @@ pipeline {
 
     environment {
         GITHUB_CREDS = credentials('github-token')
-    }
-    
-    triggers {
-        githubPush()
     }
     
     stages {
@@ -31,9 +43,9 @@ pipeline {
                 anyOf {
                     expression { env.CHANGE_ID != null }
                     expression { env.CHANGE_TARGET != null && env.CHANGE_BRANCH != null }
-                    branch 'feat/*'
-                    branch 'hotfix/*'
-                    branch 'develop/*'
+                    expression { env.BRANCH_NAME =~ /^feat\/.*/ }
+                    expression { env.BRANCH_NAME =~ /^hotfix\/.*/ }
+                    expression { env.BRANCH_NAME =~ /^develop\/.*/ }
                 }
             }
             steps {
