@@ -65,6 +65,8 @@ pipeline {
                 branch 'main'
             }
             steps {
+                sh 'pnpm install'
+                sh 'pnpm run build'
                 sh 'sudo cp -r dist/* /home/jamkris/Documents/web/Carrier'
                 sh 'sudo systemctl restart nginx'
             }
