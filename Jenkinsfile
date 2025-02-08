@@ -6,9 +6,9 @@ properties([
             spec: 'H/5 * * * *',
             triggerMode: 'HEAVY_HOOKS',
             events: [
-                commentCreated(),
-                pullRequestOpened(),
-                pullRequestCommit()
+                [$class: 'GitHubPRCommentEvent'],
+                [$class: 'GitHubPROpenEvent'],
+                [$class: 'GitHubPRCommitEvent']
             ]
         ]
     ])
