@@ -1,10 +1,13 @@
+import type { SVGProps } from 'react';
+
 const Arrow = ({
   direction = 'left',
   size = 24,
+  ...props
 }: {
   direction?: 'left' | 'right';
   size?: number;
-}) => {
+} & SVGProps<SVGSVGElement>) => {
   return (
     <svg
       width={size}
@@ -12,9 +15,11 @@ const Arrow = ({
       viewBox="0 0 24 25"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
       style={{
         transform: direction === 'right' ? 'rotate(180deg)' : 'none',
         transformOrigin: 'center',
+        cursor: 'pointer',
       }}
     >
       <path
