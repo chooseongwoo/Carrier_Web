@@ -1,3 +1,19 @@
+properties([
+    pipelineTriggers([
+        githubPush(),
+        [
+            $class: 'GitHubPRTrigger',
+            spec: 'H/5 * * * *',
+            triggerMode: 'HEAVY_HOOKS',
+            events: [
+                [$class: 'GitHubPRCommentEvent'],
+                [$class: 'GitHubPROpenEvent'],
+                [$class: 'GitHubPRCommitEvent']
+            ]
+        ]
+    ])
+])
+
 pipeline {
     agent any
     
@@ -7,10 +23,6 @@ pipeline {
 
     environment {
         GITHUB_CREDS = credentials('github-token')
-    }
-    
-    triggers {
-        githubPush()
     }
     
     stages {
@@ -53,6 +65,8 @@ pipeline {
                 branch 'main'
             }
             steps {
+                sh 'pnpm install'
+                sh 'pnpm run build'
                 sh 'sudo cp -r dist/* /home/jamkris/Documents/web/Carrier'
                 sh 'sudo systemctl restart nginx'
             }
