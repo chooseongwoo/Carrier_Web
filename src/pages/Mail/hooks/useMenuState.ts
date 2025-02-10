@@ -4,7 +4,7 @@ const STORAGE_KEY_SELECTED_MENU = 'selectedMenu';
 const STORAGE_KEY_IS_OPENED = 'menuIsOpened';
 
 const useMenuState = () => {
-  const [selectedMenu, setSelectedMenu] = useState<string | null>(null);
+  const [selectedMenu, setSelectedMenu] = useState<string>('recieved');
   const [isOpened, setIsOpened] = useState(false);
 
   useEffect(() => {
