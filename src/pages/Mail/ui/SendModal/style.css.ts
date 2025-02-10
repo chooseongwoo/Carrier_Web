@@ -12,6 +12,7 @@ export const container = style({
   flexDirection: 'column',
   background: theme.white,
   boxShadow: '0px 4px 32px 0px rgba(88, 88, 88, 0.25)',
+  zIndex: 99,
 });
 
 export const header = style({
