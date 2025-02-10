@@ -1,10 +1,18 @@
-void setBuildStatus(context, message, state) {
-    step([
-        $class: "GitHubCommitStatusSetter",
-        contextSource: [$class: "ManuallyEnteredCommitContextSource", context: context],
-        statusResultSource: [$class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]]]
+properties([
+    pipelineTriggers([
+        githubPush(),
+        [
+            $class: 'GitHubPRTrigger',
+            spec: 'H/5 * * * *',
+            triggerMode: 'HEAVY_HOOKS',
+            events: [
+                [$class: 'GitHubPRCommentEvent'],
+                [$class: 'GitHubPROpenEvent'],
+                [$class: 'GitHubPRCommitEvent']
+            ]
+        ]
     ])
-}
+])
 
 pipeline {
     agent any
@@ -20,34 +28,45 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                script {
-                    githubChecks(
-                        name: 'Jenkins CI',
-                        status: 'in_progress'
-                    )
-                }
                 checkout scm
             }
         }
-        
-        stage('Setup pnpm') {
+
+        stage('Setup') {
             steps {
                 sh 'npm install -g pnpm'
             }
         }
-        
-        stage('Build') {
+
+        stage('Build & Test') {
+            when {
+                anyOf {
+                    expression { env.CHANGE_ID != null }
+                    expression { env.CHANGE_TARGET != null && env.CHANGE_BRANCH != null }
+                    expression { env.BRANCH_NAME =~ /^feat\/.*/ }
+                    expression { env.BRANCH_NAME =~ /^hotfix\/.*/ }
+                    expression { env.BRANCH_NAME =~ /^develop\/.*/ }
+                }
+            }
             steps {
-                sh 'pnpm install'
-                sh 'pnpm run build'
+                script {
+                    sh 'pnpm install'
+                    sh 'pnpm run build'
+                    
+                    if (env.CHANGE_ID) {
+                        echo "Processing PR #${env.CHANGE_ID}"
+                    }
+                }
             }
         }
         
         stage('Deploy') {
             when {
-                expression { env.BRANCH_NAME == 'main' }
+                branch 'main'
             }
             steps {
+                sh 'pnpm install'
+                sh 'pnpm run build'
                 sh 'sudo cp -r dist/* /home/jamkris/Documents/web/Carrier'
                 sh 'sudo systemctl restart nginx'
             }
@@ -55,19 +74,24 @@ pipeline {
     }
     
     post {
-    success {
-        githubStatus(
-            context: 'continuous-integration/jenkins',
-            description: 'The build succeeded!',
-            status: 'SUCCESS'
-        )
+        success {
+            publishChecks name: 'default',
+            title: 'Pipeline Check',
+            summary: 'Build succeeded',
+            text: 'All stages completed successfully',
+            status: 'COMPLETED',
+            conclusion: 'SUCCESS',
+            detailsURL: env.BUILD_URL,
+            actions: [],
+            annotations: []
+        }
+        failure {
+            publishChecks name: 'default',
+            title: 'Pipeline Check',
+            summary: 'Build failed',
+            text: 'Check pipeline logs for details',
+            status: 'COMPLETED',
+            conclusion: 'FAILURE'
+        }
     }
-    failure {
-        githubStatus(
-            context: 'continuous-integration/jenkins',
-            description: 'The build failed!',
-            status: 'FAILURE'
-        )
-    }
-}
 }
