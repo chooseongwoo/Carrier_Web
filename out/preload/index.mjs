@@ -6,8 +6,10 @@ if (process.contextIsolated) {
     contextBridge.exposeInMainWorld('electron', electronAPI);
     contextBridge.exposeInMainWorld('api', api);
   } catch (error) {
-    console.error('Failed to expose Electron API in the renderer:', error);
-    console.error(error);
+    console.error(
+      'renderer에서 Electron API를 호출하는 데 실패했습니다:',
+      error
+    );
   }
 } else {
   window.electron = electronAPI;
