@@ -3,23 +3,23 @@ import { Arrow } from 'shared/icons';
 import { Business, Recieved, Save, Sent, Spam, Trash } from 'pages/Mail/ui';
 import { useMenuState } from 'pages/Mail/hooks';
 import theme from 'shared/styles/theme.css';
+import { MENU_TITLES } from 'pages/Mail/constants/SidebarMenuTitle';
 
 const Sidebar = () => {
   const { selectedMenu, selectMenu, isOpened, toggleOpened } = useMenuState();
 
   const sidebarMenu = [
-    { title: '임시 보관함', icon: <Save />, label: 'save' },
+    { title: MENU_TITLES.SAVE, icon: <Save /> },
     {
-      title: '보낸 메일함',
+      title: MENU_TITLES.SENT,
       icon: <Sent fill={theme.blue[500]} />,
-      label: 'sent',
     },
-    { title: '휴지통', icon: <Trash />, label: 'trash' },
+    { title: MENU_TITLES.TRASH, icon: <Trash /> },
   ];
 
   const subMenu = [
-    { title: '업무', icon: <Business />, label: 'business' },
-    { title: '스팸', icon: <Spam />, label: 'spam' },
+    { title: MENU_TITLES.BUSINESS, icon: <Business /> },
+    { title: MENU_TITLES.SPAM, icon: <Spam /> },
   ];
 
   return (
@@ -28,11 +28,11 @@ const Sidebar = () => {
 
       <div className={s.categories}>
         <div
-          className={`${s.category} ${selectedMenu === 'recieved' ? s.selected : ''}`}
-          onClick={() => selectMenu('recieved')}
+          className={`${s.category} ${selectedMenu === MENU_TITLES.RECIEVED ? s.selected : ''}`}
+          onClick={() => selectMenu(MENU_TITLES.RECIEVED)}
         >
           <Recieved />
-          <p className={s.categoryText}>받은 메일함</p>
+          <p className={s.categoryText}>{MENU_TITLES.RECIEVED}</p>
 
           <div
             className={`${s.arrowBox} ${isOpened ? s.opened : s.closed}`}
@@ -49,9 +49,9 @@ const Sidebar = () => {
           <div className={s.subCategories}>
             {subMenu.map((menu) => (
               <div
-                className={`${s.category} ${menu.label === selectedMenu ? s.selected : ''}`}
-                key={menu.label}
-                onClick={() => selectMenu(menu.label)}
+                className={`${s.category} ${menu.title === selectedMenu ? s.selected : ''}`}
+                key={menu.title}
+                onClick={() => selectMenu(menu.title)}
               >
                 {menu.icon}
                 <p className={s.categoryText}>{menu.title}</p>
@@ -62,9 +62,9 @@ const Sidebar = () => {
 
         {sidebarMenu.map((menu) => (
           <div
-            className={`${s.category} ${menu.label === selectedMenu ? s.selected : ''}`}
-            key={menu.label}
-            onClick={() => selectMenu(menu.label)}
+            className={`${s.category} ${menu.title === selectedMenu ? s.selected : ''}`}
+            key={menu.title}
+            onClick={() => selectMenu(menu.title)}
           >
             {menu.icon}
             <p className={s.categoryText}>{menu.title}</p>

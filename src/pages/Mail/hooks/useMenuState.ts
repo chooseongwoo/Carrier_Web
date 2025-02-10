@@ -1,14 +1,18 @@
+import { SidebarMenuTitle } from 'pages/Mail/constants/SidebarMenuTitle';
 import { useEffect, useState } from 'react';
 
 const STORAGE_KEY_SELECTED_MENU = 'selectedMenu';
 const STORAGE_KEY_IS_OPENED = 'menuIsOpened';
 
 const useMenuState = () => {
-  const [selectedMenu, setSelectedMenu] = useState<string>('recieved');
+  const [selectedMenu, setSelectedMenu] =
+    useState<SidebarMenuTitle>('받은 메일함');
   const [isOpened, setIsOpened] = useState(false);
 
   useEffect(() => {
-    const storedMenu = localStorage.getItem(STORAGE_KEY_SELECTED_MENU);
+    const storedMenu = localStorage.getItem(
+      STORAGE_KEY_SELECTED_MENU
+    ) as SidebarMenuTitle;
     const storedIsOpened = localStorage.getItem(STORAGE_KEY_IS_OPENED);
 
     if (storedMenu) {
@@ -19,7 +23,7 @@ const useMenuState = () => {
     }
   }, []);
 
-  const selectMenu = (label: string) => {
+  const selectMenu = (label: SidebarMenuTitle) => {
     setSelectedMenu(label);
     localStorage.setItem(STORAGE_KEY_SELECTED_MENU, label);
   };
