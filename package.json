@@ -3,9 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "main": "./out/main/index.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "start": "electron-vite && preview && dev",
+    "prebuild": "electron-vite build",
     "preview": "vite preview",
     "prepare": "husky",
     "commitlint": "commitlint --config commitlint.config.ts",
@@ -21,6 +24,8 @@
     ]
   },
   "dependencies": {
+    "@electron-toolkit/preload": "^3.0.1",
+    "@electron-toolkit/utils": "^3.0.0",
     "@fullcalendar/core": "^6.1.15",
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/interaction": "^6.1.15",
@@ -31,6 +36,7 @@
     "@vanilla-extract/recipes": "^0.5.5",
     "@vanilla-extract/vite-plugin": "^4.0.19",
     "axios": "^1.7.9",
+    "electron": "^34.0.1",
     "path": "^0.12.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -47,6 +53,7 @@
     "@typescript-eslint/eslint-plugin": "^8.20.0",
     "@typescript-eslint/parser": "^8.20.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
+    "electron-vite": "^2.3.0",
     "eslint": "^9.18.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^18.0.0",
