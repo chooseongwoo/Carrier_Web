@@ -20,6 +20,7 @@ export const container = style({
   display: 'flex',
   flexDirection: 'column',
   padding: '20px 24px',
+  right: '70%',
 });
 
 export const emailText = style({

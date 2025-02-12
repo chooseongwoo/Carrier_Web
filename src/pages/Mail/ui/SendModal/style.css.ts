@@ -13,6 +13,8 @@ export const container = style({
   background: theme.white,
   boxShadow: '0px 4px 32px 0px rgba(88, 88, 88, 0.25)',
   zIndex: 99,
+  bottom: 30,
+  right: 80,
 });
 
 export const header = style({
