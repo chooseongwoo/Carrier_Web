@@ -119,7 +119,7 @@ export const calendarModalItemAttribute = style({
   ...font.p2,
 });
 
-export const DisplayBtnLayout = recipe({
+export const displayBtnLayout = recipe({
   base: {
     display: 'flex',
     height: '24px',
@@ -129,6 +129,7 @@ export const DisplayBtnLayout = recipe({
     borderRadius: '9999px',
     backgroundColor: theme.blue[400],
     boxShadow: '0px 0px 0px 0px rgba(121, 121, 121, 0.25) inset',
+    transition: 'all 0.2s ease',
   },
   variants: {
     isActive: {
@@ -141,12 +142,13 @@ export const DisplayBtnLayout = recipe({
   },
 });
 
-export const DisplayBtnObject = style({
+export const displayBtnObject = style({
   width: '20px',
   height: '20px',
   borderRadius: '9999px',
   backgroundColor: theme.white,
   boxShadow: '0px 2px 10px 0px rgba(84, 84, 84, 0.25)',
+  transition: 'all 0.2s ease',
 });
 
 export const calendarModalFooter = style({

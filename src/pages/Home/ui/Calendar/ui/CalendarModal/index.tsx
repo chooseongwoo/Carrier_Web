@@ -97,13 +97,32 @@ const CalendarModal: React.FC<CalendarModalProps> = ({ onClose, event }) => {
             <div className={s.calendarModalItem}>
               <div className={s.calendarModalItemTitle}>하루 종일</div>
               <div
-                className={s.DisplayBtnLayout({ isActive: isAllDay })}
+                className={s.displayBtnLayout({ isActive: isAllDay })}
                 onClick={handleIsAllday}
               >
-                <div className={s.DisplayBtnObject} />
+                <div className={s.displayBtnObject} />
               </div>
             </div>
           )}
+          {event?.start &&
+            event?.end &&
+            !isAllDay &&
+            eventType === 'Schedule' && (
+              <>
+                <div className={s.calendarModalItem}>
+                  <div className={s.calendarModalItemTitle}>시작</div>
+                  <div className={s.calendarModalItemAttribute}>
+                    {new Date(event.start).toLocaleString()}
+                  </div>
+                </div>
+                <div className={s.calendarModalItem}>
+                  <div className={s.calendarModalItemTitle}>종료</div>
+                  <div className={s.calendarModalItemAttribute}>
+                    {new Date(event.end).toLocaleString()}
+                  </div>
+                </div>
+              </>
+            )}
 
           <div className={s.calendarModalItem}>
             <div className={s.calendarModalItemTitle}>반복</div>
