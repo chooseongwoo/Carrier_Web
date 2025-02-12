@@ -1,6 +1,6 @@
+import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
 import path from 'path';
 import react from '@vitejs/plugin-react-swc';
-import { externalizeDepsPlugin, defineConfig } from 'electron-vite';
 import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
@@ -27,13 +27,6 @@ export default defineConfig({
   },
   renderer: {
     root: '.',
-    build: {
-      rollupOptions: {
-        input: {
-          index: path.resolve(__dirname, 'index.html'),
-        },
-      },
-    },
     plugins: [
       react(),
       vanillaExtractPlugin({
