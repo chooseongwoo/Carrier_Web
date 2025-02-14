@@ -7,3 +7,4 @@ export { default as Trash } from './Trash';
 export { default as Cancel } from './Cancel';
 export { default as Image } from './Image';
 export { default as File } from './File';
+export { default as WriteIcon } from './WriteIcon';

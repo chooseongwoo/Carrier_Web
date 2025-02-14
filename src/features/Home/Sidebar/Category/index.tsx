@@ -1,5 +1,5 @@
 import * as s from './style.css';
-import { BtnCategoryPlus, BtnCategoryItem } from '../ui';
+import { BtnCategoryPlus, BtnCategoryItem } from 'features/Home/ui';
 
 const Category = () => {
   return (

@@ -1,9 +1,9 @@
 import * as s from './style.css';
 import { Arrow } from 'shared/icons';
-import { Business, Recieved, Save, Sent, Spam, Trash } from 'pages/Mail/ui';
-import { useMenuState } from 'pages/Mail/hooks';
+import { Business, Recieved, Save, Sent, Spam, Trash } from 'features/Mail/ui';
+import { useMenuState } from 'entities/mail/hooks';
 import theme from 'shared/styles/theme.css';
-import { MENU_TITLES } from 'pages/Mail/constants/SidebarMenuTitle';
+import { MENU_TITLES } from 'entities/mail/constants/SidebarMenuTitle';
 
 const Sidebar = () => {
   const { selectedMenu, selectMenu, isOpened, toggleOpened } = useMenuState();
@@ -14,7 +14,10 @@ const Sidebar = () => {
       title: MENU_TITLES.SENT,
       icon: <Sent fill={theme.blue[500]} />,
     },
-    { title: MENU_TITLES.TRASH, icon: <Trash /> },
+    {
+      title: MENU_TITLES.TRASH,
+      icon: <Trash color={theme.blue[500]} size={24} />,
+    },
   ];
 
   const subMenu = [

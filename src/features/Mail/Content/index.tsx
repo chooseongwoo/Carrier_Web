@@ -1,10 +1,10 @@
-import { useMenuState } from 'pages/Mail/hooks';
-import WriteIcon from '../WriteIcon';
+import { useMenuState } from 'entities/mail/hooks';
+import { WriteIcon, Trash } from 'features/Mail/ui';
 import * as s from './style.css';
 import { useState } from 'react';
-import TrashcanIcon from '../TrashcanIcon';
-import SendModal from 'pages/Mail/ui/SendModal';
-import { MailModalProps } from 'pages/Mail/types/MailModalProps';
+import SendModal from 'features/Mail/SendModal';
+import { MailModalProps } from 'entities/mail/types/MailModalProps';
+import theme from 'shared/styles/theme.css';
 
 const mailData = [
   {
@@ -68,7 +68,7 @@ const Content = ({ modalOpen, toggleModalOpen }: MailModalProps) => {
             <WriteIcon />
           </div>
           <div className={s.mailOption_delete}>
-            <TrashcanIcon />
+            <Trash color={theme.gray[600]} size={32} />
           </div>
         </div>
       </header>

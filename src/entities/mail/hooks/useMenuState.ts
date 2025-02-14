@@ -1,4 +1,4 @@
-import { SidebarMenuTitle } from 'pages/Mail/constants/SidebarMenuTitle';
+import { SidebarMenuTitle } from 'entities/mail/constants/SidebarMenuTitle';
 import { useEffect, useState } from 'react';
 
 const STORAGE_KEY_SELECTED_MENU = 'selectedMenu';

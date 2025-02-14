@@ -1,11 +1,11 @@
-import { Sent, Cancel, Image, File } from 'pages/Mail/ui';
+import { Sent, Cancel, Image, File } from 'features/Mail/ui';
 import * as s from './style.css';
 import theme from 'shared/styles/theme.css';
 // @ts-ignore
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useState } from 'react';
-import { MailModalProps } from 'pages/Mail/types/MailModalProps';
+import { MailModalProps } from 'entities/mail/types/MailModalProps';
 
 const SendModal = ({ toggleModalOpen }: MailModalProps) => {
   const [content, setContent] = useState('');
