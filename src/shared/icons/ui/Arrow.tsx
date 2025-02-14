@@ -1,9 +1,11 @@
-interface ArrowProps {
+import type { SVGProps } from 'react';
+
+interface ArrowProps extends SVGProps<SVGSVGElement> {
   direction?: 'left' | 'right' | 'up' | 'down';
   size?: number;
 }
 
-const Arrow = ({ direction = 'left', size = 24 }: ArrowProps) => {
+const Arrow = ({ direction = 'left', size = 24, ...props }: ArrowProps) => {
   let rotation = 0;
   switch (direction) {
     case 'right':
