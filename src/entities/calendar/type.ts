@@ -65,10 +65,6 @@ export interface CalendarEvent {
 
 export interface Schedule extends CalendarEvent {
   type: 'Schedule';
-  title: string;
-  content?: string;
-  start: string;
-  end: string;
   startEditable: true;
   durationEditable: true;
   allDay: boolean;
@@ -76,18 +72,12 @@ export interface Schedule extends CalendarEvent {
   endTime?: string;
   repeatCycle: ScheduleRepeat;
   category: ScheduleCategory;
-  location?: string;
 }
 
 export interface Todo extends CalendarEvent {
   type: 'Todo';
-  title: string;
-  content?: string;
-  start: string;
-  end: string;
   startEditable: true;
   durationEditable: false;
   repeatCycle: TodoRepeat;
   priority: TodoPriority;
-  location?: string;
 }
