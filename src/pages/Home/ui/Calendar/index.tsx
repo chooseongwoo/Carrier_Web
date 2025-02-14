@@ -16,7 +16,7 @@ import {
   CalendarToggle,
 } from './ui';
 import { events } from 'entities/calendar/model';
-import { Schedule, Todo, CalendarEvent } from 'entities/calendar/type';
+import { Schedule, CalendarEvent } from 'entities/calendar/type';
 import * as s from './style.css';
 import './root.css';
 import theme from 'shared/styles/theme.css';
@@ -62,36 +62,33 @@ const Calendar = () => {
     const clickedEvent = info.event;
     const { type, ...props } = clickedEvent.extendedProps;
 
-    if (type === 'Schedule') {
-      const scheduleEvent: Schedule = {
-        type: 'Schedule',
-        title: clickedEvent.title,
-        start: clickedEvent.startStr,
-        end: clickedEvent.endStr,
-        startEditable: true,
-        durationEditable: true,
-        allDay: clickedEvent.allDay,
-        repeatCycle: props.repeatCycle || 'NONE',
-        category: props.category || 'FIRST',
-        content: props.content,
-        location: props.location,
-      };
-      handleModalOpen(scheduleEvent);
-    } else {
-      const todoEvent: Todo = {
-        type: 'Todo',
-        title: clickedEvent.title,
-        start: clickedEvent.startStr,
-        end: clickedEvent.endStr,
-        startEditable: true,
-        durationEditable: false,
-        repeatCycle: props.repeatCycle || 'NONE',
-        priority: props.priority || 'MIDDLE',
-        content: props.content,
-        location: props.location,
-      };
-      handleModalOpen(todoEvent);
-    }
+    const baseEvent = {
+      title: clickedEvent.title,
+      start: clickedEvent.startStr,
+      end: clickedEvent.endStr,
+      startEditable: true,
+      repeatCycle: props.repeatCycle || 'NONE',
+      content: props.content,
+      location: props.location,
+    };
+
+    const eventData =
+      type === 'Schedule'
+        ? {
+            ...baseEvent,
+            type: 'Schedule' as const,
+            durationEditable: true,
+            allDay: clickedEvent.allDay,
+            category: props.category || 'FIRST',
+          }
+        : {
+            ...baseEvent,
+            type: 'Todo' as const,
+            durationEditable: false,
+            priority: props.priority || 'MIDDLE',
+          };
+
+    handleModalOpen(eventData);
   };
 
   const handleDatesSet = ({ view }: DatesSetArg) => {
