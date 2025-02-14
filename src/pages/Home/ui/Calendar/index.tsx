@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, memo } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -20,6 +20,26 @@ import { Schedule, CalendarEvent } from 'entities/calendar/type';
 import * as s from './style.css';
 import './root.css';
 import theme from 'shared/styles/theme.css';
+
+const EventContent = memo(({ event }: { event: any }) => {
+  const isSchedule = event.extendedProps.type === 'Schedule';
+  return (
+    <div
+      className={
+        isSchedule ? s.calendarScheduleContainer : s.calendarTodoContainer
+      }
+    >
+      <span
+        className={isSchedule ? s.calendarScheduleText : s.calendarTodoText}
+        style={{
+          color: isSchedule ? theme.blue[500] : theme.black,
+        }}
+      >
+        {event.title}
+      </span>
+    </div>
+  );
+});
 
 const Calendar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -170,31 +190,7 @@ const Calendar = () => {
           dayNumberText.replace('일', '')
         }
         titleFormat={{ year: 'numeric', month: 'long' }}
-        eventContent={({ event }) => (
-          <div
-            className={
-              event.extendedProps.type === 'Schedule'
-                ? s.calendarScheduleContainer
-                : s.calendarTodoContainer
-            }
-          >
-            <span
-              className={
-                event.extendedProps.type === 'Schedule'
-                  ? s.calendarScheduleText
-                  : s.calendarTodoText
-              }
-              style={{
-                color:
-                  event.extendedProps.type === 'Schedule'
-                    ? theme.blue[500]
-                    : theme.black,
-              }}
-            >
-              {event.title}
-            </span>
-          </div>
-        )}
+        eventContent={({ event }) => <EventContent event={event} />}
         dayMaxEvents={3}
         events={events}
         eventClick={handleEventClick}
