@@ -41,6 +41,27 @@ const EventContent = memo(({ event }: { event: any }) => {
   );
 });
 
+const useCalendarNavigation = (calendarRef: React.RefObject<FullCalendar>) => {
+  const [calendar, setCalendar] = useState<CalendarApi | null>(null);
+
+  useEffect(() => {
+    if (calendarRef.current) {
+      setCalendar(calendarRef.current.getApi());
+    }
+  }, []);
+
+  return {
+    navigate: useCallback(
+      (action: 'prev' | 'next' | 'today') => {
+        if (calendar) {
+          calendar[action]();
+        }
+      },
+      [calendar]
+    ),
+  };
+};
+
 const Calendar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isToggleVisible, setIsToggleVisible] = useState(false);
@@ -48,8 +69,8 @@ const Calendar = () => {
     CalendarEvent | undefined
   >();
   const [currentDate, setCurrentDate] = useState({ year: 0, month: 0 });
-  const [calendar, setCalendar] = useState<CalendarApi | null>(null);
   const calendarRef = useRef<FullCalendar | null>(null);
+  const { navigate } = useCalendarNavigation(calendarRef);
 
   const toggleCalendar = useCallback(
     () => setIsToggleVisible((prev) => !prev),
@@ -125,24 +146,6 @@ const Calendar = () => {
     setCurrentDate({ year: date.getFullYear(), month: date.getMonth() + 1 });
   };
 
-  const handlePrevMonth = () => {
-    if (calendar !== null) calendar.prev();
-  };
-
-  const handleNextMonth = () => {
-    if (calendar !== null) calendar.next();
-  };
-
-  const handlePresentMonth = () => {
-    if (calendar !== null) calendar.today();
-  };
-
-  useEffect(() => {
-    if (calendarRef.current) {
-      setCalendar(calendarRef.current.getApi());
-    }
-  }, []);
-
   return (
     <div className={s.calendarContainer}>
       <div className={s.calendarHeaderContainer}>
@@ -155,14 +158,22 @@ const Calendar = () => {
           </div>
           <div className={s.calendarHeaderSub}>
             <div className={s.calendarHeaderBtnLayout}>
-              <Arrow direction="left" size={26} onClick={handlePrevMonth} />
+              <Arrow
+                direction="left"
+                size={26}
+                onClick={() => navigate('prev')}
+              />
               <div
                 className={s.calendarHeaderTodayBtn}
-                onClick={handlePresentMonth}
+                onClick={() => navigate('today')}
               >
                 오늘
               </div>
-              <Arrow direction="right" size={26} onClick={handleNextMonth} />
+              <Arrow
+                direction="right"
+                size={26}
+                onClick={() => navigate('next')}
+              />
             </div>
             <span className={s.calendarTitleYear}>{currentDate.year}년</span>
             <span className={s.calendarTitleMonth}>{currentDate.month}월</span>
