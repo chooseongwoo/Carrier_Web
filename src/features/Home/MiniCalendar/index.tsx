@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Arrow } from 'shared/icons';
-import * as s from './ui/style.css';
+import * as s from './style.css';
 
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
