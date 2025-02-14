@@ -1,27 +1,52 @@
-export type EventType = 'Schedule' | 'Todo';
+export const EVENT_TYPE = {
+  Schedule: 'Schedule',
+  Todo: 'Todo',
+} as const;
+
+export type EventType = (typeof EVENT_TYPE)[keyof typeof EVENT_TYPE];
+
+export const SCHEDULE_REPEAT = {
+  NONE: 'NONE',
+  DAILY: 'DAILY',
+  WEEKDAYS: 'WEEKDAYS',
+  WEEKENDS: 'WEEKENDS',
+  MONTHLY: 'MONTHLY',
+} as const;
 
 export type ScheduleRepeat =
-  | 'NONE'
-  | 'DAILY'
-  | 'WEEKDAYS'
-  | 'WEEKENDS'
-  | 'MONTHLY';
+  (typeof SCHEDULE_REPEAT)[keyof typeof SCHEDULE_REPEAT];
 
-export type ScheduleCategory = 'FIRST' | 'SECOND' | 'THIRD';
+export const SCHEDULE_CATEGORY = {
+  FIRST: 'FIRST',
+  SECOND: 'SECOND',
+  THIRD: 'THIRD',
+} as const;
 
-export type TodoRepeat =
-  | 'NONE'
-  | 'DAILY'
-  | 'WEEKDAYS'
-  | 'WEEKENDS'
-  | 'WEEKLY'
-  | 'BIWEEKLY'
-  | 'MONTHLY'
-  | 'QUARTERLY'
-  | 'SEMIANNUALLY'
-  | 'ANNUALLY';
+export type ScheduleCategory =
+  (typeof SCHEDULE_CATEGORY)[keyof typeof SCHEDULE_CATEGORY];
 
-export type TodoPriority = 'LOW' | 'MIDDLE' | 'HIGH';
+export const TODO_REPEAT = {
+  NONE: 'NONE',
+  DAILY: 'DAILY',
+  WEEKDAYS: 'WEEKDAYS',
+  WEEKENDS: 'WEEKENDS',
+  WEEKLY: 'WEEKLY',
+  BIWEEKLY: 'BIWEEKLY',
+  MONTHLY: 'MONTHLY',
+  QUARTERLY: 'QUARTERLY',
+  SEMIANNUALLY: 'SEMIANNUALLY',
+  ANNUALLY: 'ANNUALLY',
+} as const;
+
+export type TodoRepeat = (typeof TODO_REPEAT)[keyof typeof TODO_REPEAT];
+
+export const TODO_PRIORITY = {
+  LOW: 'LOW',
+  MIDDLE: 'MIDDLE',
+  HIGH: 'HIGH',
+} as const;
+
+export type TodoPriority = (typeof TODO_PRIORITY)[keyof typeof TODO_PRIORITY];
 
 export interface CalendarEvent {
   type: EventType;
