@@ -13,43 +13,27 @@ interface CalendarModalProps {
 }
 
 const CalendarModal: React.FC<CalendarModalProps> = ({ onClose, event }) => {
-  const {
-    eventType,
-    setEventType,
-    title,
-    content,
-    selectedRepeat,
-    setSelectedRepeat,
-    selectedCategory,
-    setSelectedCategory,
-    selectedPriority,
-    setSelectedPriority,
-    isAllDay,
-    setIsAllDay,
-    isInitial,
-  } = useEventState({
+  const { state, updateState, switchEventType, isInitial } = useEventState({
     event,
   });
 
-  const handleChangeRepeat = (value: string) => setSelectedRepeat(value);
+  const handleChangeRepeat = (value: string) =>
+    updateState({ selectedRepeat: value });
 
   const handleChangeCategory = (value: string) =>
-    setSelectedCategory(value as ScheduleCategory);
+    updateState({
+      selectedCategory: value as ScheduleCategory,
+    });
 
   const handleChangePriority = (value: string) =>
-    setSelectedPriority(value as TodoPriority);
+    updateState({
+      selectedPriority: value as TodoPriority,
+    });
 
-  const handleIsAllday = () => setIsAllDay((prev) => !prev);
-
-  const switchEventType = (type: 'Schedule' | 'Todo') => {
-    setEventType(type);
-    if (type === 'Schedule') {
-      setSelectedCategory('FIRST');
-      setIsAllDay(true);
-    } else {
-      setSelectedPriority('MIDDLE');
-    }
-  };
+  const handleIsAllday = () =>
+    updateState({
+      isAllDay: !state.isAllDay,
+    });
 
   return (
     <div className={s.calendarModalOverlay} onClick={onClose}>
@@ -59,7 +43,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({ onClose, event }) => {
             <div
               className={s.calendarEventButton({
                 position: 'left',
-                isActive: eventType === 'Schedule',
+                isActive: state.eventType === 'Schedule',
               })}
               onClick={() => switchEventType('Schedule')}
             >
@@ -68,7 +52,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({ onClose, event }) => {
             <div
               className={s.calendarEventButton({
                 position: 'right',
-                isActive: eventType === 'Todo',
+                isActive: state.eventType === 'Todo',
               })}
               onClick={() => switchEventType('Todo')}
             >
@@ -81,23 +65,23 @@ const CalendarModal: React.FC<CalendarModalProps> = ({ onClose, event }) => {
           <input
             className={s.calendarModalTitle}
             placeholder="새 일정"
-            value={title}
+            value={state.title}
             onChange={(e) => handleChangeRepeat(e.target.value)}
           />
           <input
             className={s.calendarModalSubTitle}
             placeholder="메모"
-            value={content}
+            value={state.content}
             onChange={(e) => handleChangeRepeat(e.target.value)}
           />
         </div>
 
         <div className={s.calendarModalBody}>
-          {eventType === 'Schedule' && (
+          {state.eventType === 'Schedule' && (
             <div className={s.calendarModalItem}>
               <div className={s.calendarModalItemTitle}>하루 종일</div>
               <div
-                className={s.displayBtnLayout({ isActive: isAllDay })}
+                className={s.displayBtnLayout({ isActive: state.isAllDay })}
                 onClick={handleIsAllday}
               >
                 <div className={s.displayBtnObject} />
@@ -106,8 +90,8 @@ const CalendarModal: React.FC<CalendarModalProps> = ({ onClose, event }) => {
           )}
           {event?.start &&
             event?.end &&
-            !isAllDay &&
-            eventType === 'Schedule' && (
+            !state.isAllDay &&
+            state.eventType === 'Schedule' && (
               <>
                 <div className={s.calendarModalItem}>
                   <div className={s.calendarModalItemTitle}>시작</div>
@@ -128,9 +112,9 @@ const CalendarModal: React.FC<CalendarModalProps> = ({ onClose, event }) => {
             <div className={s.calendarModalItemTitle}>반복</div>
             <Dropdown
               name="repeat"
-              value={selectedRepeat}
+              value={state.selectedRepeat}
               data={
-                eventType === 'Schedule'
+                state.eventType === 'Schedule'
                   ? [
                       { value: 'NONE', label: '없음' },
                       { value: 'DAILY', label: '매일' },
@@ -152,12 +136,12 @@ const CalendarModal: React.FC<CalendarModalProps> = ({ onClose, event }) => {
             />
           </div>
 
-          {eventType === 'Schedule' ? (
+          {state.eventType === 'Schedule' ? (
             <div className={s.calendarModalItem}>
               <div className={s.calendarModalItemTitle}>카테고리</div>
               <Dropdown
                 name="category"
-                value={selectedCategory}
+                value={state.selectedCategory}
                 data={[
                   { value: 'FIRST', label: '나의 일정', color: '#3B82F6' },
                   { value: 'SECOND', label: '게임', color: '#22C55E' },
@@ -171,7 +155,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({ onClose, event }) => {
               <div className={s.calendarModalItemTitle}>우선순위</div>
               <Dropdown
                 name="priority"
-                value={selectedPriority}
+                value={state.selectedPriority}
                 data={[
                   { value: 'LOW', label: '낮음' },
                   { value: 'MIDDLE', label: '중간' },
