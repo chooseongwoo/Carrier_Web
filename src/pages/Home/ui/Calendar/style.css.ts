@@ -134,67 +134,70 @@ export const calendarTodoText = style({
   },
 });
 
-globalStyle('.fc-theme-standard .fc-scrollgrid', {
+globalStyle(`${calendarContainer} .fc-theme-standard .fc-scrollgrid`, {
   borderRadius: '20px 20px 0px 0px',
   borderTop: `1px solid ${theme.gray[100]}`,
   borderRight: `2px solid ${theme.gray[100]}`,
   borderLeft: `2px solid ${theme.gray[100]}`,
 });
 
-globalStyle('.fc-col-header', {
+globalStyle(`${calendarContainer} .fc-col-header`, {
   borderBottom: `1px solid ${theme.gray[100]}`,
 });
 
-globalStyle('.fc .fc-toolbar.fc-header-toolbar', {
+globalStyle(`${calendarContainer} .fc .fc-toolbar.fc-header-toolbar`, {
   margin: '0',
 });
 
-globalStyle('.fc-theme-standard td, .fc-theme-standard th', {
-  borderRight: `1px solid ${theme.gray[100]}`,
-  borderBottom: `1px solid ${theme.gray[100]}`,
-});
+globalStyle(
+  `${calendarContainer} .fc-theme-standard td, .fc-theme-standard th`,
+  {
+    borderRight: `1px solid ${theme.gray[100]}`,
+    borderBottom: `1px solid ${theme.gray[100]}`,
+  }
+);
 
-globalStyle('.fc .fc-daygrid-day-top', {
+globalStyle(`${calendarContainer} .fc .fc-daygrid-day-top`, {
   display: 'flex',
   flexDirection: 'row',
 });
 
-globalStyle('.fc-day-sun', {
+globalStyle(`${calendarContainer} .fc-day-sun`, {
   color: 'red',
 });
 
-globalStyle('.fc-day', {
+globalStyle(`${calendarContainer} .fc-day`, {
   fontFamily: 'Pretendard',
   ...font.p1,
 });
 
-globalStyle('.fc .fc-daygrid-day-frame', {
+globalStyle(`${calendarContainer} .fc .fc-daygrid-day-frame`, {
   minHeight: '100%',
   position: 'relative',
 });
 
-globalStyle('.fc .fc-col-header-cell-cushion', {
+globalStyle(`${calendarContainer} .fc .fc-col-header-cell-cushion`, {
   fontFamily: 'Pretendard',
   ...font.p1,
 });
 
-globalStyle('.fc .fc-daygrid-day-number', {
+globalStyle(`${calendarContainer} .fc .fc-daygrid-day-number`, {
   padding: '4px',
   position: 'relative',
   zIndex: '4',
   borderRadius: '8px',
 });
 
-globalStyle('.fc-popover-header ', {
+globalStyle(`${calendarContainer} .fc-popover-header`, {
   visibility: 'hidden',
 });
 
-globalStyle('.fc .fc-popover', {
+globalStyle(`${calendarContainer} .fc .fc-popover`, {
   boxShadow: 'none',
   zIndex: '1',
 });
 
-globalStyle('.fc .fc-more-popover .fc-popover-body', {
+globalStyle(`${calendarContainer} .fc .fc-more-popover .fc-popover-body`, {
   padding: '20px 16px',
   gap: '4px',
   position: 'absolute',
@@ -203,15 +206,15 @@ globalStyle('.fc .fc-more-popover .fc-popover-body', {
   boxShadow: '0px 4px 32px 0px rgba(92, 92, 92, 0.25)',
 });
 
-globalStyle('.fc .fc-daygrid-event-harness', {
+globalStyle(`${calendarContainer} .fc .fc-daygrid-event-harness`, {
   marginBottom: '4px',
 });
 
-globalStyle('.fc-direction-ltr .fc-daygrid-more-link', {
+globalStyle(`${calendarContainer} .fc-direction-ltr .fc-daygrid-more-link`, {
   float: 'none',
 });
 
-globalStyle('.fc .fc-daygrid-more-link', {
+globalStyle(`${calendarContainer} .fc .fc-daygrid-more-link`, {
   marginTop: '20px',
   borderRadius: '6px',
   cursor: 'pointer',
