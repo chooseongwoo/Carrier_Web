@@ -175,8 +175,12 @@ const Calendar = () => {
                 onClick={() => navigate('next')}
               />
             </div>
-            <span className={s.calendarTitleYear}>{currentDate.year}년</span>
-            <span className={s.calendarTitleMonth}>{currentDate.month}월</span>
+            <div className={s.calendarTitle}>
+              <span className={s.calendarTitleYear}>{currentDate.year}년</span>
+              <span className={s.calendarTitleMonth}>
+                {currentDate.month}월
+              </span>
+            </div>
           </div>
         </div>
         <div className={s.calendarSearchBar}>

@@ -58,6 +58,11 @@ export const calendarHeaderTodayBtn = style({
   cursor: 'pointer',
 });
 
+export const calendarTitle = style({
+  display: 'flex',
+  gap: '6px',
+});
+
 export const calendarTitleYear = style({
   color: theme.black,
   fontFamily: 'Pretendard',
