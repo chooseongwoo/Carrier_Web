@@ -7,7 +7,7 @@ interface CalendarToggleProps {
   onModalOpen: (event?: CalendarEvent) => void;
 }
 
-const CalendarToggle: React.FC<CalendarToggleProps> = ({ onModalOpen }) => {
+const CalendarToggle = ({ onModalOpen }: CalendarToggleProps) => {
   const createNewEvent = useCreateNewEvent();
 
   const handleClick = (type: 'Schedule' | 'Todo') => {

@@ -12,7 +12,7 @@ interface CalendarModalProps {
   event?: CalendarEvent;
 }
 
-const CalendarModal: React.FC<CalendarModalProps> = ({ onClose, event }) => {
+const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
   const { state, updateState, switchEventType, isInitial } = useEventState({
     event,
   });
