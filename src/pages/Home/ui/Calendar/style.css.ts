@@ -3,7 +3,7 @@ import { font } from 'shared/styles/font.css';
 import theme from 'shared/styles/theme.css';
 
 export const calendarContainer = style({
-  width: 'calc(100vw - 420px)',
+  width: 'calc(100vw - 440px)',
   height: '100vh',
 });
 
@@ -143,10 +143,6 @@ globalStyle('.fc-theme-standard .fc-scrollgrid', {
 
 globalStyle('.fc-col-header', {
   borderBottom: `1px solid ${theme.gray[100]}`,
-});
-
-globalStyle('.fc .fc-scrollgrid-liquid', {
-  height: 'calc(100% - 80px);',
 });
 
 globalStyle('.fc .fc-toolbar.fc-header-toolbar', {

@@ -194,7 +194,7 @@ const Calendar = () => {
         initialView="dayGridMonth"
         headerToolbar={{ left: '', end: '' }}
         fixedWeekCount={false}
-        height="100%"
+        height="calc(100% - 80px)"
         dayMaxEventRows={true}
         expandRows={true}
         editable
