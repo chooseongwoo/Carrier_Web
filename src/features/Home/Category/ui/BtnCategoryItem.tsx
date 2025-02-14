@@ -5,9 +5,9 @@ interface BtnCategoryItemProps {
   initialBgColor?: string;
 }
 
-const BtnCategoryItem: React.FC<BtnCategoryItemProps> = ({
+const BtnCategoryItem = ({
   initialBgColor = '#587EFD',
-}) => {
+}: BtnCategoryItemProps) => {
   const [isClicked, setIsClicked] = useState(false);
 
   const handleClick = () => {
