@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -31,65 +31,74 @@ const Calendar = () => {
   const [calendar, setCalendar] = useState<CalendarApi | null>(null);
   const calendarRef = useRef<FullCalendar | null>(null);
 
-  const toggleCalendar = () => setIsToggleVisible((prev) => !prev);
+  const toggleCalendar = useCallback(
+    () => setIsToggleVisible((prev) => !prev),
+    []
+  );
 
-  const handleModalOpen = (event?: CalendarEvent) => {
+  const handleModalOpen = useCallback((event?: CalendarEvent) => {
     setSelectedEvent(event);
     setIsModalOpen(true);
-  };
+  }, []);
 
-  const handleModalClose = () => {
+  const handleModalClose = useCallback(() => {
     setIsModalOpen(false);
     setSelectedEvent(undefined);
-  };
+  }, []);
 
-  const handleDateClick = ({ date }: { date: Date }) => {
-    const newEvent: Schedule = {
-      type: 'Schedule',
-      title: '',
-      start: date.toISOString(),
-      end: date.toISOString(),
-      startEditable: true,
-      durationEditable: true,
-      allDay: true,
-      repeatCycle: 'NONE',
-      category: 'FIRST',
-    };
-    handleModalOpen(newEvent);
-  };
+  const handleDateClick = useCallback(
+    ({ date }: { date: Date }) => {
+      const newEvent: Schedule = {
+        type: 'Schedule',
+        title: '',
+        start: date.toISOString(),
+        end: date.toISOString(),
+        startEditable: true,
+        durationEditable: true,
+        allDay: true,
+        repeatCycle: 'NONE',
+        category: 'FIRST',
+      };
+      handleModalOpen(newEvent);
+    },
+    [handleModalOpen]
+  );
 
-  const handleEventClick = (info: EventClickArg) => {
-    const clickedEvent = info.event;
-    const { type, ...props } = clickedEvent.extendedProps;
+  const handleEventClick = useCallback(
+    (info: EventClickArg) => {
+      const clickedEvent = info.event;
+      const { type, ...props } = clickedEvent.extendedProps;
 
-    const baseEvent = {
-      title: clickedEvent.title,
-      start: clickedEvent.startStr,
-      end: clickedEvent.endStr,
-      startEditable: true,
-      repeatCycle: props.repeatCycle || 'NONE',
-      content: props.content,
-      location: props.location,
-    };
+      const baseEvent = {
+        title: clickedEvent.title,
+        start: clickedEvent.startStr,
+        end: clickedEvent.endStr,
+        startEditable: true,
+        repeatCycle: props.repeatCycle || 'NONE',
+        content: props.content,
+        location: props.location,
+      };
 
-    const eventData =
-      type === 'Schedule'
-        ? {
-            ...baseEvent,
-            type: 'Schedule' as const,
-            durationEditable: true,
-            allDay: clickedEvent.allDay,
-            category: props.category || 'FIRST',
-          }
-        : {
-            ...baseEvent,
-            type: 'Todo' as const,
-            durationEditable: false,
-            priority: props.priority || 'MIDDLE',
-          };
+      const eventData =
+        type === 'Schedule'
+          ? {
+              ...baseEvent,
+              type: 'Schedule' as const,
+              durationEditable: true,
+              allDay: clickedEvent.allDay,
+              category: props.category || 'FIRST',
+            }
+          : {
+              ...baseEvent,
+              type: 'Todo' as const,
+              durationEditable: false,
+              priority: props.priority || 'MIDDLE',
+            };
 
-    handleModalOpen(eventData);
-  };
+      handleModalOpen(eventData);
+    },
+    [handleModalOpen]
+  );
 
   const handleDatesSet = ({ view }: DatesSetArg) => {
     const date = new Date(view.currentStart);
