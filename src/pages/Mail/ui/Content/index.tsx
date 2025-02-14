@@ -3,6 +3,8 @@ import WriteIcon from '../WriteIcon';
 import * as s from './style.css';
 import { useState } from 'react';
 import TrashcanIcon from '../TrashcanIcon';
+import SendModal from 'pages/Mail/ui/SendModal';
+import { MailModalProps } from 'pages/Mail/types/MailModalProps';
 
 const mailData = [
   {
@@ -43,7 +45,7 @@ const mailData = [
   },
 ];
 
-const Content = () => {
+const Content = ({ modalOpen, toggleModalOpen }: MailModalProps) => {
   const { selectedMenu } = useMenuState();
   const [selectedMail, setSelectedMail] = useState(0);
   const selectedMailData = mailData.find((mail) => mail.id === selectedMail);
@@ -57,7 +59,12 @@ const Content = () => {
 
         <div className={s.mailOption}>
           <div className={s.mailOption_addPlan}>일정으로 추가</div>
-          <div className={s.mailOption_write}>
+          <div
+            className={s.mailOption_write}
+            onClick={() => {
+              toggleModalOpen?.(true);
+            }}
+          >
             <WriteIcon />
           </div>
           <div className={s.mailOption_delete}>
@@ -123,6 +130,7 @@ const Content = () => {
             </>
           )}
         </div>
+        {modalOpen && <SendModal toggleModalOpen={toggleModalOpen} />}
       </main>
     </div>
   );
