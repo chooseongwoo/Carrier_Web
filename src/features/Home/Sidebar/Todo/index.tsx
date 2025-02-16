@@ -9,7 +9,7 @@ interface TodoItem {
   checked: boolean;
 }
 
-const ToDoList = () => {
+const TodoList = () => {
   const [todoItems, setTodoItems] = useState<TodoItem[]>([
     { id: 1, text: '미래랑 산책가기', checked: false },
     { id: 2, text: '하니 산책시키기', checked: true },
@@ -25,24 +25,24 @@ const ToDoList = () => {
   };
 
   return (
-    <div className={s.ToDoListContainer}>
-      <div className={s.ToDoListHeader}>
-        <div className={s.ToDoListTitle}>해야할 것</div>
-        <div className={s.ToDoListSetDate}>
+    <div className={s.TodoListContainer}>
+      <div className={s.TodoListHeader}>
+        <div className={s.TodoListTitle}>해야할 것</div>
+        <div className={s.TodoListSetDate}>
           <Arrow direction="left" />
-          <div className={s.ToDoListDateTitle}>2025.01.07</div>
+          <div className={s.TodoListDateTitle}>2025.01.07</div>
           <Arrow direction="right" />
         </div>
       </div>
-      <div className={s.ToDoListMain}>
+      <div className={s.TodoListMain}>
         {todoItems.map((item) => (
           <div
             key={item.id}
-            className={s.ToDoListItem}
+            className={s.TodoListItem}
             onClick={() => handleToggle(item.id)}
           >
             {item.checked ? <BtnToDoChecked /> : <BtnToDoNormal />}
-            <span className={s.ToDoListItemText}>{item.text}</span>
+            <span className={s.TodoListItemText}>{item.text}</span>
           </div>
         ))}
       </div>
@@ -50,4 +50,4 @@ const ToDoList = () => {
   );
 };
 
-export default ToDoList;
+export default TodoList;
