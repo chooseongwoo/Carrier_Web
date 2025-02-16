@@ -1,4 +1,4 @@
-import { CalendarSchedule, CalendarTodo } from './ui';
+import { CalendarScheduleIcon, CalendarTodoIcon } from 'features/Home/ui';
 import { CalendarEvent } from 'entities/calendar/type';
 import * as s from './style.css';
 import useCreateNewEvent from './calendarToggle.hook';
@@ -21,14 +21,14 @@ const CalendarToggle = ({ onModalOpen }: CalendarToggleProps) => {
         className={s.calendarToggleMain}
         onClick={() => handleClick('Schedule')}
       >
-        <CalendarSchedule />
+        <CalendarScheduleIcon />
         <div className={s.calendarToggleText}>일정 생성</div>
       </button>
       <button
         className={s.calendarToggleMain}
         onClick={() => handleClick('Todo')}
       >
-        <CalendarTodo />
+        <CalendarTodoIcon />
         <div className={s.calendarToggleText}>할 일 생성</div>
       </button>
     </div>

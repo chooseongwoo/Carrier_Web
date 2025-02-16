@@ -1,5 +1,5 @@
-import * as s from '../style.css';
-import { DropdownCheck } from './index.ts';
+import * as s from './style.css';
+import { DropdownCheckIcon } from 'features/Home/ui';
 
 interface DropdownItemProps {
   item: { value: string; label: string; color?: string };
@@ -10,7 +10,7 @@ interface DropdownItemProps {
 const DropdownItem = ({ item, isSelected, onSelect }: DropdownItemProps) => {
   return (
     <div className={s.dropdownItem} onClick={() => onSelect(item.value)}>
-      <DropdownCheck
+      <DropdownCheckIcon
         style={{ visibility: isSelected ? 'visible' : 'hidden' }}
       />
       {item.color && (

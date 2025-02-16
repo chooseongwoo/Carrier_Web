@@ -29,6 +29,7 @@ export const dropdownContainer = style({
   border: `1px solid ${theme.gray[100]}`,
   backgroundColor: theme.gray[50],
   boxShadow: '0px 4px 32px 0px rgba(92,92,92,0.25)',
+  zIndex: '1001',
 });
 
 export const dropdownItem = style({

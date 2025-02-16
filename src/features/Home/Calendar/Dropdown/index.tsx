@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import * as s from './style.css';
-import { DropdownArrow, DropdownItem } from './ui/index.ts';
+import DropdownItem from './DropdownItem.tsx';
 import useDropdown from './dropdown.hook.ts';
+import { Arrow } from 'shared/icons';
 
 interface Data {
   value: string;
@@ -47,7 +48,7 @@ const EventDropdown = ({
         ) : (
           <div className={s.dropdownText}>{selectedLabel}</div>
         )}
-        <DropdownArrow direction={isOpen ? 'top' : 'bottom'} />
+        <Arrow direction={isOpen ? 'up' : 'down'} />
       </div>
 
       {isOpen && (
