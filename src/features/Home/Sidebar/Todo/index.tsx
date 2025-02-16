@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Arrow } from 'shared/icons';
-import { BtnToDoNormal, BtnToDoChecked } from 'features/Home/ui';
+import { TodoNormalIcon, TodoCheckedIcon } from 'features/Home/ui';
 import * as s from './style.css';
 
 interface TodoItem {
@@ -41,7 +41,7 @@ const Todo = () => {
             className={s.TodoListItem}
             onClick={() => handleToggle(item.id)}
           >
-            {item.checked ? <BtnToDoChecked /> : <BtnToDoNormal />}
+            {item.checked ? <TodoCheckedIcon /> : <TodoNormalIcon />}
             <span className={s.TodoListItemText}>{item.text}</span>
           </div>
         ))}

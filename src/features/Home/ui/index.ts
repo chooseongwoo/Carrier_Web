@@ -1,7 +1,7 @@
-export { default as BtnToDoNormal } from './BtnToDoNormal';
-export { default as BtnToDoChecked } from './BtnToDoChecked';
-export { default as BtnCategoryPlus } from './BtnCategoryPlus';
-export { default as BtnCategoryItem } from './BtnCategoryItem';
+export { default as TodoNormalIcon } from './TodoNormalIcon';
+export { default as TodoCheckedIcon } from './TodoCheckedIcon';
+export { default as CategoryPlusIcon } from './CategoryPlusIcon';
+export { default as CategoryItemIcon } from './CategoryItemIcon';
 export { default as CalendarPlusIcon } from './CalendarPlusIcon';
 export { default as CalendarSearchIcon } from './CalendarSearchIcon';
 export { default as DropdownCheckIcon } from './DropdownCheckIcon';
