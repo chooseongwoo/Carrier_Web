@@ -9,7 +9,7 @@ interface TodoItem {
   checked: boolean;
 }
 
-const TodoList = () => {
+const Todo = () => {
   const [todoItems, setTodoItems] = useState<TodoItem[]>([
     { id: 1, text: '미래랑 산책가기', checked: false },
     { id: 2, text: '하니 산책시키기', checked: true },
@@ -50,4 +50,4 @@ const TodoList = () => {
   );
 };
 
-export default TodoList;
+export default Todo;

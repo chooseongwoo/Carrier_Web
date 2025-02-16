@@ -1,9 +1,4 @@
-import {
-  Category,
-  Display,
-  MiniCalendar,
-  ToDoList,
-} from 'features/Home/Sidebar';
+import { Category, Display, MiniCalendar, Todo } from 'features/Home/Sidebar';
 import * as s from './style.css';
 
 const SideBar = () => {
@@ -11,7 +6,7 @@ const SideBar = () => {
     <aside className={s.container}>
       <MiniCalendar />
       <Display />
-      <ToDoList />
+      <Todo />
       <Category />
     </aside>
   );
