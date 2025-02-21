@@ -5,6 +5,12 @@ export const EVENT_TYPE = {
 
 export type EventType = (typeof EVENT_TYPE)[keyof typeof EVENT_TYPE];
 
+export interface Category {
+  id: number;
+  name: string;
+  color: string;
+}
+
 export interface CalendarEvent {
   type: EventType;
   title: string;
@@ -15,6 +21,7 @@ export interface CalendarEvent {
   location?: string | null;
   allDay?: boolean;
   category?: number;
+  priority?: number;
   startEditable: boolean;
   durationEditable: boolean;
 }
