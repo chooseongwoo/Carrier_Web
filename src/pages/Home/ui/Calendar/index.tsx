@@ -38,23 +38,38 @@ const EventContent = memo(({ event }: { event: EventImpl }) => {
 
 const useCalendarNavigation = (calendarRef: React.RefObject<FullCalendar>) => {
   const [calendar, setCalendar] = useState<CalendarApi | null>(null);
+  const [dateRange, setDateRange] = useState<{
+    startDate: string;
+    endDate: string;
+  } | null>(null);
 
   useEffect(() => {
     if (calendarRef.current) {
-      setCalendar(calendarRef.current.getApi());
+      const api = calendarRef.current.getApi();
+      setCalendar(api);
+      updateDateRange(api);
     }
   }, []);
 
-  return {
-    navigate: useCallback(
-      (action: 'prev' | 'next' | 'today') => {
-        if (calendar) {
-          calendar[action]();
-        }
-      },
-      [calendar]
-    ),
+  const updateDateRange = (api: CalendarApi) => {
+    setDateRange({
+      startDate:
+        api.view.currentStart.toISOString().split('T')[0] + 'T00:00:00',
+      endDate: api.view.currentEnd.toISOString().split('T')[0] + 'T00:00:00',
+    });
   };
+
+  const navigate = useCallback(
+    (action: 'prev' | 'next' | 'today') => {
+      if (calendar) {
+        calendar[action]();
+        updateDateRange(calendar);
+      }
+    },
+    [calendar]
+  );
+
+  return { navigate, dateRange };
 };
 
 const Calendar = () => {
@@ -65,7 +80,7 @@ const Calendar = () => {
   >();
   const [currentDate, setCurrentDate] = useState({ year: 0, month: 0 });
   const calendarRef = useRef<FullCalendar | null>(null);
-  const { navigate } = useCalendarNavigation(calendarRef);
+  const { navigate, dateRange } = useCalendarNavigation(calendarRef);
 
   const toggleCalendar = useCallback(
     () => setIsToggleVisible((prev) => !prev),
