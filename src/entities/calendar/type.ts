@@ -26,17 +26,17 @@ export interface CalendarEvent {
   durationEditable: boolean;
 }
 
-export interface Todo extends CalendarEvent {
-  type: 'Todo';
-  priority: number;
-  startEditable: true;
-  durationEditable: false;
+export interface ScheduleReq {
+  startDate: string;
+  endDate: string;
+  categoryIds: number[];
 }
 
-export interface Schedule extends CalendarEvent {
-  type: 'Schedule';
+export interface Schedule {
+  id: number;
+  title: string;
+  startDate: string;
+  endDate?: string;
   allDay: boolean;
-  category: number;
-  startEditable: true;
-  durationEditable: true;
+  categoryId: number;
 }
