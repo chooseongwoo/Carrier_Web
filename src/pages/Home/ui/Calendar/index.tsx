@@ -99,8 +99,8 @@ const Calendar = () => {
     handleModalOpen({
       type: 'Schedule',
       title: '',
-      startDate: date.toISOString(),
-      endDate: date.toISOString(),
+      start: date.toISOString(),
+      end: date.toISOString(),
       startEditable: true,
       durationEditable: true,
       allDay: true,
@@ -114,8 +114,8 @@ const Calendar = () => {
     const { type, ...props } = info.event.extendedProps;
     handleModalOpen({
       title: info.event.title,
-      startDate: info.event.startStr,
-      endDate: info.event.endStr,
+      start: info.event.startStr,
+      end: info.event.endStr,
       startEditable: true,
       isRepeat: false,
       memo: props.memo,

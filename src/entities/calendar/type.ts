@@ -16,8 +16,8 @@ export interface CalendarEvent {
   title: string;
   memo?: string;
   isRepeat: boolean;
-  startDate: string;
-  endDate?: string | null;
+  start: string;
+  end: string;
   location?: string | null;
   allDay?: boolean;
   category?: number;

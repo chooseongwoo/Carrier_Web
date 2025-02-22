@@ -87,21 +87,21 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
               </div>
             </div>
           )}
-          {event?.startDate &&
-            event?.endDate &&
+          {event?.start &&
+            event?.end &&
             !state.isAllDay &&
             state.eventType === 'Schedule' && (
               <>
                 <div className={s.calendarModalItem}>
                   <div className={s.calendarModalItemTitle}>시작</div>
                   <div className={s.calendarModalItemAttribute}>
-                    {new Date(event.startDate).toLocaleString()}
+                    {new Date(event.start).toLocaleString()}
                   </div>
                 </div>
                 <div className={s.calendarModalItem}>
                   <div className={s.calendarModalItemTitle}>종료</div>
                   <div className={s.calendarModalItemAttribute}>
-                    {new Date(event.endDate).toLocaleString()}
+                    {new Date(event.end).toLocaleString()}
                   </div>
                 </div>
               </>

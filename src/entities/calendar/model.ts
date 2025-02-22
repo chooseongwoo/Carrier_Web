@@ -2,8 +2,8 @@ import { CalendarEvent, Category } from './type';
 
 export const events: CalendarEvent[] = [
   {
-    startDate: '2025-02-09T14:00:00',
-    endDate: '2025-02-12T14:00:00',
+    start: '2025-02-09T14:00:00',
+    end: '2025-02-12T14:00:00',
     title: '놀자fsdf',
     type: 'Schedule',
     isRepeat: false,
@@ -14,7 +14,8 @@ export const events: CalendarEvent[] = [
     durationEditable: true,
   },
   {
-    startDate: '2025-02-09T14:00:00',
+    start: '2025-02-09T14:00:00',
+    end: '2025-02-09T14:00:00',
     title: '공부하기',
     type: 'Todo',
     isRepeat: false,
