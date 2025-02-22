@@ -40,7 +40,7 @@ importers:
         version: 0.5.5(@vanilla-extract/css@1.17.0)
       '@vanilla-extract/vite-plugin':
         specifier: ^4.0.19
-        version: 4.0.19(@types/node@22.10.7)(vite@5.4.11(@types/node@22.10.7))
+        version: 4.0.19(@types/node@22.13.4)(vite@5.4.11(@types/node@22.13.4))
       axios:
         specifier: ^1.7.9
         version: 1.7.9
@@ -58,14 +58,14 @@ importers:
         version: 7.1.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       vite:
         specifier: '5'
-        version: 5.4.11(@types/node@22.10.7)
+        version: 5.4.11(@types/node@22.13.4)
       vite-tsconfig-paths:
         specifier: ^5.1.4
-        version: 5.1.4(typescript@5.6.3)(vite@5.4.11(@types/node@22.10.7))
+        version: 5.1.4(typescript@5.6.3)(vite@5.4.11(@types/node@22.13.4))
     devDependencies:
       '@commitlint/cli':
         specifier: ^19.6.1
-        version: 19.6.1(@types/node@22.10.7)(typescript@5.6.3)
+        version: 19.6.1(@types/node@22.13.4)(typescript@5.6.3)
       '@commitlint/config-conventional':
         specifier: ^19.6.0
         version: 19.6.0
@@ -75,6 +75,9 @@ importers:
       '@eslint/js':
         specifier: ^9.17.0
         version: 9.18.0
+      '@types/node':
+        specifier: ^22.13.4
+        version: 22.13.4
       '@types/react':
         specifier: ^18.3.18
         version: 18.3.18
@@ -89,7 +92,7 @@ importers:
         version: 8.20.0(eslint@9.18.0(jiti@2.4.2))(typescript@5.6.3)
       '@vitejs/plugin-react-swc':
         specifier: ^3.5.0
-        version: 3.7.2(vite@5.4.11(@types/node@22.10.7))
+        version: 3.7.2(vite@5.4.11(@types/node@22.13.4))
       electron:
         specifier: ^34.0.1
         version: 34.1.1
@@ -98,7 +101,7 @@ importers:
         version: 25.1.8(electron-builder-squirrel-windows@25.1.8(dmg-builder@25.1.8))
       electron-vite:
         specifier: ^2.3.0
-        version: 2.3.0(@swc/core@1.10.7)(vite@5.4.11(@types/node@22.10.7))
+        version: 2.3.0(@swc/core@1.10.7)(vite@5.4.11(@types/node@22.13.4))
       eslint:
         specifier: ^9.18.0
         version: 9.18.0(jiti@2.4.2)
@@ -1009,8 +1012,8 @@ packages:
   '@types/node@20.17.17':
     resolution: {integrity: sha512-/WndGO4kIfMicEQLTi/mDANUu/iVUhT7KboZPdEqqHQ4aTS+3qT3U5gIqWDFV+XouorjfgGqvKILJeHhuQgFYg==}
 
-  '@types/node@22.10.7':
-    resolution: {integrity: sha512-V09KvXxFiutGp6B7XkpaDXlNadZxrzajcY50EuoLIpQ6WWYCSvf19lVIazzfIzQvhUN2HjX12spLojTnhuKlGg==}
+  '@types/node@22.13.4':
+    resolution: {integrity: sha512-ywP2X0DYtX3y08eFVx5fNIw7/uIv8hYUKgXoK8oayJlLnKcRfEYCxWMVE1XagUdVtCJlZT1AU4LXEABW+L1Peg==}
 
   '@types/plist@3.0.5':
     resolution: {integrity: sha512-E6OCaRmAe4WDmWNsL/9RMqdkkzDCY1etutkflWk4c+AcjDU07Pcz1fQwTX0TQz+Pxqn9i4L1TU3UFpjnrcDgxA==}
@@ -3847,11 +3850,11 @@ snapshots:
       '@babel/helper-string-parser': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
 
-  '@commitlint/cli@19.6.1(@types/node@22.10.7)(typescript@5.6.3)':
+  '@commitlint/cli@19.6.1(@types/node@22.13.4)(typescript@5.6.3)':
     dependencies:
       '@commitlint/format': 19.5.0
       '@commitlint/lint': 19.6.0
-      '@commitlint/load': 19.6.1(@types/node@22.10.7)(typescript@5.6.3)
+      '@commitlint/load': 19.6.1(@types/node@22.13.4)(typescript@5.6.3)
       '@commitlint/read': 19.5.0
       '@commitlint/types': 19.5.0
       tinyexec: 0.3.2
@@ -3898,7 +3901,7 @@ snapshots:
       '@commitlint/rules': 19.6.0
       '@commitlint/types': 19.5.0
 
-  '@commitlint/load@19.6.1(@types/node@22.10.7)(typescript@5.6.3)':
+  '@commitlint/load@19.6.1(@types/node@22.13.4)(typescript@5.6.3)':
     dependencies:
       '@commitlint/config-validator': 19.5.0
       '@commitlint/execute-rule': 19.5.0
@@ -3906,7 +3909,7 @@ snapshots:
       '@commitlint/types': 19.5.0
       chalk: 5.4.1
       cosmiconfig: 9.0.0(typescript@5.6.3)
-      cosmiconfig-typescript-loader: 6.1.0(@types/node@22.10.7)(cosmiconfig@9.0.0(typescript@5.6.3))(typescript@5.6.3)
+      cosmiconfig-typescript-loader: 6.1.0(@types/node@22.13.4)(cosmiconfig@9.0.0(typescript@5.6.3))(typescript@5.6.3)
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       lodash.uniq: 4.5.0
@@ -4463,12 +4466,12 @@ snapshots:
     dependencies:
       '@types/http-cache-semantics': 4.0.4
       '@types/keyv': 3.1.4
-      '@types/node': 22.10.7
+      '@types/node': 22.13.4
       '@types/responselike': 1.0.3
 
   '@types/conventional-commits-parser@5.0.1':
     dependencies:
-      '@types/node': 22.10.7
+      '@types/node': 22.13.4
 
   '@types/cookie@0.6.0': {}
 
@@ -4480,7 +4483,7 @@ snapshots:
 
   '@types/fs-extra@9.0.13':
     dependencies:
-      '@types/node': 22.10.7
+      '@types/node': 22.13.4
 
   '@types/http-cache-semantics@4.0.4': {}
 
@@ -4490,7 +4493,7 @@ snapshots:
 
   '@types/keyv@3.1.4':
     dependencies:
-      '@types/node': 22.10.7
+      '@types/node': 22.13.4
 
   '@types/ms@2.1.0': {}
 
@@ -4498,13 +4501,13 @@ snapshots:
     dependencies:
       undici-types: 6.19.8
 
-  '@types/node@22.10.7':
+  '@types/node@22.13.4':
     dependencies:
       undici-types: 6.20.0
 
   '@types/plist@3.0.5':
     dependencies:
-      '@types/node': 22.10.7
+      '@types/node': 22.13.4
       xmlbuilder: 15.1.1
     optional: true
 
@@ -4525,14 +4528,14 @@ snapshots:
 
   '@types/responselike@1.0.3':
     dependencies:
-      '@types/node': 22.10.7
+      '@types/node': 22.13.4
 
   '@types/verror@1.10.10':
     optional: true
 
   '@types/yauzl@2.10.3':
     dependencies:
-      '@types/node': 22.10.7
+      '@types/node': 22.13.4
     optional: true
 
   '@typescript-eslint/eslint-plugin@8.20.0(@typescript-eslint/parser@8.20.0(eslint@9.18.0(jiti@2.4.2))(typescript@5.6.3))(eslint@9.18.0(jiti@2.4.2))(typescript@5.6.3)':
@@ -4635,7 +4638,7 @@ snapshots:
     transitivePeerDependencies:
       - babel-plugin-macros
 
-  '@vanilla-extract/integration@7.1.12(@types/node@22.10.7)':
+  '@vanilla-extract/integration@7.1.12(@types/node@22.13.4)':
     dependencies:
       '@babel/core': 7.26.0
       '@babel/plugin-syntax-typescript': 7.25.9(@babel/core@7.26.0)
@@ -4647,8 +4650,8 @@ snapshots:
       find-up: 5.0.0
       javascript-stringify: 2.1.0
       mlly: 1.7.4
-      vite: 5.4.11(@types/node@22.10.7)
-      vite-node: 1.6.0(@types/node@22.10.7)
+      vite: 5.4.11(@types/node@22.13.4)
+      vite-node: 1.6.0(@types/node@22.13.4)
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -4667,10 +4670,10 @@ snapshots:
     dependencies:
       '@vanilla-extract/css': 1.17.0
 
-  '@vanilla-extract/vite-plugin@4.0.19(@types/node@22.10.7)(vite@5.4.11(@types/node@22.10.7))':
+  '@vanilla-extract/vite-plugin@4.0.19(@types/node@22.13.4)(vite@5.4.11(@types/node@22.13.4))':
     dependencies:
-      '@vanilla-extract/integration': 7.1.12(@types/node@22.10.7)
-      vite: 5.4.11(@types/node@22.10.7)
+      '@vanilla-extract/integration': 7.1.12(@types/node@22.13.4)
+      vite: 5.4.11(@types/node@22.13.4)
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
@@ -4683,10 +4686,10 @@ snapshots:
       - supports-color
       - terser
 
-  '@vitejs/plugin-react-swc@3.7.2(vite@5.4.11(@types/node@22.10.7))':
+  '@vitejs/plugin-react-swc@3.7.2(vite@5.4.11(@types/node@22.13.4))':
     dependencies:
       '@swc/core': 1.10.7
-      vite: 5.4.11(@types/node@22.10.7)
+      vite: 5.4.11(@types/node@22.13.4)
     transitivePeerDependencies:
       - '@swc/helpers'
 
@@ -5194,9 +5197,9 @@ snapshots:
 
   core-util-is@1.0.3: {}
 
-  cosmiconfig-typescript-loader@6.1.0(@types/node@22.10.7)(cosmiconfig@9.0.0(typescript@5.6.3))(typescript@5.6.3):
+  cosmiconfig-typescript-loader@6.1.0(@types/node@22.13.4)(cosmiconfig@9.0.0(typescript@5.6.3))(typescript@5.6.3):
     dependencies:
-      '@types/node': 22.10.7
+      '@types/node': 22.13.4
       cosmiconfig: 9.0.0(typescript@5.6.3)
       jiti: 2.4.2
       typescript: 5.6.3
@@ -5412,7 +5415,7 @@ snapshots:
 
   electron-to-chromium@1.5.83: {}
 
-  electron-vite@2.3.0(@swc/core@1.10.7)(vite@5.4.11(@types/node@22.10.7)):
+  electron-vite@2.3.0(@swc/core@1.10.7)(vite@5.4.11(@types/node@22.13.4)):
     dependencies:
       '@babel/core': 7.26.0
       '@babel/plugin-transform-arrow-functions': 7.25.9(@babel/core@7.26.0)
@@ -5420,7 +5423,7 @@ snapshots:
       esbuild: 0.21.5
       magic-string: 0.30.17
       picocolors: 1.1.1
-      vite: 5.4.11(@types/node@22.10.7)
+      vite: 5.4.11(@types/node@22.13.4)
     optionalDependencies:
       '@swc/core': 1.10.7
     transitivePeerDependencies:
@@ -5825,7 +5828,7 @@ snapshots:
 
   eval@0.1.8:
     dependencies:
-      '@types/node': 22.10.7
+      '@types/node': 22.13.4
       require-like: 0.1.2
 
   eventemitter3@2.0.3: {}
@@ -7607,13 +7610,13 @@ snapshots:
       extsprintf: 1.4.1
     optional: true
 
-  vite-node@1.6.0(@types/node@22.10.7):
+  vite-node@1.6.0(@types/node@22.13.4):
     dependencies:
       cac: 6.7.14
       debug: 4.4.0
       pathe: 1.1.2
       picocolors: 1.1.1
-      vite: 5.4.11(@types/node@22.10.7)
+      vite: 5.4.11(@types/node@22.13.4)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -7625,24 +7628,24 @@ snapshots:
       - supports-color
       - terser
 
-  vite-tsconfig-paths@5.1.4(typescript@5.6.3)(vite@5.4.11(@types/node@22.10.7)):
+  vite-tsconfig-paths@5.1.4(typescript@5.6.3)(vite@5.4.11(@types/node@22.13.4)):
     dependencies:
       debug: 4.4.0
       globrex: 0.1.2
       tsconfck: 3.1.4(typescript@5.6.3)
     optionalDependencies:
-      vite: 5.4.11(@types/node@22.10.7)
+      vite: 5.4.11(@types/node@22.13.4)
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  vite@5.4.11(@types/node@22.10.7):
+  vite@5.4.11(@types/node@22.13.4):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.5.1
       rollup: 4.30.1
     optionalDependencies:
-      '@types/node': 22.10.7
+      '@types/node': 22.13.4
       fsevents: 2.3.3
 
   wcwidth@1.0.1:

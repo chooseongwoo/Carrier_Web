@@ -4,6 +4,10 @@ import react from '@vitejs/plugin-react-swc';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
+  build: {
+    outDir: 'out/renderer',
+    emptyOutDir: true,
+  },
   plugins: [
     react(),
     vanillaExtractPlugin({
@@ -17,4 +21,5 @@ export default defineConfig({
     port: 5173,
     open: true,
   },
+  base: './',
 });

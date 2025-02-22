@@ -7,15 +7,19 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "start": "electron-vite && preview && dev",
+    "start": "concurrently \"electron-vite\" \"vite\"",
     "prebuild": "electron-vite build",
     "preview": "vite preview",
     "prepare": "husky",
     "commitlint": "commitlint --config commitlint.config.ts",
     "lint": "eslint .",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
+    "format:all": "prettier --cache --write .",
     "lints": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "formats": "prettier --cache --write ."
+    "deploy:osx": "electron-builder --mac",
+    "deploy:win": "concurrently \"pnpm run deploy:win32\" \"pnpm run deploy:win64\"",
+    "deploy:win32": "electron-builder --win nsis:ia32",
+    "deploy:win64": "electron-builder --win nsis:x64"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -48,6 +52,7 @@
     "@commitlint/config-conventional": "^19.6.0",
     "@commitlint/types": "^19.5.0",
     "@eslint/js": "^9.17.0",
+    "@types/node": "^22.13.4",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@typescript-eslint/eslint-plugin": "^8.20.0",
