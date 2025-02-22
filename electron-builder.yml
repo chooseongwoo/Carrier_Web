@@ -15,7 +15,7 @@ files:
 
 mac:
   target: dmg
-  icon: resources/installer/icon.icns
+  icon: electron/assets/icons.icns
 
 dmg:
   title: Carrier
@@ -26,7 +26,7 @@ win:
       arch:
         - x64
         - ia32
-  icon: resources/installer/icon.ico
+  icon: electron/assets/icons.ico
 
 nsis:
   oneClick: false
