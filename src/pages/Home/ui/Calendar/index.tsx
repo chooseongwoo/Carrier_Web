@@ -4,16 +4,16 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import {
   DatesSetArg,
-  DayCellContentArg,
   EventClickArg,
   CalendarApi,
+  DayCellContentArg,
 } from '@fullcalendar/core';
 import { EventImpl } from '@fullcalendar/core/internal';
 import { Arrow } from 'shared/icons';
 import { CalendarPlusIcon, CalendarSearchIcon } from 'features/Home/ui';
 import { CalendarModal, CalendarToggle } from 'features/Home/Calendar';
 import { events } from 'entities/calendar/model';
-import { Schedule, CalendarEvent } from 'entities/calendar/type';
+import { CalendarEvent } from 'entities/calendar/type';
 import * as s from './style.css';
 import './root.css';
 import theme from 'shared/styles/theme.css';
@@ -28,9 +28,7 @@ const EventContent = memo(({ event }: { event: EventImpl }) => {
     >
       <span
         className={isSchedule ? s.calendarScheduleText : s.calendarTodoText}
-        style={{
-          color: isSchedule ? theme.blue[500] : theme.black,
-        }}
+        style={{ color: isSchedule ? theme.blue[500] : theme.black }}
       >
         {event.title}
       </span>
@@ -73,74 +71,53 @@ const Calendar = () => {
     () => setIsToggleVisible((prev) => !prev),
     []
   );
-
   const handleModalOpen = useCallback((event?: CalendarEvent) => {
     setSelectedEvent(event);
     setIsModalOpen(true);
   }, []);
-
   const handleModalClose = useCallback(() => {
     setIsModalOpen(false);
     setSelectedEvent(undefined);
   }, []);
 
-  const handleDateClick = useCallback(
-    ({ date }: { date: Date }) => {
-      const newEvent: Schedule = {
-        type: 'Schedule',
-        title: '',
-        start: date.toISOString(),
-        end: date.toISOString(),
-        startEditable: true,
-        durationEditable: true,
-        allDay: true,
-        repeatCycle: 'NONE',
-        category: 'FIRST',
-      };
-      handleModalOpen(newEvent);
-    },
-    [handleModalOpen]
-  );
+  const handleDateClick = useCallback(({ date }: { date: Date }) => {
+    handleModalOpen({
+      type: 'Schedule',
+      title: '',
+      startDate: date.toISOString(),
+      endDate: date.toISOString(),
+      startEditable: true,
+      durationEditable: true,
+      allDay: true,
+      isRepeat: false,
+      category: 1,
+      location: null,
+    });
+  }, []);
 
-  const handleEventClick = useCallback(
-    (info: EventClickArg) => {
-      const clickedEvent = info.event;
-      const { type, ...props } = clickedEvent.extendedProps;
-
-      const baseEvent = {
-        title: clickedEvent.title,
-        start: clickedEvent.startStr,
-        end: clickedEvent.endStr,
-        startEditable: true,
-        repeatCycle: props.repeatCycle || 'NONE',
-        content: props.content,
-        location: props.location,
-      };
-
-      const eventData =
-        type === 'Schedule'
-          ? {
-              ...baseEvent,
-              type: 'Schedule' as const,
-              durationEditable: true,
-              allDay: clickedEvent.allDay,
-              category: props.category || 'FIRST',
-            }
-          : {
-              ...baseEvent,
-              type: 'Todo' as const,
-              durationEditable: false,
-              priority: props.priority || 'MIDDLE',
-            };
-
-      handleModalOpen(eventData);
-    },
-    [handleModalOpen]
-  );
+  const handleEventClick = useCallback((info: EventClickArg) => {
+    const { type, ...props } = info.event.extendedProps;
+    handleModalOpen({
+      title: info.event.title,
+      startDate: info.event.startStr,
+      endDate: info.event.endStr,
+      startEditable: true,
+      isRepeat: false,
+      memo: props.memo,
+      location: props.location,
+      durationEditable: type === 'Schedule',
+      allDay: info.event.allDay,
+      category: type === 'Schedule' ? 1 : undefined,
+      priority: type === 'Todo' ? props.priority || 2 : undefined,
+      type,
+    });
+  }, []);
 
   const handleDatesSet = ({ view }: DatesSetArg) => {
-    const date = new Date(view.currentStart);
-    setCurrentDate({ year: date.getFullYear(), month: date.getMonth() + 1 });
+    setCurrentDate({
+      year: view.currentStart.getFullYear(),
+      month: view.currentStart.getMonth() + 1,
+    });
   };
 
   return (
@@ -192,8 +169,7 @@ const Calendar = () => {
         headerToolbar={{ left: '', end: '' }}
         fixedWeekCount={false}
         height="calc(100% - 80px)"
-        dayMaxEventRows={true}
-        expandRows={true}
+        dayMaxEventRows
         editable
         selectable
         locale="ko"
@@ -203,11 +179,10 @@ const Calendar = () => {
         }
         titleFormat={{ year: 'numeric', month: 'long' }}
         eventContent={({ event }) => <EventContent event={event} />}
-        dayMaxEvents={3}
-        events={events}
         eventClick={handleEventClick}
         dateClick={handleDateClick}
         moreLinkText={(num) => `+${num}`}
+        events={events}
       />
       {isModalOpen && (
         <CalendarModal onClose={handleModalClose} event={selectedEvent} />
