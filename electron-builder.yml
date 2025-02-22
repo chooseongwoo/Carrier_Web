@@ -1,0 +1,34 @@
+appId: com.5Jings.Carrier
+productName: Carrier
+asar: false
+
+directories:
+  buildResources: resources/installer
+  output: dist
+  app: .
+
+files:
+  - out/main/**
+  - out/preload/**
+  - out/renderer/**
+  - package.json
+
+mac:
+  target: dmg
+  icon: electron/assets/icons.icns
+
+dmg:
+  title: Carrier
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+        - ia32
+  icon: electron/assets/icons.ico
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: false
+  createDesktopShortcut: true
