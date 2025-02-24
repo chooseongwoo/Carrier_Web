@@ -10,9 +10,10 @@ interface CalendarModalProps {
 }
 
 const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
-  const { state, updateState, switchEventType, isInitial } = useEventState({
-    event,
-  });
+  const { state, updateState, switchEventType, isInitial, createEvent } =
+    useEventState({
+      event,
+    });
 
   const handleChangeRepeat = (id: number) =>
     updateState({ selectedRepeatId: id });
@@ -169,7 +170,9 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
 
         {isInitial ? (
           <div className={s.calendarModalCreateBtn}>
-            <div className={s.calendarModalCreateBtnText}>생성</div>
+            <div className={s.calendarModalCreateBtnText} onClick={createEvent}>
+              생성
+            </div>
           </div>
         ) : (
           <div className={s.calendarModalDeleteBtn}>

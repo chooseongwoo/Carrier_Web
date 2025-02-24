@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { CalendarEvent, Schedule, Todo } from 'entities/calendar/type';
+import { CalendarEvent } from 'entities/calendar/type';
+import { usePostScheduleMutation } from 'features/Home/services/home.mutation';
 
 interface UseEventStateProps {
   event?: CalendarEvent;
@@ -9,6 +10,8 @@ interface EventState {
   eventType: 'Schedule' | 'Todo';
   title: string;
   memo: string;
+  startDate: string;
+  endDate: string | null;
   selectedRepeatId: number;
   selectedCategoryId: number;
   selectedPriorityId: number;
@@ -21,12 +24,12 @@ const useEventState = ({ event }: UseEventStateProps) => {
     eventType: event?.type || 'Schedule',
     title: event?.title || '',
     memo: event?.memo || '',
+    startDate: event?.start || '',
+    endDate: event?.end || null,
     selectedRepeatId: 1,
-    selectedCategoryId:
-      event?.type === 'Schedule' ? (event as Schedule).category : 1,
-    selectedPriorityId: event?.type === 'Todo' ? (event as Todo).priority : 1,
-    isAllDay:
-      event?.type === 'Schedule' ? (event as Schedule).allDay || false : false,
+    selectedCategoryId: event?.type === 'Schedule' ? event.category || 1 : 1,
+    selectedPriorityId: event?.type === 'Todo' ? event.priority || 1 : 1,
+    isAllDay: event?.type === 'Schedule' ? event.allDay || false : false,
     location: event?.location || '',
   });
 
@@ -55,25 +58,45 @@ const useEventState = ({ event }: UseEventStateProps) => {
     [updateState]
   );
 
+  const scheduleData = {
+    title: state.title,
+    allDay: state.isAllDay,
+    isRepeat: false,
+    categoryId: state.selectedCategoryId,
+    startDate: state.startDate,
+    endDate: state.endDate,
+    location: state.location,
+  };
+  const { postScheduleMutate } = usePostScheduleMutation(scheduleData);
+
+  const createEvent = useCallback(() => {
+    postScheduleMutate();
+  }, [postScheduleMutate]);
+
   useEffect(() => {
     if (event) {
       setState({
         eventType: event.type,
         title: event.title,
         memo: event.memo || '',
+        startDate: event?.start || '',
+        endDate: event?.end || null,
         selectedRepeatId: 1,
         location: event.location || '',
-        selectedCategoryId:
-          event.type === 'Schedule' ? (event as Schedule).category : 1,
-        selectedPriorityId:
-          event.type === 'Todo' ? (event as Todo).priority : 1,
-        isAllDay:
-          event.type === 'Schedule' ? (event as Schedule).allDay : false,
+        selectedCategoryId: event.type === 'Schedule' ? event.category || 1 : 1,
+        selectedPriorityId: event.type === 'Todo' ? event.priority || 1 : 1,
+        isAllDay: event.type === 'Schedule' ? event.allDay || false : false,
       });
     }
   }, [event]);
 
-  return { state, updateState, switchEventType, isInitial };
+  return {
+    state,
+    updateState,
+    switchEventType,
+    isInitial,
+    createEvent,
+  };
 };
 
 export default useEventState;
