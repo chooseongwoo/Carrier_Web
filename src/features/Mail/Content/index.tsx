@@ -87,6 +87,7 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
                 selectedMail === data.id ? s.mailList_container_selected : ''
               }`}
               onClick={() => setSelectedMail(data.id)}
+              key={data.id}
             >
               {data.read ? '' : <div className={s.mailList_readState} />}
               <div className={s.mailList_header}>
