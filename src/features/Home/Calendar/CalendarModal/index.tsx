@@ -35,6 +35,8 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
       isAllDay: !state.isAllDay,
     });
 
+  console.log(state);
+
   return (
     <div className={s.calendarModalOverlay} onClick={onClose}>
       <div className={s.calendarModal} onClick={(e) => e.stopPropagation()}>
