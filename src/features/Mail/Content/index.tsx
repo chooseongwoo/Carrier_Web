@@ -57,11 +57,18 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
         </div>
 
         <div className={s.mailOption}>
-          <div className={s.mailOption_addPlan}>일정으로 추가</div>
+          <div
+            className={s.mailOption_addPlan}
+            onClick={() => {
+              toggleModalOpen?.('createSchedule');
+            }}
+          >
+            일정으로 추가
+          </div>
           <div
             className={s.mailOption_write}
             onClick={() => {
-              toggleModalOpen?.(true);
+              toggleModalOpen?.('send');
             }}
           >
             <WriteIcon />

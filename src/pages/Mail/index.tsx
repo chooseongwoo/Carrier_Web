@@ -1,17 +1,16 @@
 import { Sidebar, Content } from 'features/Mail';
 import * as s from './style.css';
-import { useState } from 'react';
 import SendModal from 'features/Mail/SendModal';
 import useModal from 'shared/hooks/useModal';
+import { MailModalType } from 'entities/mail/types/MailModalProps';
 
 const Mail = () => {
-  const [isModalOpened, setIsModalOpened] = useState(false);
-  const { isOpen, openModal, closeModal } = useModal();
+  const { isOpen, openModal, closeModal } = useModal<MailModalType>();
   return (
     <div className={s.container}>
       <Sidebar />
-      <Content toggleModalOpen={setIsModalOpened} />
-      {isModalOpened && <SendModal toggleModalOpen={setIsModalOpened} />}
+      <Content toggleModalOpen={openModal} />
+      {isOpen('send') && <SendModal toggleModalClose={closeModal} />}
     </div>
   );
 };

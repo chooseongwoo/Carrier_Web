@@ -1,26 +1,25 @@
 import { useState } from 'react';
 
-interface Modals {
-  [key: string]: boolean;
-}
+const useModal = <T extends string>() => {
+  const [modals, setModals] = useState<Record<T, boolean>>(
+    {} as Record<T, boolean>
+  );
 
-const useModal = () => {
-  const [modals, setModals] = useState<Modals>({});
-
-  const openModal = (key: string) => {
-    setModals(() => ({
+  const openModal = (key: T) => {
+    setModals((prev) => ({
+      ...prev,
       [key]: true,
     }));
   };
 
-  const closeModal = (key: string) => {
+  const closeModal = (key: T) => {
     setModals((prev) => ({
       ...prev,
       [key]: false,
     }));
   };
 
-  const isOpen = (key: string) => modals[key];
+  const isOpen = (key: T) => modals[key] ?? false;
 
   return {
     isOpen,
