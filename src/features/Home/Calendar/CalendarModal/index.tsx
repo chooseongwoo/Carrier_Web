@@ -108,7 +108,7 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
               </>
             )}
 
-          <div className={s.calendarModalItem}>
+          {/* <div className={s.calendarModalItem}>
             <div className={s.calendarModalItemTitle}>반복</div>
             <Dropdown
               name="repeat"
@@ -134,7 +134,7 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
               }
               onChange={handleChangeRepeat}
             />
-          </div>
+          </div> */}
 
           {state.eventType === 'Schedule' ? (
             <div className={s.calendarModalItem}>
