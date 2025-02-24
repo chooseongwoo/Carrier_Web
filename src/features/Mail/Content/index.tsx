@@ -2,7 +2,6 @@ import { useMenuState } from 'entities/mail/hooks';
 import { WriteIcon, Trash } from 'features/Mail/ui';
 import * as s from './style.css';
 import { useState } from 'react';
-import SendModal from 'features/Mail/SendModal';
 import { MailModalProps } from 'entities/mail/types/MailModalProps';
 import theme from 'shared/styles/theme.css';
 
@@ -45,7 +44,7 @@ const mailData = [
   },
 ];
 
-const Content = ({ modalOpen, toggleModalOpen }: MailModalProps) => {
+const Content = ({ toggleModalOpen }: MailModalProps) => {
   const { selectedMenu } = useMenuState();
   const [selectedMail, setSelectedMail] = useState(0);
   const selectedMailData = mailData.find((mail) => mail.id === selectedMail);
@@ -130,7 +129,6 @@ const Content = ({ modalOpen, toggleModalOpen }: MailModalProps) => {
             </>
           )}
         </div>
-        {modalOpen && <SendModal toggleModalOpen={toggleModalOpen} />}
       </main>
     </div>
   );
