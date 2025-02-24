@@ -2,7 +2,7 @@ import { createGlobalTheme } from '@vanilla-extract/css';
 
 const theme = createGlobalTheme(':root', {
   blue: {
-    50: '#EAFFFF',
+    50: '#EAEFFF',
     100: '#BECDFE',
     200: '#9FB5FE',
     300: '#7393FD',
@@ -14,7 +14,7 @@ const theme = createGlobalTheme(':root', {
     900: '#13276A',
   },
   gray: {
-    50: '#F6F6F8',
+    50: '#F4F4F4',
     100: '#E5E5E5',
     200: '#D8D8D8',
     300: '#C5C5C5',
@@ -30,7 +30,7 @@ const theme = createGlobalTheme(':root', {
     500: '#EE3A3A',
   },
   white: '#FFFFFF',
-  black: '#171719',
+  black: '#121213',
 });
 
 export default theme;
