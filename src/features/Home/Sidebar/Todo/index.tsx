@@ -1,27 +1,58 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Arrow } from 'shared/icons';
 import { TodoNormalIcon, TodoCheckedIcon } from 'features/Home/ui';
 import * as s from './style.css';
+import { useQueryClient } from '@tanstack/react-query';
+import { todoQuery } from 'features/Home/services/todo.query';
+import {
+  ChangeDateToDash,
+  NowDatePeriod,
+  getNextDate,
+  getPrevDate,
+} from 'shared/lib/date';
+
+/* eslint-disable no-console */
 
 interface TodoItem {
   id: number;
-  text: string;
-  checked: boolean;
+  title: string;
+  isDone: boolean;
 }
 
 const Todo = () => {
-  const [todoItems, setTodoItems] = useState<TodoItem[]>([
-    { id: 1, text: '미래랑 산책가기', checked: false },
-    { id: 2, text: '하니 산책시키기', checked: true },
-    { id: 3, text: '베이스 치기', checked: false },
-  ]);
+  const queryClient = useQueryClient();
+  const NowDate = NowDatePeriod;
+  const [date, setDate] = useState(NowDate);
+  const [todoItems, setTodoItems] = useState<TodoItem[]>([]);
+
+  useEffect(() => {
+    try {
+      const fetchTodos = async () => {
+        const data = await queryClient.fetchQuery(
+          todoQuery.getTodo(ChangeDateToDash(date))
+        );
+        setTodoItems(data);
+      };
+      fetchTodos();
+    } catch (error) {
+      console.error('에러 발생:', error);
+    }
+  }, [queryClient, date]);
 
   const handleToggle = (id: number) => {
     setTodoItems((prevItems) =>
       prevItems.map((item) =>
-        item.id === id ? { ...item, checked: !item.checked } : item
+        item.id === id ? { ...item, checked: !item.isDone } : item
       )
     );
+  };
+
+  const handlePrevDate = () => {
+    setDate(getPrevDate(date));
+  };
+
+  const handleNextDate = () => {
+    setDate(getNextDate(date));
   };
 
   return (
@@ -29,9 +60,9 @@ const Todo = () => {
       <div className={s.TodoListHeader}>
         <div className={s.TodoListTitle}>해야할 것</div>
         <div className={s.TodoListSetDate}>
-          <Arrow direction="left" />
-          <div className={s.TodoListDateTitle}>2025.01.07</div>
-          <Arrow direction="right" />
+          <Arrow direction="left" onClick={handlePrevDate} />
+          <div className={s.TodoListDateTitle}>{date}</div>
+          <Arrow direction="right" onClick={handleNextDate} />
         </div>
       </div>
       <div className={s.TodoListMain}>
@@ -41,8 +72,8 @@ const Todo = () => {
             className={s.TodoListItem}
             onClick={() => handleToggle(item.id)}
           >
-            {item.checked ? <TodoCheckedIcon /> : <TodoNormalIcon />}
-            <span className={s.TodoListItemText}>{item.text}</span>
+            {item.isDone ? <TodoCheckedIcon /> : <TodoNormalIcon />}
+            <span className={s.TodoListItemText}>{item.title}</span>
           </div>
         ))}
       </div>
