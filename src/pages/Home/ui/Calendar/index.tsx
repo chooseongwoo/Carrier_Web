@@ -12,11 +12,11 @@ import { EventImpl } from '@fullcalendar/core/internal';
 import { Arrow } from 'shared/icons';
 import { CalendarPlusIcon, CalendarSearchIcon } from 'features/Home/ui';
 import { CalendarModal, CalendarToggle } from 'features/Home/Calendar';
-import { events } from 'entities/calendar/model';
 import { CalendarEvent } from 'entities/calendar/type';
 import * as s from './style.css';
 import './root.css';
 import theme from 'shared/styles/theme.css';
+import { useScheduleListMutation } from 'features/Home/services/home.mutation';
 
 const EventContent = memo(({ event }: { event: EventImpl }) => {
   const isSchedule = event.extendedProps.type === 'Schedule';
@@ -80,7 +80,27 @@ const Calendar = () => {
   >();
   const [currentDate, setCurrentDate] = useState({ year: 0, month: 0 });
   const calendarRef = useRef<FullCalendar | null>(null);
+  const [events, setEvents] = useState<CalendarEvent[]>([]);
   const { navigate, dateRange } = useCalendarNavigation(calendarRef);
+
+  const { postScheduleListMutate } = useScheduleListMutation({
+    startDate: dateRange?.startDate || '',
+    endDate: dateRange?.endDate || '',
+    categoryIds: [3], // 추후 카테고리 id 불러오는 api 값으로 변경
+  });
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const convertedEvents = await postScheduleListMutate();
+        setEvents(convertedEvents);
+      } catch (error) {
+        console.error('에러남:', error);
+      }
+    };
+
+    fetchEvents();
+  }, [dateRange]);
 
   const toggleCalendar = useCallback(
     () => setIsToggleVisible((prev) => !prev),
@@ -135,6 +155,10 @@ const Calendar = () => {
     });
   };
 
+  useEffect(() => {
+    console.log(dateRange?.startDate);
+    console.log(dateRange?.endDate);
+  });
   return (
     <div className={s.calendarContainer}>
       <div className={s.calendarHeaderContainer}>
