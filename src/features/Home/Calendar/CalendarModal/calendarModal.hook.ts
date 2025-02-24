@@ -64,19 +64,40 @@ const useEventState = ({ event }: UseEventStateProps) => {
   );
 
   useEffect(() => {
-    if (event) {
-      setState({
-        eventType: event.type,
-        title: event.title,
-        content: event.content || '',
-        selectedRepeat: event.repeatCycle || 'NONE',
-        location: event.location || '',
-        selectedCategory:
-          event.type === 'Schedule' ? (event as Schedule).category : undefined,
-        selectedPriority:
-          event.type === 'Todo' ? (event as Todo).priority : undefined,
-        isAllDay:
-          event.type === 'Schedule' ? (event as Schedule).allDay : false,
+    if (event && event.title) {
+      setState((prev) => {
+        if (
+          prev.eventType !== event.type ||
+          prev.title !== event.title ||
+          prev.content !== event.content ||
+          prev.selectedRepeat !== event.repeatCycle ||
+          prev.location !== event.location ||
+          prev.selectedCategory !==
+            (event.type === 'Schedule'
+              ? (event as Schedule).category
+              : undefined) ||
+          prev.selectedPriority !==
+            (event.type === 'Todo' ? (event as Todo).priority : undefined) ||
+          prev.isAllDay !==
+            (event.type === 'Schedule' ? (event as Schedule).allDay : false)
+        ) {
+          return {
+            eventType: event.type,
+            title: event.title,
+            content: event.content || '',
+            selectedRepeat: event.repeatCycle || 'NONE',
+            location: event.location || '',
+            selectedCategory:
+              event.type === 'Schedule'
+                ? (event as Schedule).category
+                : undefined,
+            selectedPriority:
+              event.type === 'Todo' ? (event as Todo).priority : undefined,
+            isAllDay:
+              event.type === 'Schedule' ? (event as Schedule).allDay : false,
+          };
+        }
+        return prev;
       });
     }
   }, [event]);
