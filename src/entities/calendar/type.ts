@@ -33,10 +33,10 @@ export interface ScheduleReq {
 }
 
 export interface Schedule {
-  id: number;
   title: string;
-  startDate: string;
-  endDate?: string;
   allDay: boolean;
-  categoryId: number;
+  isRepeat: boolean;
+  startDate: string;
+  endDate: string | null;
+  category: Category;
 }

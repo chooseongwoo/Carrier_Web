@@ -1,13 +1,10 @@
 import { customAxios } from 'shared/api';
-import { authorization } from 'shared/api/header';
-import {
-  PostScheduleListReq,
-  GetScheduleListRes,
-  PostScheduleReq,
-} from 'entities/calendar/remote';
+import authorization from 'shared/api/header';
+import { PostScheduleListReq, PostScheduleReq } from 'entities/calendar/remote';
+import { Schedule } from 'entities/calendar/type';
 
 export const postScheduleList = async (params: PostScheduleListReq) => {
-  const { data } = await customAxios.post<GetScheduleListRes>(
+  const { data } = await customAxios.post<Schedule[]>(
     '/schedule',
     params,
     authorization()
