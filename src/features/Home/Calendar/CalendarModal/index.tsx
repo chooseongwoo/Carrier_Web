@@ -34,21 +34,22 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
       isAllDay: !state.isAllDay,
     });
 
-  const navigate = useNavigate();
   const { mutate } = useCreateTodoMutation();
 
-  console.log(state);
-
   const onSubmit = () => {
+    const currentDate = new Date(event?.start || '');
+    currentDate.setDate(currentDate.getDate() + 1);
+    const modifiedDate = currentDate.toISOString();
+
     mutate({
       title: state.title,
-      date: event?.start || '',
+      date: modifiedDate,
       isRepeat: state.selectedRepeat !== 'NONE',
       priority: state.selectedPriority || 'MEDIUM',
       memo: state.content,
       location: state.location,
     });
-    navigate('/');
+    window.location.reload();
   };
 
   return (
