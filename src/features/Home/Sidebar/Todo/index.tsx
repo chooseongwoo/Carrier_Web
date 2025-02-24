@@ -3,7 +3,7 @@ import { Arrow } from 'shared/icons';
 import { TodoNormalIcon, TodoCheckedIcon } from 'features/Home/ui';
 import * as s from './style.css';
 import { useQueryClient } from '@tanstack/react-query';
-import { todoQuery } from 'features/Home/services/todo.query';
+import { todoQuery } from 'features/Home/services/Home.query';
 import {
   ChangeDateToDash,
   NowDatePeriod,
