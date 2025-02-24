@@ -47,7 +47,7 @@ export const TodoListMain = style({
   paddingLeft: '8px',
   flexDirection: 'column',
   alignItems: 'flex-start',
-  gap: '2px',
+  gap: '8px',
 });
 
 export const TodoListItem = style({
