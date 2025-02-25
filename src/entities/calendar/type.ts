@@ -26,12 +26,6 @@ export interface CalendarEvent {
   durationEditable: boolean;
 }
 
-export interface ScheduleReq {
-  startDate: string;
-  endDate: string;
-  categoryIds: number[];
-}
-
 export interface Schedule {
   title: string;
   allDay: boolean;
