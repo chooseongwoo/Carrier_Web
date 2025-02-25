@@ -6,12 +6,6 @@ import { Schedule, EVENT_TYPE } from 'entities/calendar/type';
 export const usePostScheduleMutation = (scheduleData: PostScheduleReq) => {
   const { mutate: postScheduleMutate, ...restMutation } = useMutation({
     mutationFn: () => postAddSchedule(scheduleData),
-    onSuccess: ({ data }) => {
-      console.log('일정추가됨:', data);
-    },
-    onError: (error) => {
-      console.error('일정추가실패함:', error);
-    },
   });
 
   return { postScheduleMutate, ...restMutation };
@@ -37,12 +31,6 @@ export const useScheduleListMutation = (params: PostScheduleListReq) => {
         startEditable: true,
         durationEditable: true,
       }));
-    },
-    onSuccess: (data) => {
-      console.log('스케줄리스트요청성공함:', data);
-    },
-    onError: (error) => {
-      console.error('스케줄리스트요청실패함:', error);
     },
   });
 

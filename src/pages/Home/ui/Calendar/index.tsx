@@ -94,9 +94,7 @@ const Calendar = () => {
       try {
         const convertedEvents = await postScheduleListMutate();
         setEvents(convertedEvents);
-      } catch (error) {
-        console.error('에러남:', error);
-      }
+      } catch (error) {}
     };
 
     fetchEvents();
