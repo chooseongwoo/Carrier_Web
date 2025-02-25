@@ -12,8 +12,8 @@ import { useState } from 'react';
 import LoadingStatus from 'features/Mail/CreateScheduleModal/LoadingStatus';
 
 const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [event, setEvent] = useState<CalendarEvent>({
+  const [isLoading] = useState(true);
+  const [event] = useState<CalendarEvent>({
     type: 'Schedule',
     title: 'AI 일정 제목',
     start: '2025-02-09T14:00:00',
