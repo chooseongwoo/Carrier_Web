@@ -13,14 +13,21 @@ const loadingTextList = [
 
 const LoadingStatus = ({ toggleModalClose }: MailModalProps) => {
   const [loadingTextIndex, setLoadingTextIndex] = useState(0);
+  const [animationClass, setAnimationClass] = useState('');
+  const displayText = loadingTextList[loadingTextIndex];
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setLoadingTextIndex((loadingTextIndex + 1) % loadingTextList.length);
+      setAnimationClass(s.fadeOut);
+
+      setTimeout(() => {
+        setLoadingTextIndex((prev) => (prev + 1) % loadingTextList.length);
+        setAnimationClass(s.fadeIn);
+      }, 500);
     }, 2500);
 
     return () => clearInterval(interval);
-  }, [loadingTextIndex]);
+  }, []);
 
   return (
     <div className={s.container({ type: 'loading' })}>
@@ -30,7 +37,7 @@ const LoadingStatus = ({ toggleModalClose }: MailModalProps) => {
         aria-label="Loading Spinner"
         data-testid="loader"
       />
-      <p className={s.loadingText}>{loadingTextList[loadingTextIndex]}</p>
+      <p className={`${s.loadingText} ${animationClass}`}>{displayText}</p>
       <button
         className={s.button({ type: 'cancel' })}
         onClick={() => toggleModalClose?.('createSchedule')}

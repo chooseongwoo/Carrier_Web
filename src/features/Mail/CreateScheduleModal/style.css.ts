@@ -1,4 +1,4 @@
-import { style } from '@vanilla-extract/css';
+import { keyframes, style } from '@vanilla-extract/css';
 import { font } from 'shared/styles/font.css';
 import { recipe } from '@vanilla-extract/recipes';
 import theme from 'shared/styles/theme.css';
@@ -13,15 +13,26 @@ export const background = style({
   alignItems: 'center',
 });
 
-export const container = style({
-  width: '37.5rem',
-  padding: '20px 24px',
-  background: `${theme.white}`,
-  borderRadius: '8px',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '20px',
-  alignItems: 'center',
+export const container = recipe({
+  base: {
+    width: '37.5rem',
+    padding: '20px 24px',
+    background: `${theme.white}`,
+    borderRadius: '8px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '20px',
+  },
+  variants: {
+    type: {
+      create: {},
+      loading: {
+        justifyContent: 'center',
+        height: '28rem',
+      },
+    },
+  },
 });
 
 export const explainText = style({
@@ -215,4 +226,39 @@ export const button = recipe({
       },
     },
   },
+});
+
+export const loadingText = style({
+  ...font.p2,
+  color: `${theme.gray[800]}`,
+});
+
+const fadeOutKeyframes = keyframes({
+  '0%': {
+    opacity: 1,
+    transform: 'translateY(0)',
+  },
+  '100%': {
+    opacity: 0,
+    transform: 'translateY(-20px)',
+  },
+});
+
+export const fadeOut = style({
+  animation: `${fadeOutKeyframes} 0.5s forwards ease-in-out`,
+});
+
+const fadeInKeyframes = keyframes({
+  '0%': {
+    opacity: 0,
+    transform: 'translateY(20px)',
+  },
+  '100%': {
+    opacity: 1,
+    transform: 'translateY(0)',
+  },
+});
+
+export const fadeIn = style({
+  animation: `${fadeInKeyframes} 0.5s forwards ease-in-out`,
 });
