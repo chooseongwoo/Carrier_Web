@@ -1,5 +1,5 @@
 import { customAxios } from 'shared/api';
-import authorization from 'shared/api/header';
+import { authorization } from 'shared/api/header';
 import { PostScheduleListReq, PostScheduleReq } from 'entities/calendar/remote';
 import { Schedule } from 'entities/calendar/type';
 
