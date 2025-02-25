@@ -117,19 +117,19 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
                 state.eventType === 'Schedule'
                   ? [
                       { id: 1, value: 'NONE', name: '없음' },
-                      { id: 2, value: 'NONE', name: '매일' },
-                      { id: 3, value: 'NONE', name: '매주' },
-                      { id: 4, value: 'NONE', name: '매달' },
+                      { id: 2, value: 'DAILY', name: '매일' },
+                      { id: 3, value: 'WEEKLY', name: '매주' },
+                      { id: 4, value: 'MONTHLY', name: '매달' },
                     ]
                   : [
                       { id: 1, value: 'NONE', name: '없음' },
-                      { id: 2, value: 'NONE', name: '매일' },
-                      { id: 3, value: 'NONE', name: '매주' },
-                      { id: 4, value: 'NONE', name: '격주' },
-                      { id: 5, value: 'NONE', name: '매달' },
-                      { id: 6, value: 'NONE', name: '분기' },
-                      { id: 7, value: 'NONE', name: '반기' },
-                      { id: 8, value: 'NONE', name: '매년' },
+                      { id: 2, value: 'DAILY', name: '매일' },
+                      { id: 3, value: 'WEEKLY', name: '매주' },
+                      { id: 4, value: 'BIWEEKLY', name: '격주' },
+                      { id: 5, value: 'MONTHLY', name: '매달' },
+                      { id: 6, value: 'QUARTERLY', name: '3개월마다' },
+                      { id: 7, value: 'SEMIANNUALLY', name: '6개월마다' },
+                      { id: 8, value: 'YEARLY', name: '매년' },
                     ]
               }
               onChange={handleChangeRepeat}
@@ -154,9 +154,9 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
                 id={state.selectedPriorityId}
                 data={[
                   { id: 1, value: 'NONE', name: '없음' },
-                  { id: 2, value: 'NONE', name: '매일' },
-                  { id: 3, value: 'NONE', name: '매주' },
-                  { id: 4, value: 'NONE', name: '매달' },
+                  { id: 2, value: 'DAILY', name: '매일' },
+                  { id: 3, value: 'WEEKLY', name: '매주' },
+                  { id: 4, value: 'MONTHLY', name: '매달' },
                 ]}
                 onChange={handleChangePriority}
               />
