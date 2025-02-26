@@ -21,3 +21,8 @@ export const patchTodo = async (id: number) => {
   const { data } = await customAxios.patch(`todo/change/${id}`);
   return data;
 };
+
+export const getCategory = async () => {
+  const { data } = await customAxios.get('/category');
+  return data;
+};
