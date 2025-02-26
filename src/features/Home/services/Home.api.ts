@@ -16,3 +16,8 @@ export const postTodo = async (todo: {
   const { data } = await customAxios.post('/todo/add', todo);
   return data;
 };
+
+export const patchTodo = async (id: number) => {
+  const { data } = await customAxios.patch(`todo/change/${id}`);
+  return data;
+};

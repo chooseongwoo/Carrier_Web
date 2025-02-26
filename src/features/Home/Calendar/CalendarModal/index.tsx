@@ -7,7 +7,6 @@ import {
   TodoPriority,
 } from 'entities/calendar/type';
 import { useCreateTodoMutation } from 'features/Home/services/Home.mutation';
-import { useNavigate } from 'react-router-dom';
 
 interface CalendarModalProps {
   onClose: () => void;

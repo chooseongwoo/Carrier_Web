@@ -10,6 +10,7 @@ import {
   getNextDate,
   getPrevDate,
 } from 'shared/lib/date';
+import { usePatchTodoMutation } from 'features/Home/services/Home.mutation';
 
 /* eslint-disable no-console */
 
@@ -39,12 +40,14 @@ const Todo = () => {
     }
   }, [queryClient, date]);
 
-  const handleToggle = (id: number) => {
+  const { mutate } = usePatchTodoMutation();
+  const handleToggle = async (id: number) => {
     setTodoItems((prevItems) =>
       prevItems.map((item) =>
-        item.id === id ? { ...item, checked: !item.isDone } : item
+        item.id === id ? { ...item, isDone: !item.isDone } : item
       )
     );
+    mutate(id);
   };
 
   const handlePrevDate = () => {
