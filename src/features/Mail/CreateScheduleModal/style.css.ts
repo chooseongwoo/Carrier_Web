@@ -68,7 +68,7 @@ export const calendarEventButton = recipe({
     position: {
       left: { borderTopLeftRadius: '8px', borderBottomLeftRadius: '8px' },
       right: { borderTopRightRadius: '8px', borderBottomRightRadius: '8px' },
-      default: { borderRadius: 'none' },
+      default: { borderRadius: 0 },
     },
     isActive: {
       true: {
