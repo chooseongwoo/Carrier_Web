@@ -90,14 +90,11 @@ const Calendar = () => {
   });
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const convertedEvents = await postScheduleListMutate();
-        setEvents(convertedEvents);
-      } catch (error) {}
-    };
-
-    fetchEvents();
+    postScheduleListMutate()
+      .then(setEvents)
+      .catch(() => {
+        alert('스케줄을 불러오는데 실패 했습니다.');
+      });
   }, [dateRange]);
 
   const toggleCalendar = useCallback(
