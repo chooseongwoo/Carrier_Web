@@ -14,8 +14,7 @@ export const usePostScheduleMutation = (scheduleData: PostScheduleReq) => {
 export const useScheduleListMutation = (params: PostScheduleListReq) => {
   const { mutateAsync: postScheduleListMutate, ...restMutation } = useMutation({
     mutationFn: async () => {
-      const response = await postScheduleList(params);
-      if (!response) return [];
+      const response = (await postScheduleList(params)) ?? [];
 
       return response.map(
         ({
