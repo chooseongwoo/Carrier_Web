@@ -153,10 +153,9 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
                 name="priority"
                 id={state.selectedPriorityId}
                 data={[
-                  { id: 1, value: 'NONE', name: '없음' },
-                  { id: 2, value: 'DAILY', name: '매일' },
-                  { id: 3, value: 'WEEKLY', name: '매주' },
-                  { id: 4, value: 'MONTHLY', name: '매달' },
+                  { id: 1, value: 'LOW', name: '낮음' },
+                  { id: 2, value: 'MIDDLE', name: '중간' },
+                  { id: 3, value: 'HIGH', name: '높음' },
                 ]}
                 onChange={handleChangePriority}
               />
