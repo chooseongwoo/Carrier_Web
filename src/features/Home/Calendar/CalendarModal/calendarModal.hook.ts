@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { CalendarEvent } from 'entities/calendar/type';
 import { usePostScheduleMutation } from 'features/Home/services/home.mutation';
 
@@ -32,6 +32,7 @@ const useEventState = ({ event }: UseEventStateProps) => {
     isAllDay: event?.type === 'Schedule' ? event.allDay || false : false,
     location: event?.location || '',
   });
+  const prevEventRef = useRef<CalendarEvent | undefined>(undefined);
 
   const isInitial = !event || event.title === '';
 
@@ -47,10 +48,10 @@ const useEventState = ({ event }: UseEventStateProps) => {
           ? {
               selectedCategory: 1,
               isAllDay: true,
-              selectedPriority: undefined,
+              selectedPriority: 1,
             }
           : {
-              selectedPriority: 'MIDDLE',
+              selectedPriority: 1,
               isAllDay: false,
             }),
       });
@@ -74,7 +75,27 @@ const useEventState = ({ event }: UseEventStateProps) => {
   }, [postScheduleMutate]);
 
   useEffect(() => {
-    if (event) {
+    if (!event) return;
+
+    const hasChanged = () => {
+      const prev = prevEventRef.current;
+
+      if (!prev) return true;
+
+      return (
+        prev.type !== event.type ||
+        prev.title !== event.title ||
+        prev.memo !== event.memo ||
+        prev.start !== event.start ||
+        prev.end !== event.end ||
+        prev.location !== event.location ||
+        prev.category !== event.category ||
+        prev.priority !== event.priority ||
+        prev.allDay !== event.allDay
+      );
+    };
+
+    if (hasChanged()) {
       setState({
         eventType: event.type,
         title: event.title,
@@ -87,6 +108,8 @@ const useEventState = ({ event }: UseEventStateProps) => {
         selectedPriorityId: event.type === 'Todo' ? event.priority || 1 : 1,
         isAllDay: event.type === 'Schedule' ? event.allDay || false : false,
       });
+
+      prevEventRef.current = { ...event };
     }
   }, [event]);
 
