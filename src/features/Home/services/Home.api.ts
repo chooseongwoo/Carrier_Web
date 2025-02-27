@@ -27,6 +27,14 @@ export const getCategory = async () => {
   return data;
 };
 
+export const postCategory = async (category: {
+  name: string;
+  color: string;
+}) => {
+  const { data } = await customAxios.post('/category/add', category);
+  return data;
+};
+
 export const patchCategory = async (id: number) => {
   const { data } = await customAxios.patch(`category/change/${id}`);
   return data;

@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { patchCategory, patchTodo, postTodo } from './Home.api';
+import { patchCategory, patchTodo, postCategory, postTodo } from './Home.api';
 
 export const useCreateTodoMutation = () => {
   return useMutation({
@@ -16,5 +16,11 @@ export const usePatchTodoMutation = () => {
 export const usePatchCategoryMutation = () => {
   return useMutation({
     mutationFn: patchCategory,
+  });
+};
+
+export const useCreateCategoryMutation = () => {
+  return useMutation({
+    mutationFn: postCategory,
   });
 };

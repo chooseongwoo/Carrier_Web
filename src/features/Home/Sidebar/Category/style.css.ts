@@ -67,6 +67,14 @@ export const CategoryItemTitle = style({
   ...font.p1,
 });
 
+export const CategoryNewItemInput = style({
+  padding: '1px 3px',
+});
+
+export const CategoryNewItem = style({
+  backgroundColor: theme.blue[50],
+});
+
 export const BtnCategoryItemStatic = style({
   width: '24px',
   height: '24px',

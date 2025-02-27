@@ -3,9 +3,9 @@ import theme from 'shared/styles/theme.css';
 import { usePatchCategoryMutation } from '../services/Home.mutation';
 
 interface BtnCategoryItemProps {
-  id: number;
+  id?: number;
   initialBgColor?: string;
-  activeState?: boolean;
+  activeState: boolean;
 }
 
 const BtnCategoryItem = ({
@@ -13,16 +13,16 @@ const BtnCategoryItem = ({
   activeState = true,
   id,
 }: BtnCategoryItemProps) => {
-  const [isClicked, setIsClicked] = useState(activeState);
+  const [isClicked, setIsClicked] = useState(true);
 
   useEffect(() => {
-    setIsClicked(activeState);
+    setIsClicked(!activeState);
   }, [activeState]);
 
   const { mutate } = usePatchCategoryMutation();
   const handleClick = () => {
     setIsClicked(!isClicked);
-    mutate(id);
+    if (id) mutate(id);
   };
 
   return (
