@@ -26,3 +26,8 @@ export const getCategory = async () => {
   const { data } = await customAxios.get('/category');
   return data;
 };
+
+export const patchCategory = async (id: number) => {
+  const { data } = await customAxios.patch(`category/change/${id}`);
+  return data;
+};

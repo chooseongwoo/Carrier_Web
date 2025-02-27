@@ -9,7 +9,7 @@ import { categoryQuery } from 'features/Home/services/Home.query';
 const Category = () => {
   const queryClient = useQueryClient();
   const [categoryDate, setCategoryDate] = useState<
-    { id: number; name: string; color: string }[]
+    { id: number; name: string; color: string; active: boolean }[]
   >([]);
 
   useEffect(() => {
@@ -36,9 +36,18 @@ const Category = () => {
       </div>
       <div className={s.CategoryItemContainer}>
         {categoryDate?.map(
-          (category: { id: number; name: string; color: string }) => (
+          (category: {
+            id: number;
+            name: string;
+            color: string;
+            active: boolean;
+          }) => (
             <div className={s.CategoryItem} key={category.id}>
-              <CategoryItemIcon initialBgColor={category.color} />
+              <CategoryItemIcon
+                initialBgColor={category.color}
+                activeState={category.active}
+                id={category.id}
+              />
               <div className={s.CategoryItemTitle}>{category.name}</div>
             </div>
           )

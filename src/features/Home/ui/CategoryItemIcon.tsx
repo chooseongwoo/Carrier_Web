@@ -1,17 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import theme from 'shared/styles/theme.css';
+import { usePatchCategoryMutation } from '../services/Home.mutation';
 
 interface BtnCategoryItemProps {
+  id: number;
   initialBgColor?: string;
+  activeState?: boolean;
 }
 
 const BtnCategoryItem = ({
   initialBgColor = '#587EFD',
+  activeState = true,
+  id,
 }: BtnCategoryItemProps) => {
-  const [isClicked, setIsClicked] = useState(false);
+  const [isClicked, setIsClicked] = useState(activeState);
 
+  useEffect(() => {
+    setIsClicked(activeState);
+  }, [activeState]);
+
+  const { mutate } = usePatchCategoryMutation();
   const handleClick = () => {
     setIsClicked(!isClicked);
+    mutate(id);
   };
 
   return (
