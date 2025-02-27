@@ -17,20 +17,26 @@ export const useScheduleListMutation = (params: PostScheduleListReq) => {
       const response = await postScheduleList(params);
       if (!response) return [];
 
-      return response.map((schedule: Schedule) => ({
-        type: EVENT_TYPE.Schedule,
-        title: schedule.title,
-        allDay: schedule.allDay,
-        isRepeat: schedule.isRepeat,
-        start: schedule.startDate,
-        end:
-          schedule.allDay && !schedule.endDate
-            ? schedule.startDate
-            : schedule.endDate || '',
-        category: schedule.category.id,
-        startEditable: true,
-        durationEditable: true,
-      }));
+      return response.map(
+        ({
+          title,
+          allDay,
+          isRepeat,
+          startDate,
+          endDate,
+          category,
+        }: Schedule) => ({
+          type: EVENT_TYPE.Schedule,
+          title,
+          allDay,
+          isRepeat,
+          start: startDate,
+          end: allDay && !endDate ? startDate : endDate || '',
+          category: category.id,
+          startEditable: true,
+          durationEditable: true,
+        })
+      );
     },
   });
 
