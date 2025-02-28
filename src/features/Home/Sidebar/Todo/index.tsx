@@ -10,7 +10,7 @@ import {
   getPrevDate,
 } from 'shared/lib/date';
 import { usePatchTodoMutation } from 'features/Home/services/home.mutation';
-import { todoQuery } from 'features/Home/services/Home.query';
+import { todoQuery } from 'features/Home/services/home.query';
 
 /* eslint-disable no-console */
 
