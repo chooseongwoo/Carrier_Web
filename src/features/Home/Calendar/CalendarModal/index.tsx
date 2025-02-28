@@ -1,12 +1,8 @@
 import * as s from './style.css';
 import Dropdown from '../Dropdown';
 import useEventState from './calendarModal.hook';
-import {
-  CalendarEvent,
-  ScheduleCategory,
-  TodoPriority,
-} from 'entities/calendar/type';
-import { useCreateTodoMutation } from 'features/Home/services/Home.mutation';
+import { CalendarEvent } from 'entities/calendar/type';
+import { categorys } from 'entities/calendar/model';
 
 interface CalendarModalProps {
   onClose: () => void;
@@ -14,19 +10,24 @@ interface CalendarModalProps {
 }
 
 const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
-  const { state, updateState, switchEventType, isInitial } = useEventState({
-    event,
-  });
-
-  const handleChangeCategory = (value: string) =>
-    updateState({
-      selectedCategory: value as ScheduleCategory,
+  const { state, updateState, switchEventType, isInitial, createEvent } =
+    useEventState({
+      event,
     });
+  const handleChangeRepeat = (id: number) =>
+    updateState({ selectedRepeatId: id });
 
-  const handleChangePriority = (value: string) =>
-    updateState({
-      selectedPriority: value as TodoPriority,
-    });
+  const handleChangeCategory = (id: number) =>
+    updateState({ selectedCategoryId: id });
+
+  const handleChangePriority = (id: number) =>
+    updateState({ selectedPriorityId: id });
+
+  const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) =>
+    updateState({ title: e.target.value });
+
+  const handleChangeMemo = (e: React.ChangeEvent<HTMLInputElement>) =>
+    updateState({ memo: e.target.value });
 
   const handleIsAllday = () =>
     updateState({
@@ -82,13 +83,13 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
             className={s.calendarModalTitle}
             placeholder="새 일정"
             value={state.title}
-            onChange={(e) => updateState({ title: e.target.value })}
+            onChange={handleChangeTitle}
           />
           <input
             className={s.calendarModalSubTitle}
             placeholder="메모"
-            value={state.content}
-            onChange={(e) => updateState({ content: e.target.value })}
+            value={state.memo}
+            onChange={handleChangeMemo}
           />
         </div>
 
@@ -128,24 +129,24 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
             <div className={s.calendarModalItemTitle}>반복</div>
             <Dropdown
               name="repeat"
-              value={state.selectedRepeat}
+              id={state.selectedRepeatId}
               data={
                 state.eventType === 'Schedule'
                   ? [
-                      { value: 'NONE', label: '없음' },
-                      { value: 'DAILY', label: '매일' },
-                      { value: 'WEEKDAYS', label: '매주' },
-                      { value: 'WEEKENDS', label: '매달' },
+                      { id: 1, value: 'NONE', name: '없음' },
+                      { id: 2, value: 'DAILY', name: '매일' },
+                      { id: 3, value: 'WEEKLY', name: '매주' },
+                      { id: 4, value: 'MONTHLY', name: '매달' },
                     ]
                   : [
-                      { value: 'NONE', label: '없음' },
-                      { value: 'DAILY', label: '매일' },
-                      { value: 'WEEKLY', label: '매주' },
-                      { value: 'BIWEEKLY', label: '격주' },
-                      { value: 'MONTHLY', label: '매달' },
-                      { value: 'QUARTERLY', label: '분기' },
-                      { value: 'SEMIANNUALLY', label: '반기' },
-                      { value: 'ANNUALLY', label: '매년' },
+                      { id: 1, value: 'NONE', name: '없음' },
+                      { id: 2, value: 'DAILY', name: '매일' },
+                      { id: 3, value: 'WEEKLY', name: '매주' },
+                      { id: 4, value: 'BIWEEKLY', name: '격주' },
+                      { id: 5, value: 'MONTHLY', name: '매달' },
+                      { id: 6, value: 'QUARTERLY', name: '3개월마다' },
+                      { id: 7, value: 'SEMIANNUALLY', name: '6개월마다' },
+                      { id: 8, value: 'YEARLY', name: '매년' },
                     ]
               }
               onChange={handleChangeRepeat}
@@ -157,12 +158,8 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
               <div className={s.calendarModalItemTitle}>카테고리</div>
               <Dropdown
                 name="category"
-                value={state.selectedCategory}
-                data={[
-                  { value: 'FIRST', label: '나의 일정', color: '#3B82F6' },
-                  { value: 'SECOND', label: '게임', color: '#22C55E' },
-                  { value: 'THIRD', label: '공휴일', color: '#EF4444' },
-                ]}
+                id={state.selectedCategoryId}
+                data={categorys}
                 onChange={handleChangeCategory}
               />
             </div>
@@ -171,11 +168,11 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
               <div className={s.calendarModalItemTitle}>우선순위</div>
               <Dropdown
                 name="priority"
-                value={state.selectedPriority}
+                id={state.selectedPriorityId}
                 data={[
-                  { value: 'LOW', label: '낮음' },
-                  { value: 'MEDIUM', label: '중간' },
-                  { value: 'HIGH', label: '높음' },
+                  { id: 1, value: 'LOW', name: '낮음' },
+                  { id: 2, value: 'MEDIUM', name: '중간' },
+                  { id: 3, value: 'HIGH', name: '높음' },
                 ]}
                 onChange={handleChangePriority}
               />
@@ -188,8 +185,10 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
         </div>
 
         {isInitial ? (
-          <div className={s.calendarModalCreateBtn} onClick={onSubmit}>
-            <div className={s.calendarModalCreateBtnText}>생성</div>
+          <div className={s.calendarModalCreateBtn}>
+            <div className={s.calendarModalCreateBtnText} onClick={createEvent}>
+              생성
+            </div>
           </div>
         ) : (
           <div className={s.calendarModalDeleteBtn}>

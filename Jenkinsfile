@@ -65,9 +65,10 @@ pipeline {
                 branch 'main'
             }
             steps {
+                sh 'git pull origin main'
                 sh 'pnpm install'
                 sh 'pnpm run build'
-                sh 'sudo cp -r dist/* /home/jamkris/Documents/web/Carrier'
+                sh 'sudo cp -r out/renderer/* /home/jamkris/Documents/web/Carrier'
                 sh 'sudo systemctl restart nginx'
             }
         }
