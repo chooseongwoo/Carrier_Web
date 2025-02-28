@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import * as s from './style.css';
 import { CategoryPlusIcon, CategoryItemIcon } from 'features/Home/ui';
 import { useQueryClient } from '@tanstack/react-query';
-import { categoryQuery } from 'features/Home/services/Home.query';
-import { useCreateCategoryMutation } from 'features/Home/services/Home.mutation';
+import { categoryQuery } from 'features/Home/services/home.query';
+import { useCreateCategoryMutation } from 'features/Home/services/home.mutation';
 
 /* eslint-disable no-console */
 

@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query';
-import { getCategory, getTodos } from './Home.api';
+import { getCategory, getTodos } from './home.api';
 
 export const todoQuery = {
   getTodo: (date: string) =>

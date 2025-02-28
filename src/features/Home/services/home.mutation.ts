@@ -1,6 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
 import { PostScheduleReq, PostScheduleListReq } from 'entities/calendar/remote';
-import { postAddSchedule, postScheduleList } from './home.api';
+import {
+  patchCategory,
+  patchTodo,
+  postAddSchedule,
+  postCategory,
+  postScheduleList,
+} from './home.api';
 import { Schedule, EVENT_TYPE } from 'entities/calendar/type';
 
 export const usePostScheduleMutation = (scheduleData: PostScheduleReq) => {
@@ -9,6 +15,24 @@ export const usePostScheduleMutation = (scheduleData: PostScheduleReq) => {
   });
 
   return { postScheduleMutate, ...restMutation };
+};
+
+export const usePatchTodoMutation = () => {
+  return useMutation({
+    mutationFn: patchTodo,
+  });
+};
+
+export const usePatchCategoryMutation = () => {
+  return useMutation({
+    mutationFn: patchCategory,
+  });
+};
+
+export const useCreateCategoryMutation = () => {
+  return useMutation({
+    mutationFn: postCategory,
+  });
 };
 
 export const useScheduleListMutation = (params: PostScheduleListReq) => {

@@ -3,14 +3,14 @@ import { Arrow } from 'shared/icons';
 import { TodoNormalIcon, TodoCheckedIcon } from 'features/Home/ui';
 import * as s from './style.css';
 import { useQueryClient } from '@tanstack/react-query';
-import { todoQuery } from 'features/Home/services/Home.query';
 import {
   ChangeDateToDash,
   NowDatePeriod,
   getNextDate,
   getPrevDate,
 } from 'shared/lib/date';
-import { usePatchTodoMutation } from 'features/Home/services/Home.mutation';
+import { usePatchTodoMutation } from 'features/Home/services/home.mutation';
+import { todoQuery } from 'features/Home/services/Home.query';
 
 /* eslint-disable no-console */
 

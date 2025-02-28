@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import theme from 'shared/styles/theme.css';
-import { usePatchCategoryMutation } from '../services/Home.mutation';
+import { usePatchCategoryMutation } from '../services/home.mutation';
 
 interface BtnCategoryItemProps {
   id?: number;
