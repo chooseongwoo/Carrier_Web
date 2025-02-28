@@ -14,6 +14,14 @@ const refresh = async () => {
   return data.accessToken;
 };
 
+customAxios.interceptors.request.use((config) => {
+  const token = Storage.getItem(TOKEN.ACCESS);
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 customAxios.interceptors.response.use(
   (response) => response,
   async (error) => {
