@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import * as s from './style.css';
 import PencilIcon from 'pages/Setting/ui/PencilIcon';
+import TimePicker from 'shared/components/TimePicker';
 
 interface InputContainerProps {
   label: string;
@@ -36,6 +37,7 @@ const EditContainer = () => {
     profileImage:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-GpCMZ_ZhcWCTwy9HAghgSktZHSlXI0gfdQ&s',
   });
+  const [time, setTime] = useState(['', '', '', '']);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -104,6 +106,22 @@ const EditContainer = () => {
             />
           </div>
         </div>
+      </div>
+      <div className={s.category}>
+        <p className={s.categoryText}>일정 요약 시간대</p>
+        <p className={s.explainText}>
+          일정 요약을 받는 시간대를 변경합니다. 이 설정은 추후에 언제든지 변경할
+          수 있습니다.
+        </p>
+        <TimePicker time={time} onChange={setTime} />
+      </div>
+      <div className={s.category}>
+        <p className={s.categoryText}>로그아웃 또는 계정탈퇴</p>
+        <p className={s.explainText}>
+          이곳에서는 로그아웃을 진행할 수 있으며, 로그아웃 후에도 계정 정보는
+          유지되며 언제든지 다시 로그인할 수 있습니다.
+        </p>
+        <button className={s.logoutButton}>로그아웃</button>
       </div>
     </div>
   );

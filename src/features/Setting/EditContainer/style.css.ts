@@ -4,8 +4,8 @@ import theme from 'shared/styles/theme.css';
 
 export const container = style({
   width: '100%',
-  height: 'max-content',
-  overflowY: 'auto',
+  height: '100%',
+  overflowY: 'scroll',
   padding: '0 40px',
 });
 
@@ -21,6 +21,7 @@ export const categoryText = style({
   color: `${theme.gray[800]}`,
   padding: '14px 0 12px',
   borderBottom: `1px solid ${theme.gray[300]}`,
+  fontWeight: 600,
 });
 
 export const profileContent = style({
@@ -83,4 +84,14 @@ export const profileImage = style({
   backgroundRepeat: 'no-repeat',
   backgroundBlendMode: 'darken',
   backgroundColor: 'rgba(0, 0, 0, 0.4)',
+});
+
+export const logoutButton = style({
+  padding: '12px',
+  borderRadius: '8px',
+  border: `1px solid ${theme.gray[100]}`,
+  background: `${theme.gray[50]}`,
+  width: '200px',
+  color: `${theme.red[500]}`,
+  ...font.btn1,
 });

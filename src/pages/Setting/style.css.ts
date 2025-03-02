@@ -8,6 +8,7 @@ export const container = style({
   height: '100vh',
   display: 'flex',
   flexDirection: 'column',
+  paddingLeft: '80px',
 });
 
 export const header = style({
