@@ -12,8 +12,6 @@ import {
 import { usePatchTodoMutation } from 'features/Home/services/home.mutation';
 import { todoQuery } from 'features/Home/services/home.query';
 
-/* eslint-disable no-console */
-
 interface TodoItem {
   id: number;
   title: string;
