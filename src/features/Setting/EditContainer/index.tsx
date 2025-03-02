@@ -30,7 +30,11 @@ const InputContainer = ({
   );
 };
 
-const EditContainer = () => {
+interface EditContainerProps {
+  toggleModal: () => void;
+}
+
+const EditContainer = ({ toggleModal }: EditContainerProps) => {
   const [userInfos, setUserInfos] = useState({
     name: '백지헌',
     email: 'baekjiheonni@gmail.com',
@@ -121,7 +125,9 @@ const EditContainer = () => {
           이곳에서는 로그아웃을 진행할 수 있으며, 로그아웃 후에도 계정 정보는
           유지되며 언제든지 다시 로그인할 수 있습니다.
         </p>
-        <button className={s.logoutButton}>로그아웃</button>
+        <button className={s.logoutButton} onClick={toggleModal}>
+          로그아웃
+        </button>
       </div>
     </div>
   );

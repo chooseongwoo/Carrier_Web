@@ -1,10 +1,28 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as s from './style.css';
 import SettingIcon from 'pages/Setting/ui/SettingIcon';
 import EditContainer from 'features/Setting/EditContainer';
+import LogoutModal from 'features/Setting/LogoutModal';
 
 const Setting = () => {
   const [isDisabled] = useState(false);
+  const [isOpenedModal, setIsOpenedModal] = useState(true);
+  const toggleModal = () => {
+    setIsOpenedModal(true);
+  };
+
+  useEffect(() => {
+    if (isOpenedModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isOpenedModal]);
+
   return (
     <main className={s.container}>
       <header className={s.header}>
@@ -32,8 +50,9 @@ const Setting = () => {
             <p className={s.menuText}>설정</p>
           </div>
         </div>
-        <EditContainer />
+        <EditContainer toggleModal={toggleModal} />
       </div>
+      {isOpenedModal && <LogoutModal />}
     </main>
   );
 };
