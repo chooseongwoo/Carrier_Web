@@ -12,7 +12,7 @@ import { userKeys } from 'entities/user/services/user.keys';
 const useUser = () => {
   const [user, setUser] = useAtom(userContext);
 
-  const { data: userInfo } = useQuery<IUser>({
+  const { data: userInfo, isLoading } = useQuery<IUser>({
     queryKey: [userKeys.userInfo],
     queryFn: getUserInfo,
     enabled: !!Storage.getItem('accessToken'),
@@ -25,6 +25,7 @@ const useUser = () => {
   return {
     user,
     isLoggedIn: !!userInfo,
+    isLoading,
   };
 };
 
