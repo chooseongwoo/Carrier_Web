@@ -3,15 +3,6 @@ import { authorization } from 'shared/api/header';
 import { PostScheduleListReq, PostScheduleReq } from 'entities/calendar/remote';
 import { Schedule } from 'entities/calendar/type';
 
-export const postScheduleList = async (params: PostScheduleListReq) => {
-  const { data } = await customAxios.post<Schedule[]>(
-    '/schedule',
-    params,
-    authorization()
-  );
-  return data;
-};
-
 export const getTodos = async (date: string) => {
   const { data } = await customAxios.get(`/todo?date=${date}`);
   return data;
@@ -49,6 +40,15 @@ export const postCategory = async (category: {
 
 export const patchCategory = async (id: number) => {
   const { data } = await customAxios.patch(`category/change/${id}`);
+  return data;
+};
+
+export const postScheduleList = async (params: PostScheduleListReq) => {
+  const { data } = await customAxios.post<Schedule[]>(
+    '/schedule',
+    params,
+    authorization()
+  );
   return data;
 };
 

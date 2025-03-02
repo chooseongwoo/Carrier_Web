@@ -14,6 +14,7 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
     useEventState({
       event,
     });
+
   const handleChangeRepeat = (id: number) =>
     updateState({ selectedRepeatId: id });
 
@@ -33,24 +34,6 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
     updateState({
       isAllDay: !state.isAllDay,
     });
-
-  const { mutate } = useCreateTodoMutation();
-
-  const onSubmit = () => {
-    const currentDate = new Date(event?.start || '');
-    currentDate.setDate(currentDate.getDate() + 1);
-    const modifiedDate = currentDate.toISOString();
-
-    mutate({
-      title: state.title,
-      date: modifiedDate,
-      isRepeat: state.selectedRepeat !== 'NONE',
-      priority: state.selectedPriority || 'MEDIUM',
-      memo: state.content,
-      location: state.location,
-    });
-    window.location.reload();
-  };
 
   return (
     <div className={s.calendarModalOverlay} onClick={onClose}>
@@ -125,7 +108,7 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
               </>
             )}
 
-          {/* <div className={s.calendarModalItem}>
+          <div className={s.calendarModalItem}>
             <div className={s.calendarModalItemTitle}>반복</div>
             <Dropdown
               name="repeat"
@@ -151,7 +134,7 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
               }
               onChange={handleChangeRepeat}
             />
-          </div> */}
+          </div>
 
           {state.eventType === 'Schedule' ? (
             <div className={s.calendarModalItem}>
@@ -171,7 +154,7 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
                 id={state.selectedPriorityId}
                 data={[
                   { id: 1, value: 'LOW', name: '낮음' },
-                  { id: 2, value: 'MEDIUM', name: '중간' },
+                  { id: 2, value: 'MIDDLE', name: '중간' },
                   { id: 3, value: 'HIGH', name: '높음' },
                 ]}
                 onChange={handleChangePriority}
