@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import * as s from './style.css';
 import SettingIcon from 'pages/Setting/ui/SettingIcon';
+import EditContainer from 'features/Setting/EditContainer';
 
 const Setting = () => {
   const [isDisabled] = useState(false);
@@ -31,6 +32,7 @@ const Setting = () => {
             <p className={s.menuText}>설정</p>
           </div>
         </div>
+        <EditContainer />
       </div>
     </main>
   );
