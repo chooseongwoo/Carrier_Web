@@ -5,6 +5,8 @@ import { recipe } from '@vanilla-extract/recipes';
 
 export const container = style({
   display: 'flex',
+  position: 'sticky',
+  top: '0',
   width: 'calc(100vw - 80px)',
   height: '160px',
   alignItems: 'center',
@@ -43,6 +45,7 @@ export const datesContainer = style({
   flex: '1 0 0',
   alignSelf: 'stretch',
 
+  backgroundColor: theme.white,
   borderLeft: `1px solid ${theme.gray[100]}`,
 });
 
