@@ -7,7 +7,7 @@ export const container = style({
   width: '100%',
   flexDirection: 'column',
   alignItems: 'flex-start',
-  flex: '1 0 0',
+  flex: '2.3 0 0',
   alignSelf: 'stretch',
 
   borderRight: `1px solid ${theme.gray[100]}`,
@@ -40,6 +40,7 @@ export const titleText = style({
 export const mainContainer = style({
   padding: '28px 40px 40px 40px',
   flex: '1 0 0',
+  overflowY: 'auto',
   alignSelf: 'stretch',
 
   '::-webkit-scrollbar': {
@@ -80,7 +81,6 @@ export const textBox = style({
   resize: 'none',
 
   overflow: 'hidden',
-  backgroundColor: 'red',
 
   ...font.H4,
   fontWeight: '500',
