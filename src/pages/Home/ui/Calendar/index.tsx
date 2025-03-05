@@ -16,7 +16,7 @@ import { CalendarEvent } from 'entities/calendar/type';
 import * as s from './style.css';
 import './root.css';
 import theme from 'shared/styles/theme.css';
-import { useScheduleListMutation } from 'features/Home/services/home.mutation';
+import { useScheduleListQuery } from 'features/Home/services/home.query';
 
 const EventContent = memo(({ event }: { event: EventImpl }) => {
   const isSchedule = event.extendedProps.type === 'Schedule';
@@ -83,19 +83,25 @@ const Calendar = () => {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const { navigate, dateRange } = useCalendarNavigation(calendarRef);
 
-  const { postScheduleListMutate } = useScheduleListMutation({
+  const { data: scheduleListData } = useScheduleListQuery({
     startDate: dateRange?.startDate || '',
     endDate: dateRange?.endDate || '',
-    categoryIds: [3], // 추후 카테고리 id 불러오는 api 값으로 변경
+    categoryIds: [3],
   });
 
   useEffect(() => {
-    postScheduleListMutate()
-      .then(setEvents)
-      .catch(() => {
-        alert('스케줄을 불러오는데 실패 했습니다.');
-      });
-  }, [dateRange]);
+    const fetchEvents = async () => {
+      try {
+        if (scheduleListData) {
+          setEvents(scheduleListData);
+        }
+      } catch (error) {
+        alert('스케줄을 불러오는데 실패했습니다.');
+      }
+    };
+
+    fetchEvents();
+  }, [scheduleListData]);
 
   const toggleCalendar = useCallback(
     () => setIsToggleVisible((prev) => !prev),
