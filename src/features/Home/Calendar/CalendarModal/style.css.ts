@@ -223,6 +223,7 @@ export const calendarModalCreateBtn = style({
   backgroundColor: theme.gray[50],
   cursor: 'pointer',
   transition: 'all 0.2s ease',
+  userSelect: 'none',
   selectors: {
     '&:hover': {
       backgroundColor: '#15A665',
