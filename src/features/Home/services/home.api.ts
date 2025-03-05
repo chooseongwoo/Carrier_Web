@@ -4,7 +4,7 @@ import { PostScheduleListReq, PostScheduleReq } from 'entities/calendar/remote';
 import { Schedule } from 'entities/calendar/type';
 
 export const getTodos = async (date: string) => {
-  const { data } = await customAxios.get(`/todo?date=${date}`);
+  const { data } = await customAxios.get(`/todos?date=${date}`);
   return data;
 };
 
@@ -16,17 +16,17 @@ export const postTodo = async (todo: {
   memo: string;
   location: string;
 }) => {
-  const { data } = await customAxios.post('/todo/add', todo);
+  const { data } = await customAxios.post('/todos', todo);
   return data;
 };
 
 export const patchTodo = async (id: number) => {
-  const { data } = await customAxios.patch(`todo/change/${id}`);
+  const { data } = await customAxios.patch(`todos/change/${id}`);
   return data;
 };
 
 export const getCategory = async () => {
-  const { data } = await customAxios.get('/category');
+  const { data } = await customAxios.get('/categorys');
   return data;
 };
 
@@ -34,7 +34,7 @@ export const postCategory = async (category: {
   name: string;
   color: string;
 }) => {
-  const { data } = await customAxios.post('/category/add', category);
+  const { data } = await customAxios.post('/categorys', category);
   return data;
 };
 
@@ -45,7 +45,7 @@ export const patchCategory = async (id: number) => {
 
 export const postScheduleList = async (params: PostScheduleListReq) => {
   const { data } = await customAxios.post<Schedule[]>(
-    '/schedule',
+    '/schedules',
     params,
     authorization()
   );
@@ -54,7 +54,7 @@ export const postScheduleList = async (params: PostScheduleListReq) => {
 
 export const postAddSchedule = async (params: PostScheduleReq) => {
   const { data } = await customAxios.post(
-    '/schedule/add',
+    '/schedules',
     params,
     authorization()
   );
