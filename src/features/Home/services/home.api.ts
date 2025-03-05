@@ -27,7 +27,7 @@ export const patchTodo = async (id: number) => {
 };
 
 export const getCategory = async () => {
-  const { data } = await customAxios.get('/categorys');
+  const { data } = await customAxios.get('/categoryies');
   return data;
 };
 
@@ -35,12 +35,12 @@ export const postCategory = async (category: {
   name: string;
   color: string;
 }) => {
-  const { data } = await customAxios.post('/categorys', category);
+  const { data } = await customAxios.post('/categoryies', category);
   return data;
 };
 
 export const patchCategory = async (id: number) => {
-  const { data } = await customAxios.patch(`category/change/${id}`);
+  const { data } = await customAxios.patch(`categories/change/${id}`);
   return data;
 };
 
