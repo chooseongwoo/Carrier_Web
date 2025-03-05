@@ -1,13 +1,13 @@
 import { queryOptions, useQuery } from '@tanstack/react-query';
-import { getCategory, getTodos, getScheduleList } from './home.api';
+import { getCategory, getTodoList, getScheduleList } from './home.api';
 import { GetScheduleListReq } from 'entities/calendar/remote';
 import { homeKeys } from './home.keys';
 
-export const todoQuery = {
-  getTodo: (date: string) =>
+export const useTodoListQuery = {
+  getTodoList: (date: string) =>
     queryOptions({
-      queryKey: ['todo', date],
-      queryFn: () => getTodos(date),
+      queryKey: [homeKeys.TODO_LIST, date],
+      queryFn: () => getTodoList(date),
     }),
 };
 
