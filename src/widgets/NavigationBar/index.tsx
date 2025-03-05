@@ -39,7 +39,14 @@ const NavigationBar = () => {
         ))}
       </div>
       <div className={s.others}>
-        <img src={user.picture} className={s.profileImg} alt="프로필 사진" />
+        <img
+          src={user.picture}
+          className={s.profileImg}
+          alt="프로필 사진"
+          onClick={() => {
+            navigate('/setting');
+          }}
+        />
         <Alarm />
       </div>
     </nav>
