@@ -7,7 +7,7 @@ export const container = style({
   width: '100%',
   flexDirection: 'column',
   alignItems: 'flex-start',
-  flex: '2.3 0 0',
+  flex: '2.5 0 0',
   alignSelf: 'stretch',
 
   borderRight: `1px solid ${theme.gray[100]}`,
