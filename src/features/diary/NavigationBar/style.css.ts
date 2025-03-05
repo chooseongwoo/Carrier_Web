@@ -22,6 +22,10 @@ export const buttonContainer = style({
   alignItems: 'center',
   alignSelf: 'stretch',
 
+  cursor: 'pointer',
+
+  position: 'relative',
+
   backgroundColor: theme.white,
 });
 
@@ -57,6 +61,7 @@ export const dayContainer = style({
   flex: '1 0 0',
   alignSelf: 'stretch',
 
+  cursor: 'pointer',
   position: 'relative',
 
   borderRight: `1px solid ${theme.gray[100]}`,
@@ -102,10 +107,15 @@ export const dayText = recipe({
       true: { color: theme.white },
       false: {},
     },
+    disabled: {
+      true: { color: theme.gray[400] },
+      false: {},
+    },
   },
   defaultVariants: {
     isHoliday: false,
     selected: false,
+    disabled: false,
   },
 });
 
