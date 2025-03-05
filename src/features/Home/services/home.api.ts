@@ -1,7 +1,8 @@
 import { customAxios } from 'shared/api';
 import { authorization } from 'shared/api/header';
-import { PostScheduleListReq, PostScheduleReq } from 'entities/calendar/remote';
-import { Schedule } from 'entities/calendar/type';
+import { GetScheduleListReq, PostScheduleReq } from 'entities/calendar/remote';
+import { Schedule, EVENT_TYPE } from 'entities/calendar/type';
+import { toQueryString } from 'shared/lib/queryString';
 
 export const getTodos = async (date: string) => {
   const { data } = await customAxios.get(`/todos?date=${date}`);
@@ -43,13 +44,25 @@ export const patchCategory = async (id: number) => {
   return data;
 };
 
-export const postScheduleList = async (params: PostScheduleListReq) => {
-  const { data } = await customAxios.post<Schedule[]>(
-    '/schedules',
-    params,
+export const getScheduleList = async (params: GetScheduleListReq) => {
+  const { data } = await customAxios.get<Schedule[]>(
+    `/schedules?${toQueryString(params)}`,
     authorization()
   );
-  return data;
+
+  return data.map(
+    ({ title, allDay, isRepeat, startDate, endDate, category }) => ({
+      type: EVENT_TYPE.Schedule,
+      title,
+      allDay,
+      isRepeat,
+      start: startDate,
+      end: allDay && !endDate ? startDate : endDate || '',
+      category: category.id,
+      startEditable: true,
+      durationEditable: true,
+    })
+  );
 };
 
 export const postAddSchedule = async (params: PostScheduleReq) => {
