@@ -5,10 +5,8 @@ import {
   postCategory,
   postTodo,
   postAddSchedule,
-  postScheduleList,
 } from './home.api';
-import { PostScheduleReq, PostScheduleListReq } from 'entities/calendar/remote';
-import { Schedule, EVENT_TYPE } from 'entities/calendar/type';
+import { PostScheduleReq } from 'entities/calendar/remote';
 
 export const useCreateTodoMutation = () => {
   return useMutation({
@@ -40,35 +38,4 @@ export const usePostScheduleMutation = (scheduleData: PostScheduleReq) => {
   });
 
   return { postScheduleMutate, ...restMutation };
-};
-
-export const useScheduleListMutation = (params: PostScheduleListReq) => {
-  const { mutateAsync: postScheduleListMutate, ...restMutation } = useMutation({
-    mutationFn: async () => {
-      const response = (await postScheduleList(params)) ?? [];
-
-      return response.map(
-        ({
-          title,
-          allDay,
-          isRepeat,
-          startDate,
-          endDate,
-          category,
-        }: Schedule) => ({
-          type: EVENT_TYPE.Schedule,
-          title,
-          allDay,
-          isRepeat,
-          start: startDate,
-          end: allDay && !endDate ? startDate : endDate || '',
-          category: category.id,
-          startEditable: true,
-          durationEditable: true,
-        })
-      );
-    },
-  });
-
-  return { postScheduleListMutate, ...restMutation };
 };

@@ -10,7 +10,7 @@ import {
   getPrevDate,
 } from 'shared/lib/date';
 import { usePatchTodoMutation } from 'features/Home/services/home.mutation';
-import { todoQuery } from 'features/Home/services/home.query';
+import { useTodoListQuery } from 'features/Home/services/home.query';
 
 interface TodoItem {
   id: number;
@@ -26,13 +26,13 @@ const Todo = () => {
 
   useEffect(() => {
     try {
-      const fetchTodos = async () => {
+      const fetchTodoList = async () => {
         const data = await queryClient.fetchQuery(
-          todoQuery.getTodo(ChangeDateToDash(date))
+          useTodoListQuery.getTodoList(ChangeDateToDash(date))
         );
         setTodoItems(data);
       };
-      fetchTodos();
+      fetchTodoList();
     } catch (error) {
       console.error('에러 발생:', error);
     }
