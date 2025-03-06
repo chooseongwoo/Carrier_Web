@@ -4,6 +4,8 @@ import { TOKEN } from 'shared/constants';
 import { postLogin } from './auth.api';
 import { useNavigate } from 'react-router-dom';
 
+/* eslint-disable no-console */
+
 export const useLoginMutation = () => {
   const navigate = useNavigate();
 
