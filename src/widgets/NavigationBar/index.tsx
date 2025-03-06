@@ -12,20 +12,23 @@ const NavigationBar = () => {
     {
       icon: <Calendar />,
       link: '/',
+      label: '캘린더',
     },
     {
       icon: <Mail />,
       link: '/mail',
+      label: '이메일',
     },
     {
       icon: <Diary />,
       link: '/diary',
+      label: '일기',
     },
   ];
 
   return (
     <nav className={s.container}>
-      <div className={s.icons}>
+      <div className={s.menus}>
         {menus.map((menu) => (
           <div
             key={menu.link}
@@ -35,6 +38,7 @@ const NavigationBar = () => {
             }}
           >
             {menu.icon}
+            <p className={s.label}>{menu.label}</p>
           </div>
         ))}
       </div>
