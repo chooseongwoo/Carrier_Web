@@ -16,33 +16,37 @@ const refresh = async () => {
   return newAccessToken;
 };
 
-customAxios.interceptors.request.use((config) => {
-  const token = Storage.getItem(TOKEN.ACCESS);
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
 customAxios.interceptors.response.use(
   (response) => response,
   async (error) => {
     const request = error.config;
-    request.retryCount = (request.retryCount || 0) + 1;
 
-    if (request.retryCount > 3) {
+    if (error.response?.status !== 401) {
       return Promise.reject(error);
     }
 
-    if (!request.sent) {
-      request.sent = true;
-      request.headers.Authorization = await refresh();
-      return customAxios(request);
+    if (error.response?.status !== 400) {
+      return Promise.reject(error);
     }
-    return Promise.reject(error);
+
+    if (request._retry) {
+      return Promise.reject(error);
+    }
+
+    try {
+      request._retry = true;
+      const newToken = await refresh();
+      request.headers.Authorization = `Bearer ${newToken}`;
+      return customAxios(request);
+    } catch (refreshError) {
+      Storage.delItem(TOKEN.ACCESS);
+      Storage.delItem(TOKEN.REFRESH);
+      return Promise.reject(refreshError);
+    }
   }
 );
 
+// request interceptor는 한 번만 등록
 customAxios.interceptors.request.use((config) => {
   const token = Storage.getItem(TOKEN.ACCESS);
   if (token) {
