@@ -6,10 +6,14 @@ import { postLogin } from './auth.api';
 export const useLoginMutation = () => {
   return useMutation({
     mutationFn: postLogin,
-    onSuccess: ({ accessToken, refreshToken }) => {
+    onSuccess: ({ accessToken, refreshToken, isSignIn }) => {
       Storage.setItem(TOKEN.ACCESS, accessToken);
       Storage.setItem(TOKEN.REFRESH, refreshToken);
-      window.location.href = '/';
+      if (isSignIn) {
+        window.location.href = '/';
+      } else {
+        window.location.href = '/survey';
+      }
     },
   });
 };
