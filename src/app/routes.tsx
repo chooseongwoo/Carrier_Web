@@ -53,8 +53,8 @@ export default function Router() {
           }
         >
           <Route path="/login" element={<Login />} />
-          <Route path="/google/callback" element={<OAuth />} />
         </Route>
+        <Route path="/google/callback" element={<OAuth />} />
 
         <Route path="/survey" element={<Survey />} />
       </Routes>
