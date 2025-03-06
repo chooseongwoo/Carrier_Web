@@ -1,4 +1,4 @@
-import { useMenuState } from 'entities/mail/hooks';
+import { useMenuState } from 'features/Mail/hooks';
 import { WriteIcon, Trash } from 'features/Mail/ui';
 import * as s from './style.css';
 import { useState } from 'react';
