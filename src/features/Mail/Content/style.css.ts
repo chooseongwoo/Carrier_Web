@@ -187,3 +187,13 @@ export const description_date = style({
 });
 
 export const description_content = style({});
+
+export const notSelected = style({
+  display: 'flex',
+  width: '100%',
+  height: '100%',
+  justifyContent: 'center',
+  alignItems: 'center',
+  ...font.H3,
+  color: `${theme.gray[300]}`,
+});

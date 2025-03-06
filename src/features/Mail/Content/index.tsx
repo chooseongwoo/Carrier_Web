@@ -114,7 +114,7 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
           ))}
         </div>
         <div className={s.content_description}>
-          {selectedMail !== 0 && selectedMailData && (
+          {selectedMail !== 0 && selectedMailData ? (
             <>
               <div className={s.description_header}>
                 <div className={s.description_title}>
@@ -135,6 +135,8 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
                 {mailData.find((mail) => mail.id === selectedMail)?.description}
               </div>
             </>
+          ) : (
+            <div className={s.notSelected}>선택된 이메일 없음</div>
           )}
         </div>
       </main>
