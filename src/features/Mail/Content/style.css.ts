@@ -5,7 +5,7 @@ import theme from 'shared/styles/theme.css';
 export const container = style({
   display: 'flex',
   flexDirection: 'column',
-  width: 'calc(100vw - 360px)',
+  width: 'calc(100% - 280px)',
   height: '100vh',
 });
 
