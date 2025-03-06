@@ -80,14 +80,14 @@ export const content = style({
 });
 
 export const content_list = style({
-  width: '520px',
+  width: '28rem',
   height: 'calc(100vh - 72px)',
   borderRight: `1px solid ${theme.gray[100]}`,
 });
 
 export const mailList_container = style({
   width: '100%',
-  height: '114px',
+  height: '7rem',
   position: 'relative',
   padding: '16px 32px',
   gap: '4px',
