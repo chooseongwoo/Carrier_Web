@@ -13,10 +13,10 @@ const OAuth = () => {
   useEffect(() => {
     console.log('OAuth component mounted');
     console.log('Code:', code);
-    if (code) {
-      console.log('Calling mutate with code');
-      mutate(code);
-    }
+    // if (code) {
+    //   console.log('Calling mutate with code');
+    //   mutate(code);
+    // }
   }, [code, mutate]);
 
   return (
