@@ -21,13 +21,16 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
   });
   const mailBody = selectedMailData?.body ?? '';
   const handleMailClick = useHandleMailClick(setSelectedMail, setMails);
+  const countOfUnread = mails.filter((mail) => !mail.isRead).length;
 
   return (
     <div className={s.container}>
       <header className={s.header}>
         <div className={s.mailType}>
           {selectedMenu}
-          <div className={s.subTitle}>4개의 메일, 1개 읽지 않음</div>
+          <div className={s.subTitle}>
+            {mails.length}개의 메일, {countOfUnread}개 읽지 않음
+          </div>
         </div>
 
         <div className={s.mailOption}>
