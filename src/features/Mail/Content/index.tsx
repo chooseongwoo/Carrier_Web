@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { MailModalProps } from 'entities/mail/types/MailModalProps';
 import theme from 'shared/styles/theme.css';
 import { useAtom } from 'jotai';
-import { mailsAtom } from 'features/Mail/contexts/mail';
+import { mailsAtom, selectedMailIdAtom } from 'features/Mail/contexts/mail';
 import { useQuery } from '@tanstack/react-query';
 import { mailQuery } from 'features/Mail/services/mail.query';
 import MailBody from 'features/Mail/MailBody';
@@ -19,6 +19,7 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
     ...mailQuery.mailDetail(selectedMail),
     enabled: !!selectedMail,
   });
+  const [, setSelectedMailId] = useAtom(selectedMailIdAtom);
   const mailBody = selectedMailData?.body ?? '';
   const handleMailClick = useHandleMailClick(setSelectedMail, setMails);
   const countOfUnread = mails.filter((mail) => !mail.isRead).length;
@@ -34,23 +35,36 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
         </div>
 
         <div className={s.mailOption}>
+          {selectedMail && (
+            <div className={s.mailOption}>
+              <div
+                className={s.mailOption_textButton}
+                onClick={() => {
+                  setSelectedMailId(selectedMailData?.gmailId ?? '');
+                  toggleModalOpen?.('createSchedule');
+                }}
+              >
+                일정으로 추가
+              </div>
+              <div
+                className={s.mailOption_textButton}
+                onClick={() => {
+                  return 0;
+                }}
+              >
+                요약하기
+              </div>
+            </div>
+          )}
           <div
-            className={s.mailOption_addPlan}
-            onClick={() => {
-              toggleModalOpen?.('createSchedule');
-            }}
-          >
-            일정으로 추가
-          </div>
-          <div
-            className={s.mailOption_write}
+            className={s.mailOption_iconButton}
             onClick={() => {
               toggleModalOpen?.('send');
             }}
           >
             <WriteIcon />
           </div>
-          <div className={s.mailOption_delete}>
+          <div className={s.mailOption_iconButton}>
             <Trash color={theme.gray[600]} size={32} />
           </div>
         </div>

@@ -38,14 +38,16 @@ export const mailOption = style({
   gap: '12px',
 });
 
-export const mailOption_addPlan = style({
+export const mailOption_textButton = style({
   ...font.p1,
   color: theme.blue[500],
-  marginRight: '12px',
   cursor: 'pointer',
+  padding: '8px 16px',
+  border: `1px solid ${theme.blue[500]}`,
+  borderRadius: '8px',
 });
 
-export const mailOption_write = style({
+export const mailOption_iconButton = style({
   width: '48px',
   height: '48px',
   borderRadius: '8px',
@@ -56,18 +58,7 @@ export const mailOption_write = style({
   ':hover': {
     backgroundColor: theme.gray[50],
   },
-});
-
-export const mailOption_delete = style({
-  width: '48px',
-  height: '48px',
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'center',
-  alignItems: 'center',
-  ':hover': {
-    backgroundColor: theme.gray[50],
-  },
+  cursor: 'pointer',
 });
 
 export const content = style({

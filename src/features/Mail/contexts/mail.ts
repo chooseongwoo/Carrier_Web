@@ -9,3 +9,5 @@ export const updateMailsAtom = atom(null, async (_, set) => {
   const updatedMails = await getMailList();
   set(mailsAtom, updatedMails);
 });
+
+export const selectedMailIdAtom = atom<string | null>(null);
