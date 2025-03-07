@@ -8,14 +8,17 @@ import { useAtom } from 'jotai';
 import { mailsAtom } from 'features/Mail/contexts/mail';
 import { useQuery } from '@tanstack/react-query';
 import { mailQuery } from 'features/Mail/services/mail.query';
+import MailBody from 'features/Mail/MailBody';
 
 const Content = ({ toggleModalOpen }: MailModalProps) => {
   const [mails] = useAtom(mailsAtom);
   const { selectedMenu } = useMenuState();
   const [selectedMail, setSelectedMail] = useState('');
-  const { data: selectedMailData } = useQuery(
-    mailQuery.mailDetail(selectedMail)
-  );
+  const { data: selectedMailData } = useQuery({
+    ...mailQuery.mailDetail(selectedMail),
+    enabled: !!selectedMail,
+  });
+  const mailBody = selectedMailData?.body ?? '';
 
   return (
     <div className={s.container}>
@@ -98,13 +101,11 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
                     {selectedMailData.from}
                   </div>
                   <div className={s.description_Recipient}>
-                    {selectedMailData.to}
+                    {selectedMailData.to} 에게
                   </div>
                 </div>
               </div>
-              <div className={s.description_content}>
-                {mails.find((mail) => mail.gmailId === selectedMail)?.body}
-              </div>
+              <MailBody htmlContent={mailBody} />
             </>
           ) : (
             <div className={s.notSelected}>선택된 이메일 없음</div>

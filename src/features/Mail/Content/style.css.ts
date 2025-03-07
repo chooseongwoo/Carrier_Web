@@ -164,6 +164,7 @@ export const mailList_description = style({
 
 export const content_description = style({
   height: 'calc(100vh - 72px)',
+  overflow: 'auto',
   padding: '20px',
   flex: 1,
 });
@@ -202,7 +203,9 @@ export const description_date = style({
   color: theme.gray[500],
 });
 
-export const description_content = style({});
+export const mail_body = style({
+  all: 'unset',
+});
 
 export const notSelected = style({
   display: 'flex',
