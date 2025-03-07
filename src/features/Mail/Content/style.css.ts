@@ -162,45 +162,78 @@ export const mailList_description = style({
   WebkitLineClamp: 2,
 });
 
-export const content_description = style({
+export const content_detail = style({
   height: 'calc(100vh - 72px)',
   overflow: 'auto',
   padding: '20px',
   flex: 1,
+  display: 'flex',
+  gap: '`16px',
+  flexDirection: 'column',
 });
 
-export const description_header = style({
+export const detail_header = style({
   display: 'flex',
   flexDirection: 'column',
-  gap: '8px',
-  marginBottom: '20px',
+  gap: '16px',
 });
 
-export const description_title = style({
+export const detail_title = style({
   ...font.H2,
   fontWeight: '500',
-  marginBottom: '16px',
 });
 
-export const description_info = style({
+export const detail_info = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'start',
   justifyContent: 'center',
 });
 
-export const description_sender = style({
+export const detail_sender = style({
   ...font.H4,
 });
 
-export const description_Recipient = style({
+export const detail_Recipient = style({
   ...font.p1,
   color: theme.gray[600],
 });
 
-export const description_date = style({
+export const detail_date = style({
   ...font.p2,
   color: theme.gray[500],
+});
+
+export const detailContainer = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '16px',
+});
+
+export const summaryContainer = style({
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '8px',
+  padding: '8px 0',
+});
+
+export const summaryTitle = style({
+  fontSize: '16px',
+  lineHeight: '120%',
+  fontWeight: 600,
+  color: `${theme.blue[500]}`,
+});
+
+export const summaryDesc = style({
+  ...font.p2,
+  color: `${theme.black}`,
+});
+
+export const hrLine = style({
+  width: '100%',
+  height: '1px',
+  background: '#D8D8D8',
 });
 
 export const mail_body = style({
