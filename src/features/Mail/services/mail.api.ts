@@ -19,3 +19,8 @@ export const getMailDetail = async (gmailId: string) => {
   const { data } = await customAxios.get(`/mails/${gmailId}`);
   return data;
 };
+
+export const patchMailRead = async (gmailId: string) => {
+  const { data } = await customAxios.patch(`/mails/read/${gmailId}`);
+  return data;
+};

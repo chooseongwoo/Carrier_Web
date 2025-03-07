@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { updateMailsAtom } from 'features/Mail/contexts/mail';
 import {
+  patchMailRead,
   patchMails,
   postMailsBatchSave,
 } from 'features/Mail/services/mail.api';
@@ -16,8 +17,14 @@ export const useMailMutation = () => {
   });
 };
 
-export const useMailBatchSave = () => {
+export const useMailBatchSaveMutation = () => {
   return useMutation({
     mutationFn: postMailsBatchSave,
+  });
+};
+
+export const useMailReadMutation = () => {
+  return useMutation({
+    mutationFn: (gmailId: string) => patchMailRead(gmailId),
   });
 };

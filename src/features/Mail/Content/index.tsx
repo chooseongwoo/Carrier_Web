@@ -9,9 +9,10 @@ import { mailsAtom } from 'features/Mail/contexts/mail';
 import { useQuery } from '@tanstack/react-query';
 import { mailQuery } from 'features/Mail/services/mail.query';
 import MailBody from 'features/Mail/MailBody';
+import { useHandleMailClick } from 'features/Mail/hooks/useHandleMailClick';
 
 const Content = ({ toggleModalOpen }: MailModalProps) => {
-  const [mails] = useAtom(mailsAtom);
+  const [mails, setMails] = useAtom(mailsAtom);
   const { selectedMenu } = useMenuState();
   const [selectedMail, setSelectedMail] = useState('');
   const { data: selectedMailData } = useQuery({
@@ -19,6 +20,7 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
     enabled: !!selectedMail,
   });
   const mailBody = selectedMailData?.body ?? '';
+  const handleMailClick = useHandleMailClick(setSelectedMail, setMails);
 
   return (
     <div className={s.container}>
@@ -60,7 +62,7 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
                   ? s.mailList_container_selected
                   : ''
               }`}
-              onClick={() => setSelectedMail(data.gmailId)}
+              onClick={() => handleMailClick(data.gmailId, data.isRead)}
               key={data.gmailId}
             >
               {data.isRead ? '' : <div className={s.mailList_readState} />}
