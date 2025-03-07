@@ -3,6 +3,8 @@ import { Storage } from 'shared/lib/storage';
 import { TOKEN } from 'shared/constants';
 import { postLogin } from './auth.api';
 
+/* eslint-disable no-console */
+
 export const useLoginMutation = () => {
   return useMutation({
     mutationFn: postLogin,
@@ -10,10 +12,13 @@ export const useLoginMutation = () => {
       Storage.setItem(TOKEN.ACCESS, accessToken);
       Storage.setItem(TOKEN.REFRESH, refreshToken);
       if (isSignUp) {
-        window.location.href = '/survey';
+        window.location.replace('/survey');
       } else {
-        window.location.href = '/';
+        window.location.replace('/');
       }
+    },
+    onError: (error) => {
+      console.error('로그인 중 에러 발생:', error);
     },
   });
 };

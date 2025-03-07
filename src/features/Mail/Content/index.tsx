@@ -6,12 +6,16 @@ import { MailModalProps } from 'entities/mail/types/MailModalProps';
 import theme from 'shared/styles/theme.css';
 import { useAtom } from 'jotai';
 import { mailsAtom } from 'features/Mail/contexts/mail';
+import { useQuery } from '@tanstack/react-query';
+import { mailQuery } from 'features/Mail/services/mail.query';
 
 const Content = ({ toggleModalOpen }: MailModalProps) => {
   const [mails] = useAtom(mailsAtom);
   const { selectedMenu } = useMenuState();
   const [selectedMail, setSelectedMail] = useState('');
-  const selectedMailData = mails.find((mail) => mail.gmailId === selectedMail);
+  const { data: selectedMailData } = useQuery(
+    mailQuery.mailDetail(selectedMail)
+  );
 
   return (
     <div className={s.container}>
