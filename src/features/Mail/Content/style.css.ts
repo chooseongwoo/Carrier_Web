@@ -80,23 +80,28 @@ export const content = style({
 });
 
 export const content_list = style({
-  width: '28rem',
+  width: '440px',
   height: 'calc(100vh - 72px)',
   borderRight: `1px solid ${theme.gray[100]}`,
+  overflowY: 'auto',
 });
 
 export const mailList_container = style({
   width: '100%',
   height: '7rem',
+  maxHeight: '106px',
   position: 'relative',
   padding: '16px 32px',
-  gap: '4px',
   cursor: 'pointer',
 });
 
 export const mailList_container_selected = style({
   backgroundColor: theme.blue[500],
   color: `${theme.white} !important`,
+});
+
+export const mailList_description_selected = style({
+  color: `${theme.blue[100]} !important`,
 });
 
 export const mailList_readState = style({
@@ -121,6 +126,12 @@ export const mailList_header = style({
 export const mailList_Sender = style({
   ...font.H4,
   fontWeight: '700',
+  overflow: 'hidden',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+  WebkitBoxOrient: 'vertical',
+  WebkitLineClamp: 1,
+  width: '70%',
 });
 
 export const mailList_Date = style({
@@ -130,14 +141,19 @@ export const mailList_Date = style({
 
 export const mailList_title = style({
   ...font.p2,
+  width: '100%',
   height: '19px',
+  overflow: 'hidden',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+  WebkitBoxOrient: 'vertical',
+  WebkitLineClamp: 1,
 });
 
 export const mailList_description = style({
   ...font.p2,
   color: theme.gray[500],
   width: '100%',
-  height: '38px',
   display: '-webkit-box',
   overflow: 'hidden',
   whiteSpace: 'normal',

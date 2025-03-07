@@ -4,50 +4,15 @@ import * as s from './style.css';
 import { useState } from 'react';
 import { MailModalProps } from 'entities/mail/types/MailModalProps';
 import theme from 'shared/styles/theme.css';
-
-const mailData = [
-  {
-    id: 1,
-    sender: '보낸이름',
-    Recipient: '받는이름',
-    title: '보안알림',
-    description:
-      'macOS에 Google 계정 액세스 권한이 부여됨 chltjdgns1009@gmail.com 액세스 권한을 부여한 적이 없다면 이 활동을 확인하고 계정을 보호하세요.',
-    date: '2025.01.12.',
-    RecipientEmail: 'dltmdgus1412@gmail.com',
-    senderEmail: 'notifications@github.com',
-    read: false,
-  },
-  {
-    id: 2,
-    sender: '추성우',
-    Recipient: 'seonghoon07/Kotlin_study',
-    title: '[seonghoon07/Kotlin_study] 하지마 (Issue #1)',
-    description:
-      '— Reply to this email directly, view it on GitHub, or unsubscribe. You are receiving this because you are subscribed to this thread.',
-    date: '2025.01.12.',
-    RecipientEmail: 'Kotlin_study@noreply.github.com',
-    senderEmail: 'notifications@github.com',
-    read: true,
-  },
-  {
-    id: 3,
-    sender: 'PAYCO',
-    Recipient: '받는이름',
-    title: 'PAYCO 전자금융거래 이용약관 개정 안내',
-    description:
-      'PAYCO 전자금융거래 이용약관 개정 안내 PAYCO 서비스를 이용해주시는 회원 여러분께 감사드리며, 전자금융거래 이용약관 개정 안내 드립니다. 1. 개정약관 시행일 : 2025년 2월 17일',
-    date: '2025.01.12.',
-    RecipientEmail: 'dltmdgus1412@gmail.com',
-    senderEmail: 'notifications@github.com',
-    read: true,
-  },
-];
+import { useAtom } from 'jotai';
+import { mailsAtom } from 'features/Mail/contexts/mail';
 
 const Content = ({ toggleModalOpen }: MailModalProps) => {
+  const [mails] = useAtom(mailsAtom);
   const { selectedMenu } = useMenuState();
-  const [selectedMail, setSelectedMail] = useState(0);
-  const selectedMailData = mailData.find((mail) => mail.id === selectedMail);
+  const [selectedMail, setSelectedMail] = useState('');
+  const selectedMailData = mails.find((mail) => mail.gmailId === selectedMail);
+
   return (
     <div className={s.container}>
       <header className={s.header}>
@@ -81,40 +46,44 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
 
       <main className={s.content}>
         <div className={s.content_list}>
-          {mailData.map((data) => (
+          {mails.map((data) => (
             <div
               className={`${s.mailList_container} ${
-                selectedMail === data.id ? s.mailList_container_selected : ''
+                selectedMail === data.gmailId
+                  ? s.mailList_container_selected
+                  : ''
               }`}
-              onClick={() => setSelectedMail(data.id)}
-              key={data.id}
+              onClick={() => setSelectedMail(data.gmailId)}
+              key={data.gmailId}
             >
-              {data.read ? '' : <div className={s.mailList_readState} />}
+              {data.isRead ? '' : <div className={s.mailList_readState} />}
               <div className={s.mailList_header}>
-                <div className={s.mailList_Sender}>{data.sender}</div>
+                <div className={s.mailList_Sender}>{data.title}</div>
                 <div
                   className={`${s.mailList_Date} ${
-                    selectedMail === data.id
+                    selectedMail === data.gmailId
                       ? s.mailList_container_selected
                       : ''
                   }`}
                 >
-                  {data.date}
+                  {new Date(data.date).toLocaleDateString()}
                 </div>
               </div>
-              <div className={s.mailList_title}>{data.title}</div>
+              <div className={s.mailList_title}>{data.subject}</div>
               <div
                 className={`${s.mailList_description} ${
-                  selectedMail === data.id ? s.mailList_container_selected : ''
+                  selectedMail === data.gmailId
+                    ? s.mailList_description_selected
+                    : ''
                 }`}
               >
-                {data.description}
+                {data.preview}
               </div>
             </div>
           ))}
         </div>
         <div className={s.content_description}>
-          {selectedMail !== 0 && selectedMailData ? (
+          {selectedMail !== '' && selectedMailData ? (
             <>
               <div className={s.description_header}>
                 <div className={s.description_title}>
@@ -122,17 +91,15 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
                 </div>
                 <div className={s.description_info}>
                   <div className={s.description_sender}>
-                    {selectedMailData.sender} &lt;{selectedMailData.senderEmail}
-                    &gt;
+                    {selectedMailData.from}
                   </div>
                   <div className={s.description_Recipient}>
-                    {selectedMailData.Recipient} &lt;
-                    {selectedMailData.RecipientEmail}&gt;
+                    {selectedMailData.to}
                   </div>
                 </div>
               </div>
               <div className={s.description_content}>
-                {mailData.find((mail) => mail.id === selectedMail)?.description}
+                {mails.find((mail) => mail.gmailId === selectedMail)?.body}
               </div>
             </>
           ) : (
