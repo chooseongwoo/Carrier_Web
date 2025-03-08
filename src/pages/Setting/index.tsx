@@ -8,7 +8,6 @@ import { useUpdateUserInfo } from 'features/user/services/user.mutation';
 import { useAlarmTimeMutation } from 'features/AlaramTime/services/time.mutation';
 
 const Setting = () => {
-  const [isDisabled] = useState(false);
   const [isOpenedModal, setIsOpenedModal] = useState(false);
   const toggleModal = () => setIsOpenedModal(true);
 
@@ -56,6 +55,12 @@ const Setting = () => {
     return time[0] + time[1] + ':' + time[2] + time[3];
   }, [time]);
 
+  const isButtonDisabled = useMemo(() => {
+    return (
+      user.nickname === userInfos.name && user.notificationTime === formatTime
+    );
+  }, [user, userInfos, formatTime]);
+
   return (
     <main className={s.container}>
       <header className={s.header}>
@@ -71,13 +76,11 @@ const Setting = () => {
           </div>
         </div>
         <button
-          className={s.button({ type: isDisabled ? 'disabled' : 'enabled' })}
-          onClick={() => {
-            if (user.nickname !== userInfos.name)
-              updateUserInfoMutate(userInfos.name);
-            if (user.notificationTime !== formatTime)
-              updateAlarmTimeMutate(formatTime);
-          }}
+          className={s.button({
+            type: isButtonDisabled ? 'disabled' : 'enabled',
+          })}
+          onClick={() => updateAlarmTimeMutate(formatTime)}
+          disabled={isButtonDisabled}
         >
           저장하기
         </button>
@@ -97,7 +100,13 @@ const Setting = () => {
           setTime={setTime}
         />
       </div>
-      {isOpenedModal && <LogoutModal />}
+      {isOpenedModal && (
+        <LogoutModal
+          toggleCloseModal={() => {
+            setIsOpenedModal(false);
+          }}
+        />
+      )}
     </main>
   );
 };
