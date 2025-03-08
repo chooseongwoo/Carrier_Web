@@ -79,7 +79,10 @@ const Setting = () => {
           className={s.button({
             type: isButtonDisabled ? 'disabled' : 'enabled',
           })}
-          onClick={() => updateAlarmTimeMutate(formatTime)}
+          onClick={() => {
+            updateAlarmTimeMutate(formatTime);
+            updateUserInfoMutate(userInfos.name);
+          }}
           disabled={isButtonDisabled}
         >
           저장하기

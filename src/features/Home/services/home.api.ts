@@ -1,5 +1,4 @@
 import { customAxios } from 'shared/api';
-import { authorization } from 'shared/api/header';
 import { GetScheduleListReq, PostScheduleReq } from 'entities/calendar/remote';
 import { Schedule, EVENT_TYPE } from 'entities/calendar/type';
 import { toQueryString } from 'shared/lib/queryString';
