@@ -75,25 +75,31 @@ const useEventState = ({ event }: UseEventStateProps) => {
 
   const todoData = {
     title: state.title,
-    date: state.startDate,
+    date: state.startDate.split('T')[0],
     isRepeat: false,
     priority:
       priority.find((item) => item.id === state.selectedPriorityId)?.value ||
-      'LOW',
-    memo: state.memo,
-    location: state.location,
+      'HIGH',
+    memo: state.memo ? state.memo : null,
+    location: '임시 위치',
   };
 
-  const { postScheduleMutate } = usePostScheduleMutation(scheduleData);
+  const { mutate: postScheduleMutate } = usePostScheduleMutation();
   const { mutate: postTodoMutate } = useCreateTodoMutation();
 
   const createEvent = useCallback(() => {
     if (state.eventType === 'Schedule') {
-      postScheduleMutate();
+      postScheduleMutate(scheduleData);
     } else if (state.eventType === 'Todo') {
       postTodoMutate(todoData);
     }
-  }, [postScheduleMutate, postTodoMutate, state.eventType, todoData]);
+  }, [
+    postScheduleMutate,
+    postTodoMutate,
+    state.eventType,
+    scheduleData,
+    todoData,
+  ]);
 
   useEffect(() => {
     if (!event) return;
