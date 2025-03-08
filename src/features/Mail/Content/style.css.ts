@@ -206,7 +206,6 @@ export const summaryContainer = style({
   display: 'flex',
   flexDirection: 'column',
   gap: '8px',
-  padding: '8px 0',
 });
 
 export const summaryTitle = style({
@@ -214,6 +213,7 @@ export const summaryTitle = style({
   lineHeight: '120%',
   fontWeight: 600,
   color: `${theme.blue[500]}`,
+  paddingTop: '8px',
 });
 
 export const summaryDesc = style({

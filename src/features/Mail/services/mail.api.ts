@@ -29,3 +29,8 @@ export const getMailToSchedule = async (gmailId: string) => {
   const { data } = await customAxios.get(`/mails/schedule/${gmailId}`);
   return data;
 };
+
+export const patchMailSummary = async (gmailId: string) => {
+  const { data } = await customAxios.patch(`/mails/summary/${gmailId}`);
+  return data;
+};

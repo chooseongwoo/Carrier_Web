@@ -10,6 +10,7 @@ import { useQuery } from '@tanstack/react-query';
 import { mailQuery } from 'features/Mail/services/mail.query';
 import MailBody from 'features/Mail/MailBody';
 import { useHandleMailClick } from 'features/Mail/hooks/useHandleMailClick';
+import { useMailSummaryMutation } from 'features/Mail/services/mail.mutation';
 
 const Content = ({ toggleModalOpen }: MailModalProps) => {
   const [mails, setMails] = useAtom(mailsAtom);
@@ -23,6 +24,8 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
   const mailBody = selectedMailData?.body ?? '';
   const handleMailClick = useHandleMailClick(setSelectedMail, setMails);
   const countOfUnread = mails.filter((mail) => !mail.isRead).length;
+  const [mailSummary, setMailSummary] = useState({ summary: '' });
+  const { mutate: mailSummaryMutate } = useMailSummaryMutation();
 
   return (
     <div className={s.container}>
@@ -40,7 +43,7 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
               <div
                 className={s.mailOption_textButton}
                 onClick={() => {
-                  setSelectedMailId(selectedMailData?.gmailId ?? '');
+                  setSelectedMailId(selectedMail ?? '');
                   toggleModalOpen?.('createSchedule');
                 }}
               >
@@ -49,7 +52,11 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
               <div
                 className={s.mailOption_textButton}
                 onClick={() => {
-                  return 0;
+                  mailSummaryMutate(selectedMail, {
+                    onSuccess: ({ summary }) => {
+                      setMailSummary({ summary });
+                    },
+                  });
                 }}
               >
                 요약하기
@@ -120,19 +127,16 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
                   </div>
                 </div>
               </div>
+              {mailSummary.summary.length > 0 && (
+                <div className={s.summaryContainer}>
+                  <div className={s.hrLine} />
+                  <p className={s.summaryTitle}>본문 요약됨</p>
+                  <p className={s.summaryDesc}>{mailSummary.summary}</p>
+                </div>
+              )}
+
               <div className={s.hrLine} />
-              <div className={s.summaryContainer}>
-                <p className={s.summaryTitle}>본문 요약됨</p>
-                <p className={s.summaryDesc}>
-                  김민수 팀장님, 안녕하세요. 이번 주 금요일 오후 3시에 예정된
-                  마케팅 전략 회의를 주요 참석자 일정 조율을 위해 다음 주 월요일
-                  오전 10시로 변경하고자 합니다. 변경이 가능하신지 확인
-                  부탁드리며, 어려우시면 가능한 일정 공유 부탁드립니다.
-                  감사합니다.
-                </p>
-              </div>
-              <div className={s.hrLine} />
-              <MailBody htmlContent={mailBody} />
+              {mailBody && <MailBody htmlContent={mailBody} />}
             </div>
           ) : (
             <div className={s.notSelected}>선택된 이메일 없음</div>

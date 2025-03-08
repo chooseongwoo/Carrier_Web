@@ -9,4 +9,5 @@ export interface Mail {
   isRead: boolean;
   labels: string[];
   body?: string;
+  summary: string | null;
 }
