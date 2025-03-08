@@ -24,8 +24,12 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
   const mailBody = selectedMailData?.body ?? '';
   const handleMailClick = useHandleMailClick(setSelectedMail, setMails);
   const countOfUnread = mails.filter((mail) => !mail.isRead).length;
-  const [mailSummary, setMailSummary] = useState('');
+  const [mailSummary, setMailSummary] = useState({ gmailId: '', summary: '' });
   const { mutate: mailSummaryMutate } = useMailSummaryMutation();
+
+  const summaryText =
+    selectedMailData?.summary ??
+    (mailSummary?.gmailId === selectedMail ? mailSummary.summary : null);
 
   return (
     <div className={s.container}>
@@ -54,8 +58,8 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
                   className={s.mailOption_textButton}
                   onClick={() => {
                     mailSummaryMutate(selectedMail, {
-                      onSuccess: ({ summary }) => {
-                        setMailSummary(summary);
+                      onSuccess: (response) => {
+                        setMailSummary(response);
                       },
                     });
                   }}
@@ -129,16 +133,13 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
                   </div>
                 </div>
               </div>
-              {(selectedMailData?.summary || mailSummary) && (
+              {summaryText && (
                 <div className={s.summaryContainer}>
                   <div className={s.hrLine} />
                   <p className={s.summaryTitle}>본문 요약됨</p>
-                  <p className={s.summaryDesc}>
-                    {selectedMailData?.summary || mailSummary}
-                  </p>
+                  <p className={s.summaryDesc}>{summaryText}</p>
                 </div>
               )}
-
               <div className={s.hrLine} />
               {mailBody && <MailBody htmlContent={mailBody} />}
             </div>
