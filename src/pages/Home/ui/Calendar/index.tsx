@@ -9,6 +9,7 @@ import {
   DayCellContentArg,
 } from '@fullcalendar/core';
 import { EventImpl } from '@fullcalendar/core/internal';
+import { useQueryClient } from '@tanstack/react-query';
 import { Arrow } from 'shared/icons';
 import { CalendarPlusIcon, CalendarSearchIcon } from 'features/Home/ui';
 import { CalendarModal, CalendarToggle } from 'features/Home/Calendar';
@@ -82,26 +83,25 @@ const Calendar = () => {
   const calendarRef = useRef<FullCalendar | null>(null);
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const { navigate, dateRange } = useCalendarNavigation(calendarRef);
-
-  const { data: scheduleListData } = useScheduleListQuery({
-    startDate: dateRange?.startDate || '',
-    endDate: dateRange?.endDate || '',
-    categoryIds: [3],
-  });
+  const queryClient = useQueryClient();
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        if (scheduleListData) {
-          setEvents(scheduleListData);
-        }
-      } catch (error) {
-        alert('스케줄을 불러오는데 실패했습니다.');
-      }
-    };
-
-    fetchEvents();
-  }, [scheduleListData]);
+    try {
+      const fetchScheduleList = async () => {
+        const data = await queryClient.fetchQuery(
+          useScheduleListQuery.getScheduleList({
+            startDate: dateRange?.startDate || '',
+            endDate: dateRange?.endDate || '',
+            categoryIds: [3],
+          })
+        );
+        setEvents(data);
+      };
+      fetchScheduleList();
+    } catch (error) {
+      console.error('에러 발생:', error);
+    }
+  }, [queryClient, dateRange]);
 
   const toggleCalendar = useCallback(
     () => setIsToggleVisible((prev) => !prev),
