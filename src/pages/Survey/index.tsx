@@ -8,7 +8,7 @@ import {
 import TimePicker from 'shared/components/TimePicker';
 import * as s from './style.css';
 import Arrow from './ui/Arrow';
-import { useAlarmTime } from 'features/AlaramTime/services/time.mutation';
+import { useAlarmTimeMutation } from 'features/AlaramTime/services/time.mutation';
 import { useNavigate } from 'react-router-dom';
 import { useMailBatchSaveMutation } from 'features/Mail/services/mail.mutation';
 
@@ -24,7 +24,7 @@ const Survey = () => {
     );
   }, [time]);
 
-  const { mutate: alarmTimeMutate } = useAlarmTime();
+  const { mutate: alarmTimeMutate } = useAlarmTimeMutation();
   const { mutate: mailBatchMutate } = useMailBatchSaveMutation();
   const handleAlarmTime = (time: string) => {
     alarmTimeMutate(time, {
