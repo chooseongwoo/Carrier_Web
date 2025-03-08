@@ -14,7 +14,6 @@ export const useLoginMutation = () => {
     onSuccess: ({ accessToken, refreshToken }) => {
       Storage.setItem(TOKEN.ACCESS, accessToken);
       Storage.setItem(TOKEN.REFRESH, refreshToken);
-      console.log('성공:', accessToken);
       navigate('/');
     },
     onError: (error) => {
