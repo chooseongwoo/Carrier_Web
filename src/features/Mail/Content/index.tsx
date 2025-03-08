@@ -24,7 +24,7 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
   const mailBody = selectedMailData?.body ?? '';
   const handleMailClick = useHandleMailClick(setSelectedMail, setMails);
   const countOfUnread = mails.filter((mail) => !mail.isRead).length;
-  const [mailSummary, setMailSummary] = useState({ summary: '' });
+  const [mailSummary, setMailSummary] = useState('');
   const { mutate: mailSummaryMutate } = useMailSummaryMutation();
 
   return (
@@ -49,18 +49,20 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
               >
                 일정으로 추가
               </div>
-              <div
-                className={s.mailOption_textButton}
-                onClick={() => {
-                  mailSummaryMutate(selectedMail, {
-                    onSuccess: ({ summary }) => {
-                      setMailSummary({ summary });
-                    },
-                  });
-                }}
-              >
-                요약하기
-              </div>
+              {selectedMailData?.summary === null && (
+                <div
+                  className={s.mailOption_textButton}
+                  onClick={() => {
+                    mailSummaryMutate(selectedMail, {
+                      onSuccess: ({ summary }) => {
+                        setMailSummary(summary);
+                      },
+                    });
+                  }}
+                >
+                  요약하기
+                </div>
+              )}
             </div>
           )}
           <div
@@ -127,11 +129,13 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
                   </div>
                 </div>
               </div>
-              {mailSummary.summary.length > 0 && (
+              {(selectedMailData?.summary || mailSummary) && (
                 <div className={s.summaryContainer}>
                   <div className={s.hrLine} />
                   <p className={s.summaryTitle}>본문 요약됨</p>
-                  <p className={s.summaryDesc}>{mailSummary.summary}</p>
+                  <p className={s.summaryDesc}>
+                    {selectedMailData?.summary || mailSummary}
+                  </p>
                 </div>
               )}
 
