@@ -22,12 +22,9 @@ const EventDropdown = ({ id, data, onChange }: DropdownProps) => {
   const selectedLabel = selectedItem ? selectedItem.name : '에러';
 
   useEffect(() => {
-    if (!id && data.length > 0) {
+    if (!id || !data.some((item) => item.id === id)) {
       const firstItem = data[0];
-      onChange(
-        firstItem.id,
-        'value' in firstItem ? (firstItem.value ?? '') : firstItem.name
-      );
+      onChange(firstItem.id, firstItem.value ?? firstItem.name);
     }
   }, [id, data, onChange]);
 
