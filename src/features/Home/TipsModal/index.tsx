@@ -4,8 +4,12 @@ import theme from 'shared/styles/theme.css';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Mousewheel, Keyboard } from 'swiper/modules';
+
+// @ts-ignore
 import 'swiper/css';
+// @ts-ignore
 import 'swiper/css/bundle';
+// @ts-ignore
 import 'swiper/css/pagination';
 
 const CategoryData = [
