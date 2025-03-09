@@ -17,10 +17,7 @@ const Content = () => {
   return (
     <div className={s.container}>
       <div className={s.titleContainer}>
-        <input
-          className={s.titleText}
-          placeholder="제목을 입력해주세요."
-        ></input>
+        <input className={s.titleText} placeholder="제목을 입력해주세요." />
       </div>
       <div className={s.mainContainer}>
         <div className={s.emojiPicker}>
@@ -33,7 +30,7 @@ const Content = () => {
           placeholder="오늘 하루는 어땠나요?"
           value={text}
           onChange={handleInput}
-        ></textarea>
+        />
       </div>
     </div>
   );
