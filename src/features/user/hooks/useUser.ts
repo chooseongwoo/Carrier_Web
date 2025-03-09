@@ -5,8 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { userContext } from 'entities/user/contexts/user';
 import { useAtom } from 'jotai';
-import { getUserInfo } from 'features/userCheck/services/user.api';
-import { userKeys } from 'features/userCheck/services/user.keys';
+import { userQuery } from 'features/user/services/user.query';
 
 const useUser = () => {
   const [user, setUser] = useAtom(userContext);
