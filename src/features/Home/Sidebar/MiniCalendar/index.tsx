@@ -51,7 +51,7 @@ const MiniCalendar = () => {
       days.push(
         <div
           key={`prev-${i}`}
-          className={s.MiniCalendarEmptyDay}
+          className={s.MiniCalendarDay({ isEmpty: true })}
           style={{
             color:
               isSunday && selectedDate !== prevEndOfMonth - i
@@ -66,12 +66,11 @@ const MiniCalendar = () => {
 
     for (let i = 1; i <= daysInMonth; i++) {
       const isSunday = (startWeek + i - 1) % 7 === 0;
+      const isSelected = selectedDate === i;
       days.push(
         <div
           key={`day-${i}`}
-          className={`${s.MiniCalendarDay} ${
-            selectedDate === i ? s.MiniCalendarSelectedDay : ''
-          }`}
+          className={s.MiniCalendarDay({ selected: isSelected })}
           style={{
             color: isSunday && selectedDate !== i ? 'red' : undefined,
           }}
@@ -88,7 +87,7 @@ const MiniCalendar = () => {
       days.push(
         <div
           key={`next-${i}`}
-          className={s.MiniCalendarEmptyDay}
+          className={s.MiniCalendarDay({ isEmpty: true })}
           style={{ color: isSunday && selectedDate !== i ? 'red' : undefined }}
         >
           {i}
