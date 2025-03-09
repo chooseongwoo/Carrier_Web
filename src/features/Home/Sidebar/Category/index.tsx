@@ -3,7 +3,7 @@ import * as s from './style.css';
 import { CategoryPlusIcon, CategoryItemIcon } from 'features/Home/ui';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCreateCategoryMutation } from 'features/Home/services/home.mutation';
-import { categoryQuery } from 'features/Home/services/home.query';
+import { useCategoryListQuery } from 'features/Home/services/home.query';
 
 /* eslint-disable no-console */
 
@@ -22,7 +22,7 @@ const Category = () => {
     try {
       const fetchCategory = async () => {
         const data = await queryClient.fetchQuery(
-          categoryQuery.getCategories()
+          useCategoryListQuery.getCategoryList()
         );
         setCategoryData(data);
       };

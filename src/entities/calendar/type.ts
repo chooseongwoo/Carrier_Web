@@ -9,6 +9,7 @@ export interface Category {
   id: number;
   name: string;
   color: string;
+  active: boolean;
 }
 
 export interface CalendarEvent {

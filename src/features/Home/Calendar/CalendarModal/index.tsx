@@ -2,7 +2,8 @@ import * as s from './style.css';
 import Dropdown from '../Dropdown';
 import useEventState from './calendarModal.hook';
 import { CalendarEvent } from 'entities/calendar/type';
-import { categorys, priority } from 'entities/calendar/model';
+import { priority } from 'entities/calendar/model';
+import { useCategories } from 'entities/calendar/hooks/useCategory';
 
 interface CalendarModalProps {
   onClose: () => void;
@@ -36,6 +37,8 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
     updateState({
       isAllDay: !state.isAllDay,
     });
+
+  const categories = useCategories();
 
   return (
     <div className={s.calendarModalOverlay} onClick={onClose}>
@@ -144,7 +147,7 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
               <Dropdown
                 name="category"
                 id={state.selectedCategoryId}
-                data={categorys}
+                data={categories}
                 onChange={handleChangeCategory}
               />
             </div>

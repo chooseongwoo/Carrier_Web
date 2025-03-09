@@ -1,5 +1,9 @@
 import { customAxios } from 'shared/api';
-import { GetScheduleListReq, PostScheduleReq } from 'entities/calendar/remote';
+import {
+  GetScheduleListReq,
+  PostScheduleReq,
+  PostTodoReq,
+} from 'entities/calendar/remote';
 import { Schedule, EVENT_TYPE } from 'entities/calendar/type';
 import { toQueryString } from 'shared/lib/queryString';
 
@@ -8,15 +12,8 @@ export const getTodoList = async (date: string) => {
   return data;
 };
 
-export const postTodo = async (todo: {
-  title: string;
-  date: string;
-  isRepeat: boolean;
-  priority: string;
-  memo: string;
-  location: string;
-}) => {
-  const { data } = await customAxios.post('/todos', todo);
+export const postTodo = async (params: PostTodoReq) => {
+  const { data } = await customAxios.post('/todos', params);
   return data;
 };
 
@@ -63,7 +60,7 @@ export const getScheduleList = async (params: GetScheduleListReq) => {
   );
 };
 
-export const postAddSchedule = async (params: PostScheduleReq) => {
+export const postSchedule = async (params: PostScheduleReq) => {
   const { data } = await customAxios.post('/schedules', params);
   return data;
 };
