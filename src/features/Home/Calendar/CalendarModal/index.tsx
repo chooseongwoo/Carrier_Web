@@ -171,7 +171,7 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
         {isInitial ? (
           <div className={s.calendarModalCreateBtn}>
             <div className={s.calendarModalCreateBtnText} onClick={createEvent}>
-              생성
+              추가
             </div>
           </div>
         ) : (
