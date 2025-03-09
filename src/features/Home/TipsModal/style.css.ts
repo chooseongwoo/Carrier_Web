@@ -3,7 +3,7 @@ import { font } from 'shared/styles/font.css';
 import theme from 'shared/styles/theme.css';
 
 export const TipsModal_Background = style({
-  width: 'calc(100% - 80px)',
+  width: '100%',
   height: '100%',
   position: 'absolute',
   zIndex: 10,
