@@ -1,8 +1,7 @@
 import { customAxios } from 'shared/api';
-import { authorization } from 'shared/api/header';
 
 export const getLoginLink = async () => {
-  const { data } = await customAxios.get('/auth', authorization());
+  const { data } = await customAxios.get('/auth');
   return data;
 };
 
@@ -11,5 +10,10 @@ export const postLogin = async (code: string) => {
     token: code,
     redirectUrl: import.meta.env.VITE_APPLICATION_REDIRECT,
   });
+  return data;
+};
+
+export const deleteLogout = async () => {
+  const { data } = await customAxios.delete('/auth');
   return data;
 };

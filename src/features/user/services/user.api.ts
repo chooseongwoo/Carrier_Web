@@ -1,7 +1,11 @@
 import { customAxios } from 'shared/api';
-import { authorization } from 'shared/api/header';
 
 export const getUserInfo = async () => {
-  const { data } = await customAxios.get('/users', authorization());
+  const { data } = await customAxios.get('/users');
+  return data;
+};
+
+export const patchUserInfo = async (nickname: string) => {
+  const { data } = await customAxios.patch('/users', { nickname });
   return data;
 };
