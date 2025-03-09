@@ -7,6 +7,7 @@ import Survey from 'pages/Survey';
 import OAuth from 'pages/OAuth';
 import Mail from 'pages/Mail';
 import useUser from 'features/user/hooks/useUser';
+import Diary from 'pages/Diary';
 import { DotLoader } from 'react-spinners';
 import theme from 'shared/styles/theme.css';
 import Setting from 'pages/Setting';
@@ -43,6 +44,7 @@ export default function Router() {
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
             <Route path="/mail" element={<Mail />} />
+            <Route path="/diary" element={<Diary />} />
             <Route path="/setting" element={<Setting />} />
           </Route>
         </Route>
