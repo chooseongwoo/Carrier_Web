@@ -169,10 +169,8 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
         </div>
 
         {isInitial ? (
-          <div className={s.calendarModalCreateBtn}>
-            <div className={s.calendarModalCreateBtnText} onClick={createEvent}>
-              생성
-            </div>
+          <div className={s.calendarModalCreateBtn} onClick={createEvent}>
+            <div className={s.calendarModalCreateBtnText}>생성</div>
           </div>
         ) : (
           <div className={s.calendarModalDeleteBtn}>

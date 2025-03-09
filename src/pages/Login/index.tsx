@@ -8,12 +8,15 @@ import {
 } from 'shared/icons';
 import { authQuery } from 'features/auth/services/auth.query';
 import { useQueryClient } from '@tanstack/react-query';
+import { Storage } from 'shared/lib/storage';
 
 const Login = () => {
   const queryClient = useQueryClient();
 
   const handleLogin = async () => {
     try {
+      Storage.delItem('accessToken');
+      Storage.delItem('refreshToken');
       const url = await queryClient.fetchQuery(authQuery.loginLink());
       if (url) {
         window.location.href = `${url}${import.meta.env.VITE_APPLICATION_REDIRECT}`;
