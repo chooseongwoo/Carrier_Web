@@ -1,5 +1,4 @@
 import { atom } from 'jotai';
+import { Category } from '../type';
 
-export const categoriesAtom = atom<
-  { id: number; name: string; color: string; active: boolean }[]
->([]);
+export const categoriesAtom = atom<Category[]>([]);
