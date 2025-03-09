@@ -18,6 +18,10 @@ import * as s from './style.css';
 import './root.css';
 import theme from 'shared/styles/theme.css';
 import { useScheduleListQuery } from 'features/Home/services/home.query';
+import {
+  useCategories,
+  useCategoryList,
+} from 'entities/calendar/hooks/useCategory';
 
 const EventContent = memo(({ event }: { event: EventImpl }) => {
   const isSchedule = event.extendedProps.type === 'Schedule';
@@ -85,6 +89,10 @@ const Calendar = () => {
   const { navigate, dateRange } = useCalendarNavigation(calendarRef);
   const queryClient = useQueryClient();
 
+  useCategoryList();
+  const categories = useCategories();
+  const categoryIds = categories.map((category) => category.id);
+
   useEffect(() => {
     try {
       const fetchScheduleList = async () => {
@@ -92,7 +100,7 @@ const Calendar = () => {
           useScheduleListQuery.getScheduleList({
             startDate: dateRange?.startDate || '',
             endDate: dateRange?.endDate || '',
-            categoryIds: [3],
+            categoryIds: categoryIds,
           })
         );
         setEvents(data);
