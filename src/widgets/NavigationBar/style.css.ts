@@ -3,6 +3,8 @@ import theme from '../../shared/styles/theme.css';
 import { font } from 'shared/styles/font.css';
 
 export const container = style({
+  position: 'sticky',
+  top: '0',
   display: 'flex',
   padding: '80px 12px',
   flexDirection: 'column',
@@ -11,7 +13,6 @@ export const container = style({
   background: theme.gray[900],
   justifyContent: 'space-between',
   alignItems: 'center',
-  position: 'fixed',
 });
 
 export const menus = style({
