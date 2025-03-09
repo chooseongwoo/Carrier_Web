@@ -2,6 +2,8 @@ import { style } from '@vanilla-extract/css';
 import theme from '../../shared/styles/theme.css';
 
 export const container = style({
+  position: 'sticky',
+  top: '0',
   display: 'flex',
   padding: '80px 12px',
   flexDirection: 'column',
@@ -10,7 +12,6 @@ export const container = style({
   background: theme.gray[900],
   justifyContent: 'space-between',
   alignItems: 'center',
-  position: 'fixed',
 });
 
 export const icons = style({
