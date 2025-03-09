@@ -3,7 +3,7 @@ import theme from '../../shared/styles/theme.css';
 import { font } from 'shared/styles/font.css';
 
 export const container = style({
-  position: 'sticky',
+  position: 'fixed',
   top: '0',
   display: 'flex',
   padding: '80px 12px',

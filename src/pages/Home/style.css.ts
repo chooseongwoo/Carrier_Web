@@ -5,4 +5,5 @@ export const container = style({
   height: '100vh',
   display: 'flex',
   alignItems: 'center',
+  paddingLeft: '80px',
 });
