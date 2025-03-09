@@ -1,6 +1,7 @@
 import { title } from 'process';
 import * as s from './style.css';
 import CloseIcon from './ui/CloseIcon';
+import theme from 'shared/styles/theme.css';
 
 const CategoryData = [
   {
@@ -53,6 +54,37 @@ const TodoData = [
   },
 ];
 
+const EmailData = [
+  {
+    id: 1,
+    from: '이민준',
+    title:
+      '안예성 백엔드 빨리하라고;; 안예성 백엔드 빨리하라고;; 안예성 백엔드 빨리하라고;;',
+    date: '2025.06.01',
+  },
+  {
+    id: 2,
+    from: '이민준',
+    title:
+      '추성우 프론트 빨리하라고!! 추성우 프론트 빨리하라고!! 추성우 빨아줘! 추성우 프론트 빨리하라고!!',
+    date: '2025.06.01',
+  },
+  {
+    id: 3,
+    from: '이민준',
+    title:
+      '이승현 프론트 빨리하라고... 이승현 프론트 빨리하라고... 이승현 프론트 빨리하라고... 이승현 프론트 빨리하라고...',
+    date: '2025.06.01',
+  },
+  {
+    id: 4,
+    from: '이민준',
+    title:
+      '나도 빨리할게 ㅎㅎ 나도 빨리할게 ㅎㅎ 나도 빨리할게 ㅎㅎ 나도 빨리할게 ㅎㅎ',
+    date: '2025.06.01',
+  },
+];
+
 const TipsModal = () => {
   return (
     <div className={s.TipsModal_Background}>
@@ -96,15 +128,38 @@ const TipsModal = () => {
             })}
           </div>
           <div className={s.TipsModal_Todo}>
-            {/* Map 돌 */}
-
             <ul className={s.Todo_Content}>
               {TodoData.map((item) => {
                 return <li className={s.Todo_Title}>{item.title}</li>;
               })}
             </ul>
+          </div>
+        </div>
 
-            {/* Map 돌 */}
+        <div className={s.TipsModal_Eamil}>
+          <div className={s.Email_Title}>Email ✉️</div>
+          <div className={s.Email_Content_Container}>
+            {EmailData.map((item) => {
+              return (
+                <div
+                  className={s.Email_Content}
+                  style={{
+                    ...(item.id === 1 && {
+                      borderRadius: '12px 12px 0 0',
+                      borderTop: `1px solid ${theme.gray[100]}`,
+                    }),
+                    ...(item.id === EmailData.length && {
+                      borderRadius: '0 0 12px 12px',
+                      borderBottom: `1px solid ${theme.gray[100]}`,
+                    }),
+                  }}
+                >
+                  <div className={s.Email_From}>{item.from}</div>
+                  <div className={s.Email_Header}>{item.title}</div>
+                  <div className={s.Email_Date}>{item.date}</div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

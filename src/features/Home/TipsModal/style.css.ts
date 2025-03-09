@@ -29,6 +29,7 @@ export const TipsModal_Header = style({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
+  marginBottom: '12px',
 });
 
 export const TipsModal_CloseIcon = style({
@@ -48,7 +49,7 @@ export const TipsModal_Title = style({
 export const TipsModal_CategoryTodo = style({
   width: '100%',
   height: '250px',
-  padding: '24px 28px',
+  padding: '12px 28px',
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
@@ -113,4 +114,56 @@ export const Todo_Title = style({
   maxWidth: '100%',
   wordBreak: 'break-word',
   marginBottom: '8px',
+});
+
+export const TipsModal_Eamil = style({
+  width: '100%',
+  padding: '12px 28px',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '12px',
+});
+
+export const Email_Title = style({
+  ...font.H3,
+  color: theme.blue[500],
+});
+
+export const Email_Content_Container = style({
+  width: '100%',
+  height: 'auto',
+  maxHeight: '170px',
+  overflow: 'scroll',
+});
+
+export const Email_Content = style({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: '12px 16px',
+  borderLeft: `1px solid ${theme.gray[100]}`,
+  borderRight: `1px solid ${theme.gray[100]}`,
+  borderBottom: `1px solid ${theme.gray[100]}`,
+});
+
+export const Email_From = style({
+  ...font.H4,
+  marginRight: '28px',
+  minWidth: '52px',
+});
+
+export const Email_Header = style({
+  ...font.p1,
+  width: '526px',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+});
+
+export const Email_Date = style({
+  ...font.p2,
+  color: theme.gray[500],
+  minWidth: '86px',
+  marginLeft: '20px',
 });
