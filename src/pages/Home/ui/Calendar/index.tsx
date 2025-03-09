@@ -9,6 +9,7 @@ import {
   DayCellContentArg,
 } from '@fullcalendar/core';
 import { EventImpl } from '@fullcalendar/core/internal';
+import { useQueryClient } from '@tanstack/react-query';
 import { Arrow } from 'shared/icons';
 import { CalendarPlusIcon, CalendarSearchIcon } from 'features/Home/ui';
 import { CalendarModal, CalendarToggle } from 'features/Home/Calendar';
@@ -17,6 +18,10 @@ import * as s from './style.css';
 import './root.css';
 import theme from 'shared/styles/theme.css';
 import { useScheduleListQuery } from 'features/Home/services/home.query';
+import {
+  useCategories,
+  useCategoryList,
+} from 'entities/calendar/hooks/useCategory';
 
 const EventContent = memo(({ event }: { event: EventImpl }) => {
   const isSchedule = event.extendedProps.type === 'Schedule';
@@ -82,26 +87,29 @@ const Calendar = () => {
   const calendarRef = useRef<FullCalendar | null>(null);
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const { navigate, dateRange } = useCalendarNavigation(calendarRef);
+  const queryClient = useQueryClient();
 
-  const { data: scheduleListData } = useScheduleListQuery({
-    startDate: dateRange?.startDate || '',
-    endDate: dateRange?.endDate || '',
-    categoryIds: [3],
-  });
+  useCategoryList();
+  const categories = useCategories();
+  const categoryIds = categories.map((category) => category.id);
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        if (scheduleListData) {
-          setEvents(scheduleListData);
-        }
-      } catch (error) {
-        alert('스케줄을 불러오는데 실패했습니다.');
-      }
-    };
-
-    fetchEvents();
-  }, [scheduleListData]);
+    try {
+      const fetchScheduleList = async () => {
+        const data = await queryClient.fetchQuery(
+          useScheduleListQuery.getScheduleList({
+            startDate: dateRange?.startDate || '',
+            endDate: dateRange?.endDate || '',
+            categoryIds: categoryIds,
+          })
+        );
+        setEvents(data);
+      };
+      fetchScheduleList();
+    } catch (error) {
+      console.error('에러 발생:', error);
+    }
+  }, [queryClient, dateRange]);
 
   const toggleCalendar = useCallback(
     () => setIsToggleVisible((prev) => !prev),
@@ -156,10 +164,6 @@ const Calendar = () => {
     });
   };
 
-  useEffect(() => {
-    console.log(dateRange?.startDate);
-    console.log(dateRange?.endDate);
-  });
   return (
     <div className={s.calendarContainer}>
       <div className={s.calendarHeaderContainer}>

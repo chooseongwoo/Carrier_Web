@@ -1,6 +1,9 @@
 import { customAxios } from 'shared/api';
-import { authorization } from 'shared/api/header';
-import { GetScheduleListReq, PostScheduleReq } from 'entities/calendar/remote';
+import {
+  GetScheduleListReq,
+  PostScheduleReq,
+  PostTodoReq,
+} from 'entities/calendar/remote';
 import { Schedule, EVENT_TYPE } from 'entities/calendar/type';
 import { toQueryString } from 'shared/lib/queryString';
 
@@ -9,15 +12,8 @@ export const getTodoList = async (date: string) => {
   return data;
 };
 
-export const postTodo = async (todo: {
-  title: string;
-  date: string;
-  isRepeat: boolean;
-  priority: string;
-  memo: string;
-  location: string;
-}) => {
-  const { data } = await customAxios.post('/todos', todo);
+export const postTodo = async (params: PostTodoReq) => {
+  const { data } = await customAxios.post('/todos', params);
   return data;
 };
 
@@ -27,7 +23,7 @@ export const patchTodo = async (id: number) => {
 };
 
 export const getCategory = async () => {
-  const { data } = await customAxios.get('/categoryies');
+  const { data } = await customAxios.get('/categories');
   return data;
 };
 
@@ -35,7 +31,7 @@ export const postCategory = async (category: {
   name: string;
   color: string;
 }) => {
-  const { data } = await customAxios.post('/categoryies', category);
+  const { data } = await customAxios.post('/categories', category);
   return data;
 };
 
@@ -46,8 +42,7 @@ export const patchCategory = async (id: number) => {
 
 export const getScheduleList = async (params: GetScheduleListReq) => {
   const { data } = await customAxios.get<Schedule[]>(
-    `/schedules?${toQueryString(params)}`,
-    authorization()
+    `/schedules?${toQueryString(params)}`
   );
 
   return data.map(
@@ -65,11 +60,7 @@ export const getScheduleList = async (params: GetScheduleListReq) => {
   );
 };
 
-export const postAddSchedule = async (params: PostScheduleReq) => {
-  const { data } = await customAxios.post(
-    '/schedules',
-    params,
-    authorization()
-  );
+export const postSchedule = async (params: PostScheduleReq) => {
+  const { data } = await customAxios.post('/schedules', params);
   return data;
 };

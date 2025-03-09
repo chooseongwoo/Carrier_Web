@@ -9,6 +9,7 @@ export interface Category {
   id: number;
   name: string;
   color: string;
+  active: boolean;
 }
 
 export interface CalendarEvent {
@@ -22,8 +23,8 @@ export interface CalendarEvent {
   allDay?: boolean;
   category?: number;
   priority?: number;
-  startEditable: boolean;
-  durationEditable: boolean;
+  startEditable?: boolean;
+  durationEditable?: boolean;
 }
 
 export interface Schedule {

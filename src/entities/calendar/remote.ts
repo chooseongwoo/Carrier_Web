@@ -19,3 +19,12 @@ export interface PostScheduleReq {
   endDate: string | null;
   location: string | null;
 }
+
+export interface PostTodoReq {
+  title: string;
+  date: string;
+  isRepeat: boolean;
+  priority: string;
+  memo: string | null;
+  location: string | null;
+}
