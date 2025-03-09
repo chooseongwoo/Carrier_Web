@@ -164,10 +164,6 @@ const Calendar = () => {
     });
   };
 
-  useEffect(() => {
-    console.log(dateRange?.startDate);
-    console.log(dateRange?.endDate);
-  });
   return (
     <div className={s.calendarContainer}>
       <div className={s.calendarHeaderContainer}>
