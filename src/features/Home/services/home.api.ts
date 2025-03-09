@@ -1,5 +1,4 @@
 import { customAxios } from 'shared/api';
-import { authorization } from 'shared/api/header';
 import {
   GetScheduleListReq,
   PostScheduleReq,
@@ -43,8 +42,7 @@ export const patchCategory = async (id: number) => {
 
 export const getScheduleList = async (params: GetScheduleListReq) => {
   const { data } = await customAxios.get<Schedule[]>(
-    `/schedules?${toQueryString(params)}`,
-    authorization()
+    `/schedules?${toQueryString(params)}`
   );
 
   return data.map(
@@ -63,10 +61,6 @@ export const getScheduleList = async (params: GetScheduleListReq) => {
 };
 
 export const postSchedule = async (params: PostScheduleReq) => {
-  const { data } = await customAxios.post(
-    '/schedules',
-    params,
-    authorization()
-  );
+  const { data } = await customAxios.post('/schedules', params);
   return data;
 };

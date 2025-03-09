@@ -5,7 +5,7 @@ import { TOKEN } from 'shared/constants';
 
 export const customAxios = axios.create({
   baseURL: import.meta.env.VITE_APPLICATION_KEY,
-  timeout: 10000,
+  timeout: 100000,
 });
 
 const refresh = async () => {
