@@ -3,7 +3,7 @@ import { font } from 'shared/styles/font.css';
 import theme from 'shared/styles/theme.css';
 
 export const TipsModal_Background = style({
-  width: '100%',
+  width: 'calc(100% - 80px)',
   height: '100%',
   position: 'absolute',
   zIndex: 10,
@@ -12,7 +12,7 @@ export const TipsModal_Background = style({
 
 export const TipsModal_Container = style({
   width: '48rem',
-  height: '752px',
+  height: 'auto',
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -20,6 +20,7 @@ export const TipsModal_Container = style({
   zIndex: 11,
   borderRadius: '12px',
   backgroundColor: theme.white,
+  paddingBottom: '24px',
 });
 
 export const TipsModal_Header = style({
@@ -166,4 +167,32 @@ export const Email_Date = style({
   color: theme.gray[500],
   minWidth: '86px',
   marginLeft: '20px',
+});
+
+export const TipsModal_Tips = style({
+  width: '100%',
+  minWidth: '100%',
+  padding: '12px 28px',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '12px',
+});
+
+export const Tips_Title = style({
+  ...font.H3,
+  color: theme.blue[500],
+});
+
+export const Tips_Content_Container = style({
+  display: 'flex',
+  flexDirection: 'row',
+  overflow: 'hidden',
+  width: '100%',
+  height: 'auto',
+  minHeight: '80px',
+});
+
+export const TipsModal_Content = style({
+  minWidth: '100%',
+  width: '100%',
 });

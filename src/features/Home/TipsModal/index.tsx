@@ -1,7 +1,12 @@
-import { title } from 'process';
 import * as s from './style.css';
 import CloseIcon from './ui/CloseIcon';
 import theme from 'shared/styles/theme.css';
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Mousewheel, Keyboard } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/bundle';
+import 'swiper/css/pagination';
 
 const CategoryData = [
   {
@@ -85,6 +90,20 @@ const EmailData = [
   },
 ];
 
+const TipsData = [
+  {
+    title:
+      '오늘은 “오징징이들 회의” 일정이 있고 “롤 실버가기” 일정이 있으므로 “오징징이들 회의”일정을 끝내고 나머지 일정을 끝내는게 좋을 것 같습니다.',
+  },
+  {
+    title:
+      '오늘은 “오징징이들 회의” 일정이 있고 “롤 실버가기” 일정이 있으므로 “오징징이들 회의”일정을 끝내고 나머지 일정을 끝내는게 좋을 것 같습니다.',
+  },
+  {
+    title:
+      '오늘은 “오징징이들 회의” 일정이 있고 “롤 실버가기” 일정이 있으므로 “오징징이들 회의”일정을 끝내고 나머지 일정을 끝내는게 좋을 것 같습니다.',
+  },
+];
 const TipsModal = () => {
   return (
     <div className={s.TipsModal_Background}>
@@ -160,6 +179,23 @@ const TipsModal = () => {
                 </div>
               );
             })}
+          </div>
+        </div>
+
+        <div className={s.TipsModal_Tips}>
+          <div className={s.Tips_Title}>Tip 💡</div>
+          <div className={s.Tips_Content_Container}>
+            <Swiper
+              cssMode={true}
+              pagination={true}
+              mousewheel={true}
+              keyboard={true}
+              modules={[Navigation, Pagination, Mousewheel, Keyboard]}
+            >
+              {TipsData.map((item) => {
+                return <SwiperSlide>{item.title}</SwiperSlide>;
+              })}
+            </Swiper>
           </div>
         </div>
       </div>
