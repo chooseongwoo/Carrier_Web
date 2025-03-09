@@ -41,6 +41,18 @@ const CategoryData = [
   },
 ];
 
+const TodoData = [
+  {
+    title: '조깅하러가기 조깅하러가기 조깅하러가기 조깅하러가기',
+  },
+  {
+    title: '산책시키기',
+  },
+  {
+    title: '베이스 치기',
+  },
+];
+
 const TipsModal = () => {
   return (
     <div className={s.TipsModal_Background}>
@@ -57,8 +69,6 @@ const TipsModal = () => {
 
         <div className={s.TipsModal_CategoryTodo}>
           <div className={s.TipsModal_Category}>
-            {/* Map 돌 */}
-
             {CategoryData.map((item) => {
               return (
                 <div
@@ -84,28 +94,15 @@ const TipsModal = () => {
                 </div>
               );
             })}
-
-            <div
-              className={s.Category_Content}
-              style={{ backgroundColor: '#B6A917' }}
-            >
-              <div className={s.Category_Color} />
-              <div
-                className={s.Category_Title}
-                style={{
-                  backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                  color: '#B6A917',
-                }}
-              >
-                롤 실버가기
-                <div>9:30 AM ~ 3:10 PM</div>
-              </div>
-            </div>
-
-            {/* Map 돌 */}
           </div>
           <div className={s.TipsModal_Todo}>
             {/* Map 돌 */}
+
+            <ul className={s.Todo_Content}>
+              {TodoData.map((item) => {
+                return <li className={s.Todo_Title}>{item.title}</li>;
+              })}
+            </ul>
 
             {/* Map 돌 */}
           </div>

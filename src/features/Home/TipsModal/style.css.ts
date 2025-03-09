@@ -94,4 +94,23 @@ export const Category_Title = style({
 
 export const TipsModal_Todo = style({
   width: 'calc(50% - 4px)',
+  height: '100%',
+  overflow: 'scroll',
+});
+
+export const Todo_Content = style({
+  minWidth: '100%',
+  width: '100%',
+  display: 'block',
+  flexWrap: 'wrap',
+  listStyleType: 'disc',
+  paddingLeft: '20px',
+});
+
+export const Todo_Title = style({
+  ...font.p2,
+  display: 'list-item',
+  maxWidth: '100%',
+  wordBreak: 'break-word',
+  marginBottom: '8px',
 });
