@@ -1,20 +1,33 @@
 import { style } from '@vanilla-extract/css';
+import { recipe } from '@vanilla-extract/recipes';
 import { font } from 'shared/styles/font.css';
+
 import theme from 'shared/styles/theme.css';
 
-export const dropdownBtn = style({
-  display: 'flex',
-  padding: '4px 0px 4px 12px',
-  alignItems: 'center',
-  alignSelf: 'stretch',
-  borderRadius: '4px',
-  cursor: 'pointer',
-  gap: '2px',
-  transition: 'all 0.2s ease',
-  selectors: {
-    '&:hover': {
-      backgroundColor: theme.gray[50],
+export const dropdownBtn = recipe({
+  base: {
+    display: 'flex',
+    padding: '4px 4px 4px 12px',
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    gap: '2px',
+    transition: 'all 0.2s ease',
+    selectors: {
+      '&:hover': {
+        backgroundColor: theme.gray[50],
+      },
     },
+  },
+  variants: {
+    hasColor: {
+      true: { padding: '4px' },
+      false: {},
+    },
+  },
+  defaultVariants: {
+    hasColor: false,
   },
 });
 

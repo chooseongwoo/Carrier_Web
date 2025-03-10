@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import * as s from './style.css';
 import useDropdown from './dropdown.hook.ts';
 import DropdownItem from './DropdownItem.tsx';
-import { Arrow } from 'shared/icons';
+import { TopdownArrowIcon } from 'features/Home/ui';
 
 type DropdownItemType =
   | { id: number; name: string; color: string; value?: never }
@@ -20,6 +20,7 @@ const EventDropdown = ({ id, data, onChange }: DropdownProps) => {
 
   const selectedItem = data.find((item) => item.id === id) ?? data[0];
   const selectedLabel = selectedItem ? selectedItem.name : '에러';
+  const hasColor = selectedItem.color ? true : false;
 
   useEffect(() => {
     if (!id || !data.some((item) => item.id === id)) {
@@ -30,15 +31,19 @@ const EventDropdown = ({ id, data, onChange }: DropdownProps) => {
 
   return (
     <div>
-      <div className={s.dropdownBtn} onClick={toggleDropdown}>
-        {'color' in selectedItem && (
+      <div
+        className={s.dropdownBtn({ hasColor: hasColor })}
+        onClick={toggleDropdown}
+      >
+        {hasColor ? (
           <div
             className={s.dropdownColorBox}
             style={{ backgroundColor: selectedItem.color }}
           />
+        ) : (
+          <div className={s.dropdownText}>{selectedLabel}</div>
         )}
-        <div className={s.dropdownText}>{selectedLabel}</div>
-        <Arrow direction={isOpen ? 'up' : 'down'} />
+        <TopdownArrowIcon />
       </div>
 
       {isOpen && (
