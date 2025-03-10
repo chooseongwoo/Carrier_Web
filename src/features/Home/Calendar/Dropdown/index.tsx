@@ -41,7 +41,7 @@ const EventDropdown = ({ id, data, onChange }: DropdownProps) => {
             style={{ backgroundColor: selectedItem.color }}
           />
         ) : (
-          <div className={s.dropdownText}>{selectedLabel}</div>
+          <div className={s.dropdownBtnText}>{selectedLabel}</div>
         )}
         <TopdownArrowIcon />
       </div>
