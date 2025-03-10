@@ -32,8 +32,7 @@ const NavigationBar = () => {
 
   // TipsModal
   const { isOpen, openModal, closeModal } = useModal();
-  // const userTime = `${user.notificationTime}:00`;
-  const userTime = '10:40:00';
+  const userTime = `${user.notificationTime}:00`;
 
   const getTime = () => {
     const today = new Date();
