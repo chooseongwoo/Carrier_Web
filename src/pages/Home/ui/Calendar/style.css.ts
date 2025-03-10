@@ -186,7 +186,6 @@ globalStyle(`${calendarContainer} .fc .fc-daygrid-day-number`, {
   padding: '4px',
   position: 'relative',
   zIndex: '4',
-  borderRadius: '8px',
 });
 
 globalStyle(`${calendarContainer} .fc-popover-header`, {
@@ -215,20 +214,24 @@ globalStyle(`${calendarContainer} .fc-direction-ltr .fc-daygrid-more-link`, {
   float: 'none',
 });
 
+globalStyle(`${calendarContainer} .fc-daygrid-day-events`, {
+  minHeight: '100px',
+});
+
 globalStyle(`${calendarContainer} .fc .fc-daygrid-more-link`, {
-  marginTop: '20px',
   borderRadius: '6px',
   cursor: 'pointer',
   display: 'flex',
-  height: '100%',
+  position: 'absolute',
+  bottom: '4',
+  left: '0',
+  right: '0',
+  width: '100%',
   alignItems: 'center',
   gap: '8px',
-  alignSelf: 'stretch',
-  flexShrink: '0',
   backgroundColor: theme.gray[50],
   borderLeft: `5px solid ${theme.gray[500]}`,
   padding: '0 8px',
-  zIndex: '4',
   color: theme.gray[500],
   ...font.p2,
 });

@@ -213,7 +213,6 @@ const Calendar = () => {
         headerToolbar={{ left: '', end: '' }}
         fixedWeekCount={false}
         height="calc(100% - 80px)"
-        dayMaxEventRows
         editable
         selectable
         locale="ko"
@@ -225,6 +224,7 @@ const Calendar = () => {
         eventContent={({ event }) => <EventContent event={event} />}
         eventClick={handleEventClick}
         dateClick={handleDateClick}
+        dayMaxEvents={3}
         moreLinkText={(num) => `+${num}`}
         events={events}
       />
