@@ -39,10 +39,6 @@ globalStyle('*', {
   boxSizing: 'border-box',
 });
 
-globalStyle('ul, li', {
-  listStyle: 'none',
-});
-
 globalStyle('p', {
   display: 'inline-block',
 });
