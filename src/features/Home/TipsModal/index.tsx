@@ -108,7 +108,11 @@ const TipsData = [
       '오늘은 “오징징이들 회의” 일정이 있고 “롤 실버가기” 일정이 있으므로 “오징징이들 회의”일정을 끝내고 나머지 일정을 끝내는게 좋을 것 같습니다.',
   },
 ];
-const TipsModal = () => {
+const TipsModal = ({
+  toggleModalClose,
+}: {
+  toggleModalClose: (modalType: string) => void;
+}) => {
   return (
     <div className={s.TipsModal_Background}>
       <div className={s.TipsModal_Container}>
@@ -116,7 +120,10 @@ const TipsModal = () => {
           className={s.TipsModal_Header}
           style={{ backgroundImage: 'url(/images/HeaderImg.png)' }}
         >
-          <div className={s.TipsModal_CloseIcon}>
+          <div
+            className={s.TipsModal_CloseIcon}
+            onClick={() => toggleModalClose?.('tips')}
+          >
             <CloseIcon />
           </div>
           <div className={s.TipsModal_Title}>오늘의 일정 🗓️</div>
