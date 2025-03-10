@@ -4,13 +4,14 @@ import AlertMark from 'features/Mail/ui/AlertMark';
 import { CalendarEvent } from 'entities/calendar/type';
 import useEventState from 'features/Home/Calendar/CalendarModal/calendarModal.hook';
 import EventDropdown from 'features/Home/Calendar/Dropdown';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import LoadingStatus from 'features/Mail/CreateScheduleModal/LoadingStatus';
-import { categorys } from 'entities/calendar/model';
 import { useAtom } from 'jotai';
 import { selectedMailIdAtom } from 'features/Mail/contexts/mail';
 import { useQuery } from '@tanstack/react-query';
 import { mailQuery } from 'features/Mail/services/mail.query';
+import { usePostScheduleMutation } from 'features/Home/services/home.mutation';
+import { useCategories } from 'entities/calendar/hooks/useCategory';
 
 const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
   const [gmailId] = useAtom(selectedMailIdAtom);
@@ -47,6 +48,8 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
 
   const { state, updateState } = useEventState({ event });
 
+  const categories = useCategories();
+
   const handleChangeInputs = (key: 'title' | 'content', value: string) => {
     updateState({ [key]: value });
   };
@@ -64,6 +67,24 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
     updateState({
       isAllDay: !state.isAllDay,
     });
+
+  const scheduleData = {
+    title: state.title,
+    memo: state.memo,
+    allDay: state.isAllDay,
+    isRepeat: false,
+    categoryId: state.selectedCategoryId,
+    startDate: state.startDate,
+    endDate: state.endDate,
+    location: state.location,
+  };
+
+  const { mutate: postScheduleMutate } = usePostScheduleMutation();
+
+  const createEvent = useCallback(() => {
+    postScheduleMutate(scheduleData);
+    toggleModalClose?.('createSchedule');
+  }, [postScheduleMutate, scheduleData, toggleModalClose]);
 
   return (
     <div className={s.background}>
@@ -86,7 +107,7 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
               <input
                 className={s.calendarModalSubTitle}
                 placeholder="메모"
-                value={state.memo}
+                value={state.memo || ''}
                 onChange={(e) => handleChangeInputs('content', e.target.value)}
               />
             </div>
@@ -157,7 +178,7 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
                   <EventDropdown
                     name="category"
                     id={state.selectedCategoryId}
-                    data={categorys}
+                    data={categories}
                     onChange={handleChangeCategory}
                   />
                 </div>
@@ -191,7 +212,12 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
               >
                 취소
               </button>
-              <button className={s.button({ type: 'create' })}>확인</button>
+              <button
+                className={s.button({ type: 'create' })}
+                onClick={createEvent}
+              >
+                확인
+              </button>
             </div>
           </div>
         </div>

@@ -76,7 +76,7 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
           <input
             className={s.calendarModalSubTitle}
             placeholder="메모"
-            value={state.memo}
+            value={state.memo || ''}
             onChange={handleChangeMemo}
           />
         </div>

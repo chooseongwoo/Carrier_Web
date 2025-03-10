@@ -6,11 +6,13 @@ import TipsModal from 'features/Home/TipsModal';
 import { useState } from 'react';
 import { useInterval } from 'react-use';
 import useModal from 'shared/hooks/useModal';
+import { useCategoryList } from 'entities/calendar/hooks/useCategory';
 
 const NavigationBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useUser();
+  useCategoryList();
 
   const menus = [
     {
