@@ -16,7 +16,7 @@ import 'swiper/css/pagination';
 
 interface SchedulesProps {
   title: string;
-  color: string;
+  categoryColor: string;
   startDate: string;
   endDate: string;
 }
@@ -81,14 +81,14 @@ const TipsModal = ({
                   return (
                     <div
                       className={s.Category_Content}
-                      style={{ backgroundColor: item?.color }}
+                      style={{ backgroundColor: item?.categoryColor }}
                     >
                       <div className={s.Category_Color} />
                       <div
                         className={s.Category_Title}
                         style={{
                           backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                          color: item?.color,
+                          color: item?.categoryColor,
                         }}
                       >
                         {item.title}
