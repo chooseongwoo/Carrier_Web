@@ -98,8 +98,15 @@ export const calendarModalBody = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
-  gap: '4px',
+  gap: '8px',
   alignSelf: 'stretch',
+});
+
+export const calendarModalItemBundle = style({
+  display: 'flex',
+  width: '100%',
+  flexDirection: 'column',
+  gap: '4px',
 });
 
 export const calendarModalItem = style({
