@@ -18,10 +18,7 @@ import * as s from './style.css';
 import './root.css';
 import theme from 'shared/styles/theme.css';
 import { useScheduleListQuery } from 'features/Home/services/home.query';
-import {
-  useCategories,
-  useCategoryList,
-} from 'entities/calendar/hooks/useCategory';
+import { useCategories } from 'entities/calendar/hooks/useCategory';
 
 const EventContent = memo(({ event }: { event: EventImpl }) => {
   const isSchedule = event.extendedProps.type === 'Schedule';
@@ -89,7 +86,6 @@ const Calendar = () => {
   const { navigate, dateRange } = useCalendarNavigation(calendarRef);
   const queryClient = useQueryClient();
 
-  useCategoryList();
   const categories = useCategories();
   const categoryIds = categories.map((category) => category.id);
 
@@ -128,6 +124,7 @@ const Calendar = () => {
     handleModalOpen({
       type: 'Schedule',
       title: '',
+      memo: '',
       start: date.toISOString(),
       end: date.toISOString(),
       startEditable: true,
