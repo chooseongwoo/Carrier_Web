@@ -34,6 +34,7 @@ export const dropdownBtn = recipe({
 export const dropdownContainer = style({
   position: 'fixed',
   display: 'inline-flex',
+  marginTop: '8px',
   padding: '4px 8px',
   flexDirection: 'column',
   alignItems: 'flex-start',
