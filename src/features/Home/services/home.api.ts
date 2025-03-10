@@ -64,3 +64,8 @@ export const postSchedule = async (params: PostScheduleReq) => {
   const { data } = await customAxios.post('/schedules', params);
   return data;
 };
+
+export const getTips = async () => {
+  const { data } = await customAxios.get('/users/tips');
+  return data;
+};
