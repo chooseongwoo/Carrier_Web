@@ -57,24 +57,24 @@ const Todo = () => {
   };
 
   return (
-    <div className={s.TodoListContainer}>
-      <div className={s.TodoListHeader}>
-        <div className={s.TodoListTitle}>해야할 것</div>
-        <div className={s.TodoListSetDate}>
+    <div className={s.todoListContainer}>
+      <div className={s.todoListHeader}>
+        <div className={s.todoListTitle}>해야할 것</div>
+        <div className={s.todoListSetDate}>
           <Arrow direction="left" onClick={handlePrevDate} />
-          <div className={s.TodoListDateTitle}>{date}</div>
+          <div className={s.todoListDateTitle}>{date}</div>
           <Arrow direction="right" onClick={handleNextDate} />
         </div>
       </div>
-      <div className={s.TodoListMain}>
+      <div className={s.todoListMain}>
         {todoItems.map((item) => (
           <div
             key={item.id}
-            className={s.TodoListItem}
+            className={s.todoListItem}
             onClick={() => handleToggle(item.id)}
           >
             {item.isDone ? <TodoCheckedIcon /> : <TodoNormalIcon />}
-            <span className={s.TodoListItemText}>{item.title}</span>
+            <span className={s.todoListItemText}>{item.title}</span>
           </div>
         ))}
       </div>

@@ -14,23 +14,23 @@ const Display = () => {
   };
 
   return (
-    <div className={s.DisplayContainer}>
-      <div className={s.DisplayObject}>
-        <div className={s.DisplayTitle}>일정 표시</div>
+    <div className={s.displayContainer}>
+      <div className={s.displayObject}>
+        <div className={s.displayTitle}>일정 표시</div>
         <div
-          className={s.DisplayBtnLayout({ isActive: scheduleSelected })}
+          className={s.displayBtnLayout({ isActive: scheduleSelected })}
           onClick={toggleScheduleSelected}
         >
-          <div className={s.DisplayBtnObject}></div>
+          <div className={s.displayBtnObject}></div>
         </div>
       </div>
-      <div className={s.DisplayObject}>
-        <div className={s.DisplayTitle}>할 일 표시</div>
+      <div className={s.displayObject}>
+        <div className={s.displayTitle}>할 일 표시</div>
         <div
-          className={s.DisplayBtnLayout({ isActive: todoSelected })}
+          className={s.displayBtnLayout({ isActive: todoSelected })}
           onClick={toggleTodoSelected}
         >
-          <div className={s.DisplayBtnObject}></div>
+          <div className={s.displayBtnObject}></div>
         </div>
       </div>
     </div>
