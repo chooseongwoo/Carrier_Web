@@ -70,6 +70,7 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
 
   const scheduleData = {
     title: state.title,
+    memo: state.memo,
     allDay: state.isAllDay,
     isRepeat: false,
     categoryId: state.selectedCategoryId,

@@ -65,6 +65,7 @@ const useEventState = ({ event }: UseEventStateProps) => {
 
   const scheduleData = {
     title: state.title,
+    memo: state.memo,
     allDay: state.isAllDay,
     isRepeat: false,
     categoryId: state.selectedCategoryId,
@@ -126,7 +127,7 @@ const useEventState = ({ event }: UseEventStateProps) => {
       setState({
         eventType: event.type,
         title: event.title,
-        memo: event.memo || '',
+        memo: event.memo,
         startDate: event?.start || '',
         endDate: event?.end || null,
         selectedRepeatId: 1,
