@@ -232,3 +232,14 @@ globalStyle(`${calendarContainer} .fc .fc-daygrid-more-link`, {
   color: theme.gray[500],
   ...font.p2,
 });
+
+globalStyle(
+  `${calendarContainer} .fc-day-today .fc-daygrid-day-top .fc-daygrid-day-number`,
+  {
+    borderRadius: '8px',
+    top: '4px',
+    left: '4px',
+    backgroundColor: theme.blue[400],
+    color: theme.white,
+  }
+);
