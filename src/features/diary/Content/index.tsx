@@ -1,10 +1,18 @@
 import * as s from './style.css';
 import { EmojiIcon } from 'features/diary/ui';
 import { useRef, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useDiaryListQuery } from '../services/diary.query.ts';
 
 const Content = () => {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [text, setText] = useState('');
+  const startDateTime = '2025-02-21T12:00:00'; // 일기 조회 리스트 api
+  const endDateTime = '2025-03-21T12:00:00';
+  const { data: diaryListData } = useQuery({
+    ...useDiaryListQuery.getDiaryList(startDateTime, endDateTime),
+  });
+  console.log(diaryListData);
 
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
