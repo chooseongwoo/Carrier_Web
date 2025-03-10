@@ -49,7 +49,8 @@ export const TipsModal_Title = style({
 
 export const TipsModal_CategoryTodo = style({
   width: '100%',
-  height: '250px',
+  minHeight: '100px',
+  height: 'auto',
   padding: '12px 28px',
   display: 'flex',
   flexDirection: 'row',
@@ -152,6 +153,9 @@ export const Email_From = style({
   ...font.H4,
   marginRight: '28px',
   minWidth: '52px',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
 });
 
 export const Email_Header = style({
@@ -171,7 +175,8 @@ export const Email_Date = style({
 
 export const TipsModal_Tips = style({
   width: '100%',
-  minWidth: '100%',
+  minWidth: '70%',
+  height: 'auto',
   padding: '12px 28px',
   display: 'flex',
   flexDirection: 'column',
@@ -195,4 +200,19 @@ export const Tips_Content_Container = style({
 export const TipsModal_Content = style({
   minWidth: '100%',
   width: '100%',
+});
+
+export const TipsModal_Loading = style({
+  height: '500px',
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: '24px',
+});
+
+export const TipsModal_Loading_Text = style({
+  ...font.H4,
+  color: theme.gray[900],
 });
