@@ -51,7 +51,7 @@ const useCalendarNavigation = (calendarRef: React.RefObject<FullCalendar>) => {
       setCalendar(api);
       updateDateRange(api);
     }
-  }, []);
+  }, [calendarRef]);
 
   const updateDateRange = (api: CalendarApi) => {
     setDateRange({
@@ -105,14 +105,28 @@ const Calendar = () => {
     } catch (error) {
       console.error('에러 발생:', error);
     }
-  }, [queryClient, dateRange]);
+  }, [queryClient, dateRange, categoryIds]);
 
   const toggleCalendar = useCallback(
     () => setIsToggleVisible((prev) => !prev),
     []
   );
   const handleModalOpen = useCallback((event?: CalendarEvent) => {
-    setSelectedEvent(event);
+    setSelectedEvent({
+      ...event,
+      type: event?.type ?? 'Schedule',
+      start: new Date(
+        new Date(event?.start ?? new Date()).setDate(
+          new Date(event?.start ?? new Date()).getDate() + 1
+        )
+      ).toISOString(),
+      end: new Date(
+        new Date(event?.end ?? new Date()).setDate(
+          new Date(event?.end ?? new Date()).getDate() + 1
+        )
+      ).toISOString(),
+    } as CalendarEvent);
+
     setIsModalOpen(true);
   }, []);
   const handleModalClose = useCallback(() => {
@@ -120,39 +134,45 @@ const Calendar = () => {
     setSelectedEvent(undefined);
   }, []);
 
-  const handleDateClick = useCallback(({ date }: { date: Date }) => {
-    handleModalOpen({
-      type: 'Schedule',
-      title: '',
-      memo: '',
-      start: date.toISOString(),
-      end: date.toISOString(),
-      startEditable: true,
-      durationEditable: true,
-      allDay: true,
-      isRepeat: false,
-      category: 1,
-      location: null,
-    });
-  }, []);
+  const handleDateClick = useCallback(
+    ({ date }: { date: Date }) => {
+      handleModalOpen({
+        type: 'Schedule',
+        title: '',
+        memo: '',
+        start: date.toISOString(),
+        end: date.toISOString(),
+        startEditable: true,
+        durationEditable: true,
+        allDay: true,
+        isRepeat: false,
+        category: 1,
+        location: null,
+      });
+    },
+    [handleModalOpen]
+  );
 
-  const handleEventClick = useCallback((info: EventClickArg) => {
-    const { type, ...props } = info.event.extendedProps;
-    handleModalOpen({
-      title: info.event.title,
-      start: info.event.startStr,
-      end: info.event.endStr,
-      startEditable: true,
-      isRepeat: false,
-      memo: props.memo,
-      location: props.location,
-      durationEditable: type === 'Schedule',
-      allDay: info.event.allDay,
-      category: type === 'Schedule' ? 1 : undefined,
-      priority: type === 'Todo' ? props.priority || 2 : undefined,
-      type,
-    });
-  }, []);
+  const handleEventClick = useCallback(
+    (info: EventClickArg) => {
+      const { type, ...props } = info.event.extendedProps;
+      handleModalOpen({
+        title: info.event.title,
+        start: info.event.startStr,
+        end: info.event.endStr,
+        startEditable: true,
+        isRepeat: false,
+        memo: props.memo,
+        location: props.location,
+        durationEditable: type === 'Schedule',
+        allDay: info.event.allDay,
+        category: type === 'Schedule' ? 1 : undefined,
+        priority: type === 'Todo' ? props.priority || 2 : undefined,
+        type,
+      });
+    },
+    [handleModalOpen]
+  );
 
   const handleDatesSet = ({ view }: DatesSetArg) => {
     setCurrentDate({
