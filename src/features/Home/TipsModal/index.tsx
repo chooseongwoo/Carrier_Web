@@ -114,7 +114,10 @@ const TipsModal = ({
   toggleModalClose: (modalType: string) => void;
 }) => {
   return (
-    <div className={s.TipsModal_Background}>
+    <div
+      className={s.TipsModal_Background}
+      onClick={() => toggleModalClose?.('tips')}
+    >
       <div className={s.TipsModal_Container}>
         <div
           className={s.TipsModal_Header}
