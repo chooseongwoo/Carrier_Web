@@ -5,7 +5,7 @@ export const container = style({
   width: 'calc(100vw - 80px)',
   height: '100%',
   display: 'flex',
-
+  paddingLeft: '80px',
   flexDirection: 'column',
 });
 
