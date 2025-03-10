@@ -15,7 +15,7 @@ export interface Category {
 export interface CalendarEvent {
   type: EventType;
   title: string;
-  memo: string;
+  memo: string | null;
   isRepeat: boolean;
   start: string;
   end: string;

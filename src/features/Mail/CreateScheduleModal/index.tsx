@@ -107,7 +107,7 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
               <input
                 className={s.calendarModalSubTitle}
                 placeholder="메모"
-                value={state.memo}
+                value={state.memo || ''}
                 onChange={(e) => handleChangeInputs('content', e.target.value)}
               />
             </div>
