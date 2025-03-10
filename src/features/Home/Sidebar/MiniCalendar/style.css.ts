@@ -3,7 +3,7 @@ import { recipe } from '@vanilla-extract/recipes';
 import { font } from 'shared/styles/font.css';
 import theme from 'shared/styles/theme.css';
 
-export const MiniCalendarContainer = style({
+export const miniCalendarContainer = style({
   padding: '12px',
   borderRadius: '12px',
   flexShrink: 0,
@@ -12,13 +12,13 @@ export const MiniCalendarContainer = style({
   overflow: 'hidden',
 });
 
-export const MiniCalendarHeader = style({
+export const miniCalendarHeader = style({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
 });
 
-export const MiniCalendarTitle = style({
+export const miniCalendarTitle = style({
   color: theme.black,
   textAlign: 'center',
   fontFamily: 'Pretendard',
@@ -26,7 +26,7 @@ export const MiniCalendarTitle = style({
   fontWeight: '500',
 });
 
-export const MiniCalendarGrid = style({
+export const miniCalendarGrid = style({
   display: 'grid',
   gridTemplateColumns: 'repeat(7, 1fr)',
   rowGap: '2px',
@@ -35,7 +35,7 @@ export const MiniCalendarGrid = style({
   justifyItems: 'center',
 });
 
-export const MiniCalendarWeek = style({
+export const miniCalendarWeek = style({
   width: '24px',
   textAlign: 'center',
   color: theme.black,
@@ -43,7 +43,7 @@ export const MiniCalendarWeek = style({
   ...font.H5,
 });
 
-export const MiniCalendarDay = recipe({
+export const miniCalendarDay = recipe({
   base: {
     display: 'flex',
     width: '34px',
@@ -73,7 +73,7 @@ export const MiniCalendarDay = recipe({
   },
 });
 
-export const MiniCalendarSelectedDay = style({
+export const miniCalendarSelectedDay = style({
   display: 'flex',
   width: '24px',
   height: '24px',
@@ -89,7 +89,7 @@ export const MiniCalendarSelectedDay = style({
   ...font.H5,
 });
 
-export const MiniCalendarEmptyDay = style({
+export const miniCalendarEmptyDay = style({
   width: '34px',
   textAlign: 'center',
   color: theme.black,

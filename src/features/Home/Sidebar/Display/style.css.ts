@@ -3,7 +3,7 @@ import { style } from '@vanilla-extract/css';
 import { font } from 'shared/styles/font.css';
 import theme from 'shared/styles/theme.css';
 
-export const DisplayContainer = style({
+export const displayContainer = style({
   width: '292px',
   padding: '0px 8px',
   display: 'flex',
@@ -13,21 +13,21 @@ export const DisplayContainer = style({
   alignSelf: 'stretch',
 });
 
-export const DisplayObject = style({
+export const displayObject = style({
   display: 'flex',
   height: '26px',
   justifyContent: 'space-between',
   alignItems: 'center',
 });
 
-export const DisplayTitle = style({
+export const displayTitle = style({
   color: theme.black,
   textAlign: 'center',
   fontFamily: 'Pretendard',
   ...font.p1,
 });
 
-export const DisplayBtnLayout = recipe({
+export const displayBtnLayout = recipe({
   base: {
     display: 'flex',
     height: '24px',
@@ -49,7 +49,7 @@ export const DisplayBtnLayout = recipe({
   },
 });
 
-export const DisplayBtnObject = style({
+export const displayBtnObject = style({
   width: '20px',
   height: '20px',
   borderRadius: '9999px',
