@@ -6,12 +6,12 @@ import useEventState from 'features/Home/Calendar/CalendarModal/calendarModal.ho
 import EventDropdown from 'features/Home/Calendar/Dropdown';
 import { useCallback, useEffect, useState } from 'react';
 import LoadingStatus from 'features/Mail/CreateScheduleModal/LoadingStatus';
-import { categorys } from 'entities/calendar/model';
 import { useAtom } from 'jotai';
 import { selectedMailIdAtom } from 'features/Mail/contexts/mail';
 import { useQuery } from '@tanstack/react-query';
 import { mailQuery } from 'features/Mail/services/mail.query';
 import { usePostScheduleMutation } from 'features/Home/services/home.mutation';
+import { useCategories } from 'entities/calendar/hooks/useCategory';
 
 const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
   const [gmailId] = useAtom(selectedMailIdAtom);
@@ -48,6 +48,8 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
 
   const { state, updateState } = useEventState({ event });
 
+  const categories = useCategories();
+
   const handleChangeInputs = (key: 'title' | 'content', value: string) => {
     updateState({ [key]: value });
   };
@@ -80,9 +82,7 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
 
   const createEvent = useCallback(() => {
     postScheduleMutate(scheduleData);
-    if (toggleModalClose) {
-      toggleModalClose?.('createSchedule');
-    }
+    toggleModalClose?.('createSchedule');
   }, [postScheduleMutate, scheduleData, toggleModalClose]);
 
   return (
@@ -177,7 +177,7 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
                   <EventDropdown
                     name="category"
                     id={state.selectedCategoryId}
-                    data={categorys}
+                    data={categories}
                     onChange={handleChangeCategory}
                   />
                 </div>
