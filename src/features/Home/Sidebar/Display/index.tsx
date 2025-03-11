@@ -1,16 +1,20 @@
-import { useState } from 'react';
+import { useAtom } from 'jotai';
+import {
+  scheduleSelectedAtom,
+  todoSelectedAtom,
+} from 'entities/calendar/contexts/eventDisplayState';
 import * as s from './style.css';
 
 const Display = () => {
-  const [scheduleSelected, setScheduleSelected] = useState(false);
-  const [todoSelected, setTodoSelected] = useState(false);
+  const [scheduleSelected, setScheduleSelected] = useAtom(scheduleSelectedAtom);
+  const [todoSelected, setTodoSelected] = useAtom(todoSelectedAtom);
 
   const toggleScheduleSelected = () => {
-    setScheduleSelected((prevSelected) => !prevSelected);
+    setScheduleSelected((prev) => !prev);
   };
 
   const toggleTodoSelected = () => {
-    setTodoSelected((prevSelected) => !prevSelected);
+    setTodoSelected((prev) => !prev);
   };
 
   return (
