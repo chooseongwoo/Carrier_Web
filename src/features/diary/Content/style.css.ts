@@ -57,12 +57,34 @@ export const writeContainer = style({
   flexDirection: 'column',
   height: '100%',
   overflowY: 'auto',
+  position: 'relative',
+});
+
+export const emojiContainer = style({
+  display: 'flex',
+  gap: '8px',
 });
 
 export const emojiPicker = style({
-  display: 'flex',
   width: '100px',
   height: '100px',
+});
+
+export const emojiTextLayout = style({
+  width: '100%',
+  height: '100%',
+});
+
+export const emojiText = style({
+  width: '100%',
+  height: '100%',
+  fontSize: '5.5em',
+});
+
+export const emojiCircle = style({
+  height: '100%',
+  width: '100%',
+  display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
@@ -81,6 +103,15 @@ export const emojiPickerText = style({
   ...font.p3,
 
   userSelect: 'none',
+});
+
+export const emojiPickerContainer = style({
+  width: '100%',
+});
+
+export const emojiPickerWrapper = style({
+  position: 'absolute',
+  height: '100%',
 });
 
 export const textBox = style({

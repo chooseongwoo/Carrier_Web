@@ -4,26 +4,41 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useDiaryListQuery } from '../services/diary.query.ts';
 import { useDiaryAddMutation } from '../services/diary.mutation.ts';
+import EmojiPicker, { Categories } from 'emoji-picker-react';
 
 const Content = () => {
-  const [title, setTitle] = useState('제목ex');
-  const [content, setContent] = useState('내용ex');
-  const [emoji, setEmoji] = useState('😍');
+  const emojiPickerCategories = [
+    { category: Categories.SUGGESTED, name: '자주 사용한 이모지' },
+    { category: Categories.SMILEYS_PEOPLE, name: '스마일 & 사람' },
+    { category: Categories.ANIMALS_NATURE, name: '동물 & 자연' },
+    { category: Categories.FOOD_DRINK, name: '음식 & 음료' },
+    { category: Categories.TRAVEL_PLACES, name: '여행 & 장소' },
+    { category: Categories.ACTIVITIES, name: '활동' },
+    { category: Categories.OBJECTS, name: '사물' },
+    { category: Categories.SYMBOLS, name: '기호' },
+    { category: Categories.FLAGS, name: '국기' },
+  ];
+  const [isEmojiClicked, setIsEmojiClicked] = useState(false);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [emoji, setEmoji] = useState('');
   const startDateTime = '2025-02-21T12:00:00'; // 일기 조회 리스트 api
   const endDateTime = '2025-03-21T12:00:00';
   const { data: diaryListData } = useQuery({
     ...useDiaryListQuery.getDiaryList(startDateTime, endDateTime),
   });
   const { mutate: addDiaryMutate } = useDiaryAddMutation();
-
+  console.log(diaryListData);
   const onAddDiaryBtnClick = () => {
-    const addDiaryBody = {
-      title: title,
-      content: content,
-      emoji: emoji,
-    };
+    if (title && content && emoji) {
+      const addDiaryBody = {
+        title: title,
+        content: content,
+        emoji: emoji,
+      };
 
-    addDiaryMutate(addDiaryBody);
+      addDiaryMutate(addDiaryBody);
+    }
   };
 
   return (
@@ -38,9 +53,40 @@ const Content = () => {
       </div>
       <div className={s.mainContainer}>
         <div className={s.writeContainer}>
-          <div className={s.emojiPicker}>
-            <EmojiIcon />
-            <div className={s.emojiPickerText}>감정 추가</div>
+          <div className={s.emojiContainer}>
+            <div
+              className={s.emojiPicker}
+              onClick={() => setIsEmojiClicked((prev) => !prev)}
+            >
+              {emoji ? (
+                <div className={s.emojiTextLayout}>
+                  <p className={s.emojiText}>{emoji}</p>
+                </div>
+              ) : (
+                <div className={s.emojiCircle}>
+                  <EmojiIcon />
+                  <div className={s.emojiPickerText}>감정 추가</div>
+                </div>
+              )}
+            </div>
+            <div className={s.emojiPickerContainer}>
+              <div className={s.emojiPickerWrapper}>
+                <EmojiPicker
+                  open={isEmojiClicked}
+                  height={'100%'}
+                  searchPlaceholder="검색어 입력..."
+                  previewConfig={{
+                    defaultCaption: '기분을 선택해주세요!',
+                    showPreview: true,
+                  }}
+                  categories={emojiPickerCategories}
+                  onEmojiClick={(emojiObject) => {
+                    setEmoji(emojiObject.emoji);
+                    setIsEmojiClicked(false);
+                  }}
+                />
+              </div>
+            </div>
           </div>
           <textarea
             className={s.textBox}
