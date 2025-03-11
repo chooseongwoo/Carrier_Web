@@ -14,7 +14,9 @@ const NavigationBar = () => {
   const location = useLocation();
   const { user } = useUser();
   const { mutate } = useMailMutation();
+
   useEffect(() => {
+    mutate();
     const interval = setInterval(() => {
       mutate();
     }, 10000);
