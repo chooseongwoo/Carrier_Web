@@ -5,8 +5,8 @@ import { atom } from 'jotai';
 export const mailsAtom = atom<Mail[]>([]);
 
 export const updateMailsAtom = atom(null, async (_, set) => {
-  await patchMails();
   const updatedMails = await getMailList();
+  await patchMails();
   set(mailsAtom, updatedMails);
 });
 
