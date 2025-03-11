@@ -113,7 +113,7 @@ const Calendar = () => {
     } catch (error) {
       console.error('에러 발생:', error);
     }
-  }, [queryClient, dateRange, categoryIds]);
+  }, [queryClient, dateRange, scheduleSelected]);
 
   const filteredEvents = events.filter((event) => {
     if (event.type === 'Schedule' && !scheduleSelected) return false;
