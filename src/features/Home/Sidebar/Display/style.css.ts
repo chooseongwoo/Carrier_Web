@@ -37,10 +37,11 @@ export const displayBtnLayout = recipe({
     borderRadius: '9999px',
     backgroundColor: theme.blue[400],
     boxShadow: '0px 0px 0px 0px rgba(121, 121, 121, 0.25) inset',
+    transition: 'all 0.2s ease-in-out',
   },
   variants: {
     isActive: {
-      true: {
+      false: {
         backgroundColor: theme.gray[50],
         padding: '2px 22px 2px 2px',
         justifyContent: 'unset',
