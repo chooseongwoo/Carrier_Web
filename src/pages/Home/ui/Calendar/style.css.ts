@@ -215,6 +215,7 @@ globalStyle(`${calendarContainer} .fc-direction-ltr .fc-daygrid-more-link`, {
 });
 
 globalStyle(`${calendarContainer} .fc-daygrid-day-events`, {
+  marginTop: '6px',
   minHeight: '100px',
 });
 

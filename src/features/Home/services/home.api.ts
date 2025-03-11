@@ -1,14 +1,15 @@
 import { customAxios } from 'shared/api';
 import {
   GetScheduleListReq,
+  GetTodoListReq,
   PostScheduleReq,
   PostTodoReq,
 } from 'entities/calendar/remote';
 import { Schedule, EVENT_TYPE } from 'entities/calendar/type';
 import { toQueryString } from 'shared/lib/queryString';
 
-export const getTodoList = async (date: string) => {
-  const { data } = await customAxios.get(`/todos?date=${date}`);
+export const getTodoList = async (params: GetTodoListReq) => {
+  const { data } = await customAxios.get(`/todos?${toQueryString(params)}`);
   return data;
 };
 

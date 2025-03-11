@@ -11,6 +11,8 @@ import {
 } from 'shared/lib/date';
 import { usePatchTodoMutation } from 'features/Home/services/home.mutation';
 import { useTodoListQuery } from 'features/Home/services/home.query';
+import { useAtom } from 'jotai';
+import { todoRenderingAtom } from 'entities/calendar/contexts/eventRendering';
 
 interface TodoItem {
   id: number;
@@ -23,12 +25,19 @@ const Todo = () => {
   const NowDate = NowDatePeriod;
   const [date, setDate] = useState(NowDate);
   const [todoItems, setTodoItems] = useState<TodoItem[]>([]);
+  const [todoRendering] = useAtom(todoRenderingAtom);
+
+  const dashDate = ChangeDateToDash(date);
+  const dates = {
+    startDate: dashDate,
+    endDate: dashDate,
+  };
 
   useEffect(() => {
     try {
       const fetchTodoList = async () => {
         const data = await queryClient.fetchQuery(
-          useTodoListQuery.getTodoList(ChangeDateToDash(date))
+          useTodoListQuery.getTodoList(dates)
         );
         setTodoItems(data);
       };
@@ -36,7 +45,7 @@ const Todo = () => {
     } catch (error) {
       console.error('에러 발생:', error);
     }
-  }, [queryClient, date]);
+  }, [queryClient, date, todoRendering]);
 
   const { mutate } = usePatchTodoMutation();
   const handleToggle = async (id: number) => {
