@@ -47,7 +47,16 @@ export const getScheduleList = async (params: GetScheduleListReq) => {
   );
 
   return data.map(
-    ({ title, memo, allDay, isRepeat, startDate, endDate, category }) => ({
+    ({
+      title,
+      memo,
+      allDay,
+      isRepeat,
+      startDate,
+      endDate,
+      category,
+      location,
+    }) => ({
       type: EVENT_TYPE.Schedule,
       title,
       memo,
@@ -56,6 +65,7 @@ export const getScheduleList = async (params: GetScheduleListReq) => {
       start: startDate,
       end: allDay && !endDate ? startDate : endDate || '',
       category: category.id,
+      location,
       startEditable: true,
       durationEditable: true,
     })
