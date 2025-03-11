@@ -180,6 +180,12 @@ export const calendarModalLocationTitle = style({
   ...font.H5,
   fontWeight: '500',
   color: theme.gray[800],
+
+  selectors: {
+    '&:placeholder': {
+      color: theme.gray[400],
+    },
+  },
 });
 
 export const calendarModalLocationSubTitle = style({
