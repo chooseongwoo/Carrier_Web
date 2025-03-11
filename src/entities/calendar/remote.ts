@@ -10,6 +10,11 @@ export interface GetScheduleListRes {
   dataList: Schedule[];
 }
 
+export interface GetTodoListReq {
+  startDate: string;
+  endDate: string;
+}
+
 export interface PostScheduleReq {
   title: string;
   allDay: boolean;
