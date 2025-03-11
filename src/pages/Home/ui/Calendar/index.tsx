@@ -19,6 +19,11 @@ import './root.css';
 import theme from 'shared/styles/theme.css';
 import { useScheduleListQuery } from 'features/Home/services/home.query';
 import { useCategories } from 'entities/calendar/hooks/useCategory';
+import { useAtom } from 'jotai';
+import {
+  scheduleSelectedAtom,
+  todoSelectedAtom,
+} from 'entities/calendar/contexts/eventDisplayState';
 
 const EventContent = memo(({ event }: { event: EventImpl }) => {
   const isSchedule = event.extendedProps.type === 'Schedule';
@@ -89,6 +94,9 @@ const Calendar = () => {
   const categories = useCategories();
   const categoryIds = categories.map((category) => category.id);
 
+  const [scheduleSelected] = useAtom(scheduleSelectedAtom);
+  const [todoSelected] = useAtom(todoSelectedAtom);
+
   useEffect(() => {
     try {
       const fetchScheduleList = async () => {
@@ -106,6 +114,12 @@ const Calendar = () => {
       console.error('에러 발생:', error);
     }
   }, [queryClient, dateRange, categoryIds]);
+
+  const filteredEvents = events.filter((event) => {
+    if (event.type === 'Schedule' && !scheduleSelected) return false;
+    if (event.type === 'Todo' && !todoSelected) return false;
+    return true;
+  });
 
   const toggleCalendar = useCallback(
     () => setIsToggleVisible((prev) => !prev),
@@ -129,6 +143,7 @@ const Calendar = () => {
 
     setIsModalOpen(true);
   }, []);
+
   const handleModalClose = useCallback(() => {
     setIsModalOpen(false);
     setSelectedEvent(undefined);
@@ -243,7 +258,7 @@ const Calendar = () => {
         dateClick={handleDateClick}
         dayMaxEvents={3}
         moreLinkText={(num) => `+${num}`}
-        events={events}
+        events={filteredEvents}
       />
       {isModalOpen && (
         <CalendarModal onClose={handleModalClose} event={selectedEvent} />
