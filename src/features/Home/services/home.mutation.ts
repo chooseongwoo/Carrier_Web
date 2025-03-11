@@ -4,9 +4,8 @@ import {
   patchTodo,
   postCategory,
   postTodo,
-  postAddSchedule,
+  postSchedule,
 } from './home.api';
-import { PostScheduleReq } from 'entities/calendar/remote';
 
 export const useCreateTodoMutation = () => {
   return useMutation({
@@ -32,10 +31,8 @@ export const useCreateCategoryMutation = () => {
   });
 };
 
-export const usePostScheduleMutation = (scheduleData: PostScheduleReq) => {
-  const { mutate: postScheduleMutate, ...restMutation } = useMutation({
-    mutationFn: () => postAddSchedule(scheduleData),
+export const usePostScheduleMutation = () => {
+  return useMutation({
+    mutationFn: postSchedule,
   });
-
-  return { postScheduleMutate, ...restMutation };
 };

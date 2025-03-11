@@ -3,7 +3,7 @@ import * as s from './style.css';
 import { CategoryPlusIcon, CategoryItemIcon } from 'features/Home/ui';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCreateCategoryMutation } from 'features/Home/services/home.mutation';
-import { categoryQuery } from 'features/Home/services/home.query';
+import { useCategoryListQuery } from 'features/Home/services/home.query';
 
 /* eslint-disable no-console */
 
@@ -22,7 +22,7 @@ const Category = () => {
     try {
       const fetchCategory = async () => {
         const data = await queryClient.fetchQuery(
-          categoryQuery.getCategories()
+          useCategoryListQuery.getCategoryList()
         );
         setCategoryData(data);
       };
@@ -50,17 +50,17 @@ const Category = () => {
   };
 
   return (
-    <div className={s.CategoryContainer}>
-      <div className={s.CategoryHeader}>
-        <div className={s.CategoryTitle}>카테고리</div>
+    <div className={s.categoryContainer}>
+      <div className={s.categoryHeader}>
+        <div className={s.categoryTitle}>카테고리</div>
         <div
-          className={s.CategoryPlusBtn}
+          className={s.categoryPlusBtn}
           onClick={() => setIsOpenModal(!isOpenModal)}
         >
           <CategoryPlusIcon />
         </div>
       </div>
-      <div className={s.CategoryItemContainer}>
+      <div className={s.categoryItemContainer}>
         {categoryData?.map(
           (category: {
             id: number;
@@ -68,25 +68,25 @@ const Category = () => {
             color: string;
             active: boolean;
           }) => (
-            <div className={s.CategoryItem} key={category.id}>
+            <div className={s.categoryItem} key={category.id}>
               <CategoryItemIcon
                 initialBgColor={category.color}
                 activeState={category.active}
                 id={category.id}
               />
-              <div className={s.CategoryItemTitle}>{category.name}</div>
+              <div className={s.categoryItemTitle}>{category.name}</div>
             </div>
           )
         )}
         {isOpenModal && (
-          <div className={`${s.CategoryNewItem} ${s.CategoryItem}`}>
+          <div className={`${s.categoryNewItem} ${s.categoryItem}`}>
             <CategoryItemIcon
               initialBgColor={CategoryColor[categoryData.length]}
               activeState={true}
             />
-            <div className={s.CategoryItemTitle}>
+            <div className={s.categoryItemTitle}>
               <input
-                className={`${s.CategoryItemTitle} ${s.CategoryNewItemInput}`}
+                className={`${s.categoryItemTitle} ${s.categoryNewItemInput}`}
                 value={newCategory}
                 onChange={(e) => setNewCategory(e.currentTarget.value)}
                 onKeyDown={(e) => activeEnter(e)}

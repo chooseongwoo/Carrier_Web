@@ -1,4 +1,5 @@
 import * as s from './style.css';
+import { useState } from 'react';
 import { DropdownCheckIcon } from 'features/Home/ui';
 
 interface DropdownItemProps {
@@ -8,13 +9,18 @@ interface DropdownItemProps {
 }
 
 const DropdownItem = ({ item, isSelected, onSelect }: DropdownItemProps) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <div
-      className={s.dropdownItem}
+      className={s.dropdownItem({ hovered: isHovered })}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       onClick={() => onSelect(item.id, item.name)}
     >
       <DropdownCheckIcon
-        style={{ visibility: isSelected ? 'visible' : 'hidden' }}
+        fillColor={isHovered ? '#FFFFFF' : '#323131'}
+        style={{ opacity: isSelected ? 1 : 0 }}
       />
       {item.color && (
         <div
@@ -22,7 +28,7 @@ const DropdownItem = ({ item, isSelected, onSelect }: DropdownItemProps) => {
           style={{ backgroundColor: item.color }}
         />
       )}
-      <div className={s.dropdownText}>{item.name}</div>
+      <div>{item.name}</div>
     </div>
   );
 };

@@ -1,29 +1,36 @@
-import { queryOptions, useQuery } from '@tanstack/react-query';
-import { getCategory, getTodoList, getScheduleList } from './home.api';
-import { GetScheduleListReq } from 'entities/calendar/remote';
+import { queryOptions } from '@tanstack/react-query';
+import { getCategory, getTodoList, getScheduleList, getTips } from './home.api';
+import { GetScheduleListReq, GetTodoListReq } from 'entities/calendar/remote';
 import { homeKeys } from './home.keys';
 
 export const useTodoListQuery = {
-  getTodoList: (date: string) =>
+  getTodoList: (params: GetTodoListReq) =>
     queryOptions({
-      queryKey: [homeKeys.TODO_LIST, date],
-      queryFn: () => getTodoList(date),
+      queryKey: [homeKeys.TODO_LIST, params],
+      queryFn: () => getTodoList(params),
     }),
 };
 
-export const categoryQuery = {
-  getCategories: () =>
+export const useCategoryListQuery = {
+  getCategoryList: () =>
     queryOptions({
-      queryKey: ['Categories'],
+      queryKey: [homeKeys.CATEGORY_LIST],
       queryFn: () => getCategory(),
     }),
 };
 
-export const useScheduleListQuery = (params: GetScheduleListReq) => {
-  const { data, ...restQuery } = useQuery({
-    queryKey: [homeKeys.SCHEDULE_LIST],
-    queryFn: () => getScheduleList(params),
-  });
+export const useScheduleListQuery = {
+  getScheduleList: (params: GetScheduleListReq) =>
+    queryOptions({
+      queryKey: [homeKeys.SCHEDULE_LIST],
+      queryFn: () => getScheduleList(params),
+    }),
+};
 
-  return { data, ...restQuery };
+export const useTipsQuery = {
+  getTips: () =>
+    queryOptions({
+      queryKey: [homeKeys.TIPS],
+      queryFn: () => getTips(),
+    }),
 };

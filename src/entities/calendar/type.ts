@@ -9,12 +9,13 @@ export interface Category {
   id: number;
   name: string;
   color: string;
+  active: boolean;
 }
 
 export interface CalendarEvent {
   type: EventType;
   title: string;
-  memo?: string;
+  memo: string | null;
   isRepeat: boolean;
   start: string;
   end: string;
@@ -22,15 +23,17 @@ export interface CalendarEvent {
   allDay?: boolean;
   category?: number;
   priority?: number;
-  startEditable: boolean;
-  durationEditable: boolean;
+  startEditable?: boolean;
+  durationEditable?: boolean;
 }
 
 export interface Schedule {
   title: string;
+  memo: string | null;
   allDay: boolean;
   isRepeat: boolean;
   startDate: string;
   endDate: string | null;
   category: Category;
+  location: string;
 }

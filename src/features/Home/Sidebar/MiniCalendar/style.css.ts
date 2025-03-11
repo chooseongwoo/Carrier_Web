@@ -1,8 +1,9 @@
 import { style } from '@vanilla-extract/css';
+import { recipe } from '@vanilla-extract/recipes';
 import { font } from 'shared/styles/font.css';
 import theme from 'shared/styles/theme.css';
 
-export const MiniCalendarContainer = style({
+export const miniCalendarContainer = style({
   padding: '12px',
   borderRadius: '12px',
   flexShrink: 0,
@@ -11,13 +12,13 @@ export const MiniCalendarContainer = style({
   overflow: 'hidden',
 });
 
-export const MiniCalendarHeader = style({
+export const miniCalendarHeader = style({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
 });
 
-export const MiniCalendarTitle = style({
+export const miniCalendarTitle = style({
   color: theme.black,
   textAlign: 'center',
   fontFamily: 'Pretendard',
@@ -25,16 +26,16 @@ export const MiniCalendarTitle = style({
   fontWeight: '500',
 });
 
-export const MiniCalendarGrid = style({
+export const miniCalendarGrid = style({
   display: 'grid',
   gridTemplateColumns: 'repeat(7, 1fr)',
-  rowGap: '8px',
+  rowGap: '2px',
   justifyContent: 'space-between',
   margin: '8px 4px 0 4px',
   justifyItems: 'center',
 });
 
-export const MiniCalendarWeek = style({
+export const miniCalendarWeek = style({
   width: '24px',
   textAlign: 'center',
   color: theme.black,
@@ -42,18 +43,40 @@ export const MiniCalendarWeek = style({
   ...font.H5,
 });
 
-export const MiniCalendarDay = style({
-  width: '24px',
-  textAlign: 'center',
-  color: theme.black,
-  ...font.p1,
-  fontWeight: '500',
+export const miniCalendarDay = recipe({
+  base: {
+    display: 'flex',
+    width: '34px',
+    height: '34px',
+    padding: '2px 5px 3px 5px',
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: theme.black,
+    ...font.p1,
+    fontWeight: '500',
+    borderRadius: '8px',
+  },
+  variants: {
+    selected: {
+      true: { backgroundColor: theme.blue[500], color: theme.white },
+      false: { backgroundColor: theme.white },
+    },
+    isEmpty: {
+      true: { opacity: 0.3 },
+      false: {},
+    },
+  },
+  defaultVariants: {
+    selected: false,
+    isEmpty: false,
+  },
 });
 
-export const MiniCalendarSelectedDay = style({
+export const miniCalendarSelectedDay = style({
   display: 'flex',
-  width: '34px',
-  height: '34px',
+  width: '24px',
+  height: '24px',
   margin: '-3px -5px -3px -5px',
   justifyContent: 'center',
   alignItems: 'center',
@@ -66,8 +89,8 @@ export const MiniCalendarSelectedDay = style({
   ...font.H5,
 });
 
-export const MiniCalendarEmptyDay = style({
-  width: '24px',
+export const miniCalendarEmptyDay = style({
+  width: '34px',
   textAlign: 'center',
   color: theme.black,
   opacity: 0.3,

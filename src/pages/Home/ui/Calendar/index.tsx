@@ -9,6 +9,7 @@ import {
   DayCellContentArg,
 } from '@fullcalendar/core';
 import { EventImpl } from '@fullcalendar/core/internal';
+import { useQueryClient } from '@tanstack/react-query';
 import { Arrow } from 'shared/icons';
 import { CalendarPlusIcon, CalendarSearchIcon } from 'features/Home/ui';
 import { CalendarModal, CalendarToggle } from 'features/Home/Calendar';
@@ -17,6 +18,12 @@ import * as s from './style.css';
 import './root.css';
 import theme from 'shared/styles/theme.css';
 import { useScheduleListQuery } from 'features/Home/services/home.query';
+import { useAtom } from 'jotai';
+import {
+  scheduleSelectedAtom,
+  todoSelectedAtom,
+} from 'entities/calendar/contexts/eventDisplayState';
+import { scheduleRenderingAtom } from 'entities/calendar/contexts/eventRendering';
 
 const EventContent = memo(({ event }: { event: EventImpl }) => {
   const isSchedule = event.extendedProps.type === 'Schedule';
@@ -49,7 +56,7 @@ const useCalendarNavigation = (calendarRef: React.RefObject<FullCalendar>) => {
       setCalendar(api);
       updateDateRange(api);
     }
-  }, []);
+  }, [calendarRef]);
 
   const updateDateRange = (api: CalendarApi) => {
     setDateRange({
@@ -82,72 +89,106 @@ const Calendar = () => {
   const calendarRef = useRef<FullCalendar | null>(null);
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const { navigate, dateRange } = useCalendarNavigation(calendarRef);
+  const queryClient = useQueryClient();
 
-  const { data: scheduleListData } = useScheduleListQuery({
-    startDate: dateRange?.startDate || '',
-    endDate: dateRange?.endDate || '',
-    categoryIds: [3],
-  });
+  const [scheduleSelected] = useAtom(scheduleSelectedAtom);
+  const [todoSelected] = useAtom(todoSelectedAtom);
+
+  const [scheduleRendering] = useAtom(scheduleRenderingAtom);
+
+  const fetchScheduleList = useCallback(async () => {
+    if (!dateRange) return;
+
+    try {
+      const data = await queryClient.fetchQuery(
+        useScheduleListQuery.getScheduleList({
+          startDate: dateRange.startDate,
+          endDate: dateRange.endDate,
+        })
+      );
+      setEvents(data);
+    } catch (error) {
+      console.error('일정 데이터 가져 오기 실패:', error);
+      setEvents([]);
+    }
+  }, [queryClient, dateRange]);
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        if (scheduleListData) {
-          setEvents(scheduleListData);
-        }
-      } catch (error) {
-        alert('스케줄을 불러오는데 실패했습니다.');
-      }
-    };
+    fetchScheduleList();
+  }, [fetchScheduleList, scheduleSelected, scheduleRendering]);
 
-    fetchEvents();
-  }, [scheduleListData]);
+  const filteredEvents = events.filter((event) => {
+    if (event.type === 'Schedule' && !scheduleSelected) return false;
+    if (event.type === 'Todo' && !todoSelected) return false;
+    return true;
+  });
 
   const toggleCalendar = useCallback(
     () => setIsToggleVisible((prev) => !prev),
     []
   );
   const handleModalOpen = useCallback((event?: CalendarEvent) => {
-    setSelectedEvent(event);
+    const startDate = event?.start ? new Date(event.start) : new Date();
+    const endDate = event?.end ? new Date(event.end) : new Date();
+
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      return;
+    }
+
+    setSelectedEvent({
+      ...event,
+      type: event?.type ?? 'Schedule',
+      start: new Date(startDate.setDate(startDate.getDate() + 1)).toISOString(),
+      end: new Date(endDate.setDate(endDate.getDate() + 1)).toISOString(),
+    } as CalendarEvent);
+
     setIsModalOpen(true);
   }, []);
+
   const handleModalClose = useCallback(() => {
     setIsModalOpen(false);
     setSelectedEvent(undefined);
   }, []);
 
-  const handleDateClick = useCallback(({ date }: { date: Date }) => {
-    handleModalOpen({
-      type: 'Schedule',
-      title: '',
-      start: date.toISOString(),
-      end: date.toISOString(),
-      startEditable: true,
-      durationEditable: true,
-      allDay: true,
-      isRepeat: false,
-      category: 1,
-      location: null,
-    });
-  }, []);
+  const handleDateClick = useCallback(
+    ({ date }: { date: Date }) => {
+      handleModalOpen({
+        type: 'Schedule',
+        title: '',
+        memo: '',
+        start: date.toISOString(),
+        end: date.toISOString(),
+        startEditable: true,
+        durationEditable: true,
+        allDay: true,
+        isRepeat: false,
+        category: 1,
+        location: null,
+      });
+    },
+    [handleModalOpen]
+  );
 
-  const handleEventClick = useCallback((info: EventClickArg) => {
-    const { type, ...props } = info.event.extendedProps;
-    handleModalOpen({
-      title: info.event.title,
-      start: info.event.startStr,
-      end: info.event.endStr,
-      startEditable: true,
-      isRepeat: false,
-      memo: props.memo,
-      location: props.location,
-      durationEditable: type === 'Schedule',
-      allDay: info.event.allDay,
-      category: type === 'Schedule' ? 1 : undefined,
-      priority: type === 'Todo' ? props.priority || 2 : undefined,
-      type,
-    });
-  }, []);
+  const handleEventClick = useCallback(
+    (info: EventClickArg) => {
+      const { type, ...props } = info.event.extendedProps;
+      handleModalOpen({
+        title: info.event.title,
+        start: info.event.startStr,
+        end: info.event.endStr,
+        startEditable: true,
+        isRepeat: false,
+        memo: props.memo,
+        location: props.location,
+        durationEditable: type === 'Schedule',
+        allDay: info.event.allDay,
+        category: type === 'Schedule' ? 1 : undefined,
+        priority: type === 'Todo' ? props.priority || 2 : undefined,
+        type,
+      });
+    },
+    [handleModalOpen]
+  );
 
   const handleDatesSet = ({ view }: DatesSetArg) => {
     setCurrentDate({
@@ -156,10 +197,6 @@ const Calendar = () => {
     });
   };
 
-  useEffect(() => {
-    console.log(dateRange?.startDate);
-    console.log(dateRange?.endDate);
-  });
   return (
     <div className={s.calendarContainer}>
       <div className={s.calendarHeaderContainer}>
@@ -209,7 +246,6 @@ const Calendar = () => {
         headerToolbar={{ left: '', end: '' }}
         fixedWeekCount={false}
         height="calc(100% - 80px)"
-        dayMaxEventRows
         editable
         selectable
         locale="ko"
@@ -221,8 +257,9 @@ const Calendar = () => {
         eventContent={({ event }) => <EventContent event={event} />}
         eventClick={handleEventClick}
         dateClick={handleDateClick}
+        dayMaxEvents={3}
         moreLinkText={(num) => `+${num}`}
-        events={events}
+        events={filteredEvents}
       />
       {isModalOpen && (
         <CalendarModal onClose={handleModalClose} event={selectedEvent} />

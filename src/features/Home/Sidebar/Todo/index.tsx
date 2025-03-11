@@ -11,6 +11,8 @@ import {
 } from 'shared/lib/date';
 import { usePatchTodoMutation } from 'features/Home/services/home.mutation';
 import { useTodoListQuery } from 'features/Home/services/home.query';
+import { useAtom } from 'jotai';
+import { todoRenderingAtom } from 'entities/calendar/contexts/eventRendering';
 
 interface TodoItem {
   id: number;
@@ -23,12 +25,19 @@ const Todo = () => {
   const NowDate = NowDatePeriod;
   const [date, setDate] = useState(NowDate);
   const [todoItems, setTodoItems] = useState<TodoItem[]>([]);
+  const [todoRendering] = useAtom(todoRenderingAtom);
+
+  const dashDate = ChangeDateToDash(date);
+  const dates = {
+    startDate: dashDate,
+    endDate: dashDate,
+  };
 
   useEffect(() => {
     try {
       const fetchTodoList = async () => {
         const data = await queryClient.fetchQuery(
-          useTodoListQuery.getTodoList(ChangeDateToDash(date))
+          useTodoListQuery.getTodoList(dates)
         );
         setTodoItems(data);
       };
@@ -36,7 +45,7 @@ const Todo = () => {
     } catch (error) {
       console.error('에러 발생:', error);
     }
-  }, [queryClient, date]);
+  }, [queryClient, date, todoRendering]);
 
   const { mutate } = usePatchTodoMutation();
   const handleToggle = async (id: number) => {
@@ -57,24 +66,24 @@ const Todo = () => {
   };
 
   return (
-    <div className={s.TodoListContainer}>
-      <div className={s.TodoListHeader}>
-        <div className={s.TodoListTitle}>해야할 것</div>
-        <div className={s.TodoListSetDate}>
+    <div className={s.todoListContainer}>
+      <div className={s.todoListHeader}>
+        <div className={s.todoListTitle}>해야할 것</div>
+        <div className={s.todoListSetDate}>
           <Arrow direction="left" onClick={handlePrevDate} />
-          <div className={s.TodoListDateTitle}>{date}</div>
+          <div className={s.todoListDateTitle}>{date}</div>
           <Arrow direction="right" onClick={handleNextDate} />
         </div>
       </div>
-      <div className={s.TodoListMain}>
+      <div className={s.todoListMain}>
         {todoItems.map((item) => (
           <div
             key={item.id}
-            className={s.TodoListItem}
+            className={s.todoListItem}
             onClick={() => handleToggle(item.id)}
           >
             {item.isDone ? <TodoCheckedIcon /> : <TodoNormalIcon />}
-            <span className={s.TodoListItemText}>{item.title}</span>
+            <span className={s.todoListItemText}>{item.title}</span>
           </div>
         ))}
       </div>

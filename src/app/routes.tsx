@@ -6,12 +6,24 @@ import Home from 'pages/Home';
 import Survey from 'pages/Survey';
 import OAuth from 'pages/OAuth';
 import Mail from 'pages/Mail';
-import useUser from 'entities/user/hooks/useUser';
+import useUser from 'features/user/hooks/useUser';
+import Diary from 'pages/Diary';
 import { DotLoader } from 'react-spinners';
 import theme from 'shared/styles/theme.css';
 import Setting from 'pages/Setting';
 
-const LoadingScreen = () => <DotLoader color={theme.blue[500]} />;
+const LoadingScreen = () => (
+  <div
+    style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+    }}
+  >
+    <DotLoader color={theme.blue[500]} />
+  </div>
+);
 
 const PrivateRoute = memo(
   ({ isLoggedIn, isLoading }: { isLoggedIn: boolean; isLoading: boolean }) => {
@@ -43,6 +55,7 @@ export default function Router() {
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
             <Route path="/mail" element={<Mail />} />
+            <Route path="/diary" element={<Diary />} />
             <Route path="/setting" element={<Setting />} />
           </Route>
         </Route>

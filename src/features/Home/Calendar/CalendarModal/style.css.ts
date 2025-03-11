@@ -98,8 +98,15 @@ export const calendarModalBody = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
-  gap: '4px',
+  gap: '8px',
   alignSelf: 'stretch',
+});
+
+export const calendarModalItemBundle = style({
+  display: 'flex',
+  width: '100%',
+  flexDirection: 'column',
+  gap: '4px',
 });
 
 export const calendarModalItem = style({
@@ -173,6 +180,12 @@ export const calendarModalLocationTitle = style({
   ...font.H5,
   fontWeight: '500',
   color: theme.gray[800],
+
+  selectors: {
+    '&:placeholder': {
+      color: theme.gray[400],
+    },
+  },
 });
 
 export const calendarModalLocationSubTitle = style({
@@ -219,28 +232,20 @@ export const calendarModalCreateBtn = style({
   alignItems: 'center',
   gap: '8px',
   borderRadius: '8px',
-  border: `1px solid ${theme.gray[200]}`,
-  backgroundColor: theme.gray[50],
+  backgroundColor: theme.blue[50],
   cursor: 'pointer',
   transition: 'all 0.2s ease',
   userSelect: 'none',
   selectors: {
     '&:hover': {
-      backgroundColor: '#15A665',
-      border: `1px solid ${theme.white}`,
+      backgroundColor: '#E0E7FF',
     },
   },
 });
 export const calendarModalCreateBtnText = style({
-  color: '#15A665',
+  color: theme.blue[500],
   fontFamily: 'Pretendard',
   ...font.btn2,
-  transition: 'all 0.2s ease',
-  selectors: {
-    [`${calendarModalCreateBtn}:hover &`]: {
-      color: theme.white,
-    },
-  },
 });
 
 export const calendarModalOverlay = style({

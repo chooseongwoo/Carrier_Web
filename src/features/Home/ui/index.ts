@@ -8,3 +8,4 @@ export { default as DropdownCheckIcon } from './DropdownCheckIcon';
 export { default as DropdownArrowIcon } from './DropdownArrow';
 export { default as CalendarScheduleIcon } from './CalendarScheduleIcon';
 export { default as CalendarTodoIcon } from './CalendarTodoIcon';
+export { default as TopdownArrowIcon } from './TopdownArrowIcon';
