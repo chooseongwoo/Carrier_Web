@@ -35,4 +35,5 @@ export interface Schedule {
   startDate: string;
   endDate: string | null;
   category: Category;
+  location: string;
 }

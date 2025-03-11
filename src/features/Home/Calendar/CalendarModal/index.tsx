@@ -33,6 +33,9 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
   const handleChangeMemo = (e: React.ChangeEvent<HTMLInputElement>) =>
     updateState({ memo: e.target.value });
 
+  const handleChangeLocation = (e: React.ChangeEvent<HTMLInputElement>) =>
+    updateState({ location: e.target.value });
+
   const handleIsAllday = () =>
     updateState({
       isAllDay: !state.isAllDay,
@@ -165,7 +168,12 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
         </div>
         <div className={s.calendarModalContour} />
         <div className={s.calendarModalFooter}>
-          <div className={s.calendarModalLocationPlaceholder}>위치 추가</div>
+          <input
+            className={s.calendarModalLocationTitle}
+            placeholder="위치 추가"
+            value={state.location || ''}
+            onChange={handleChangeLocation}
+          />
         </div>
         <div className={s.calendarModalContour} />
         {isInitial ? (
