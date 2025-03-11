@@ -128,19 +128,18 @@ const Calendar = () => {
     []
   );
   const handleModalOpen = useCallback((event?: CalendarEvent) => {
+    const startDate = event?.start ? new Date(event.start) : new Date();
+    const endDate = event?.end ? new Date(event.end) : new Date();
+
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      return;
+    }
+
     setSelectedEvent({
       ...event,
       type: event?.type ?? 'Schedule',
-      start: new Date(
-        new Date(event?.start ?? new Date()).setDate(
-          new Date(event?.start ?? new Date()).getDate() + 1
-        )
-      ).toISOString(),
-      end: new Date(
-        new Date(event?.end ?? new Date()).setDate(
-          new Date(event?.end ?? new Date()).getDate() + 1
-        )
-      ).toISOString(),
+      start: new Date(startDate.setDate(startDate.getDate() + 1)).toISOString(),
+      end: new Date(endDate.setDate(endDate.getDate() + 1)).toISOString(),
     } as CalendarEvent);
 
     setIsModalOpen(true);
