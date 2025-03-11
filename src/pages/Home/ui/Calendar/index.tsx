@@ -18,7 +18,6 @@ import * as s from './style.css';
 import './root.css';
 import theme from 'shared/styles/theme.css';
 import { useScheduleListQuery } from 'features/Home/services/home.query';
-import { useCategories } from 'entities/calendar/hooks/useCategory';
 import { useAtom } from 'jotai';
 import {
   scheduleSelectedAtom,
@@ -92,31 +91,31 @@ const Calendar = () => {
   const { navigate, dateRange } = useCalendarNavigation(calendarRef);
   const queryClient = useQueryClient();
 
-  const categories = useCategories();
-  const categoryIds = categories.map((category) => category.id);
-
   const [scheduleSelected] = useAtom(scheduleSelectedAtom);
   const [todoSelected] = useAtom(todoSelectedAtom);
 
   const [scheduleRendering] = useAtom(scheduleRenderingAtom);
 
-  useEffect(() => {
+  const fetchScheduleList = useCallback(async () => {
+    if (!dateRange) return;
+
     try {
-      const fetchScheduleList = async () => {
-        const data = await queryClient.fetchQuery(
-          useScheduleListQuery.getScheduleList({
-            startDate: dateRange?.startDate || '',
-            endDate: dateRange?.endDate || '',
-            categoryIds: categoryIds,
-          })
-        );
-        setEvents(data);
-      };
-      fetchScheduleList();
+      const data = await queryClient.fetchQuery(
+        useScheduleListQuery.getScheduleList({
+          startDate: dateRange.startDate,
+          endDate: dateRange.endDate,
+        })
+      );
+      setEvents(data);
     } catch (error) {
-      console.error('에러 발생:', error);
+      console.error('일정 데이터 가져 오기 실패:', error);
+      setEvents([]);
     }
-  }, [queryClient, dateRange, scheduleSelected, scheduleRendering]);
+  }, [queryClient, dateRange]);
+
+  useEffect(() => {
+    fetchScheduleList();
+  }, [fetchScheduleList, scheduleSelected, scheduleRendering]);
 
   const filteredEvents = events.filter((event) => {
     if (event.type === 'Schedule' && !scheduleSelected) return false;

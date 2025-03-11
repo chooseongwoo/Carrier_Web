@@ -3,7 +3,6 @@ import { Schedule } from './type';
 export interface GetScheduleListReq {
   startDate: string;
   endDate: string;
-  categoryIds: number[];
 }
 
 export interface GetScheduleListRes {
