@@ -24,6 +24,7 @@ import {
   scheduleSelectedAtom,
   todoSelectedAtom,
 } from 'entities/calendar/contexts/eventDisplayState';
+import { scheduleRenderingAtom } from 'entities/calendar/contexts/eventRendering';
 
 const EventContent = memo(({ event }: { event: EventImpl }) => {
   const isSchedule = event.extendedProps.type === 'Schedule';
@@ -97,6 +98,8 @@ const Calendar = () => {
   const [scheduleSelected] = useAtom(scheduleSelectedAtom);
   const [todoSelected] = useAtom(todoSelectedAtom);
 
+  const [scheduleRendering] = useAtom(scheduleRenderingAtom);
+
   useEffect(() => {
     try {
       const fetchScheduleList = async () => {
@@ -113,7 +116,7 @@ const Calendar = () => {
     } catch (error) {
       console.error('에러 발생:', error);
     }
-  }, [queryClient, dateRange, scheduleSelected]);
+  }, [queryClient, dateRange, scheduleSelected, scheduleRendering]);
 
   const filteredEvents = events.filter((event) => {
     if (event.type === 'Schedule' && !scheduleSelected) return false;
