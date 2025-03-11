@@ -5,6 +5,8 @@ import {
   usePostScheduleMutation,
   useCreateTodoMutation,
 } from 'features/Home/services/home.mutation';
+import { useAtom } from 'jotai';
+import { todoRenderingAtom } from 'entities/calendar/contexts/eventRendering';
 
 interface UseEventStateProps {
   event?: CalendarEvent;
@@ -39,6 +41,7 @@ const useEventState = ({ event }: UseEventStateProps) => {
 
   const prevEventRef = useRef<CalendarEvent | undefined>(undefined);
   const isInitial = !event || event.title === '';
+  const [, setTodoRendering] = useAtom(todoRenderingAtom);
 
   const updateState = useCallback((updates: Partial<EventState>) => {
     setState((prev) => ({ ...prev, ...updates }));
@@ -93,6 +96,7 @@ const useEventState = ({ event }: UseEventStateProps) => {
       postScheduleMutate(scheduleData);
     } else if (state.eventType === 'Todo') {
       postTodoMutate(todoData);
+      setTodoRendering((prev) => prev + 1);
     }
   }, [
     postScheduleMutate,
