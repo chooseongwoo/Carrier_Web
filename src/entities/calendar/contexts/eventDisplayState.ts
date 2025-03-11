@@ -1,4 +1,4 @@
 import { atom } from 'jotai';
 
-export const scheduleSelectedAtom = atom(false);
-export const todoSelectedAtom = atom(false);
+export const scheduleSelectedAtom = atom(true);
+export const todoSelectedAtom = atom(true);
