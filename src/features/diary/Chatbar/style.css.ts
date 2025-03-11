@@ -49,6 +49,10 @@ export const suggestionButton = style({
   borderRadius: '8px',
   backgroundColor: theme.blue[50],
   cursor: 'pointer',
+
+  ':hover': {
+    backgroundColor: '#E4EAFF',
+  },
 });
 
 export const suggestionButtonText = style({

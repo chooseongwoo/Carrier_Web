@@ -12,3 +12,12 @@ export const getDiaryList = async ({
   );
   return data;
 };
+
+export const postDiary = async (diaryData: {
+  title: string;
+  content: string;
+  emoji: string;
+}) => {
+  const { data } = await customAxios.post('/diaries', diaryData);
+  return data;
+};

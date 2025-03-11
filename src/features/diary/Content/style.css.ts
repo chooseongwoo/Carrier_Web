@@ -5,6 +5,7 @@ import theme from 'shared/styles/theme.css';
 export const container = style({
   display: 'flex',
   width: '100%',
+  height: '100%',
   flexDirection: 'column',
   alignItems: 'flex-start',
   flex: '2.5 0 0',
@@ -38,14 +39,24 @@ export const titleText = style({
 });
 
 export const mainContainer = style({
-  padding: '28px 40px 40px 40px',
-  flex: '1 0 0',
-  overflowY: 'auto',
+  padding: '28px 40px 86px 40px',
+  width: '100%',
+  display: 'flex',
+  flexGrow: 1,
+  flexDirection: 'column',
   alignSelf: 'stretch',
+  position: 'relative',
 
   '::-webkit-scrollbar': {
     display: 'none',
   },
+});
+
+export const writeContainer = style({
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100%',
+  overflowY: 'auto',
 });
 
 export const emojiPicker = style({
@@ -75,12 +86,8 @@ export const emojiPickerText = style({
 export const textBox = style({
   display: 'flex',
   width: '100%',
-  minHeight: '150px',
-  height: 'auto',
   marginTop: '20px',
-  resize: 'none',
-
-  overflow: 'hidden',
+  height: '100%',
 
   ...font.H4,
   fontWeight: '500',
@@ -89,5 +96,20 @@ export const textBox = style({
 
   '::placeholder': {
     color: theme.gray[400],
+  },
+});
+
+export const saveDiaryBtn = style({
+  padding: '12px 24px',
+  borderRadius: '8px',
+  backgroundColor: theme.blue[500],
+  color: theme.white,
+  ...font.H5,
+  position: 'absolute',
+  bottom: '40px',
+  right: '45px',
+
+  ':hover': {
+    backgroundColor: theme.blue[600],
   },
 });
