@@ -3,15 +3,25 @@ import * as s from './style.css';
 import { Alarm, Calendar, Diary, Mail } from 'widgets/NavigationBar/ui';
 import useUser from 'features/user/hooks/useUser';
 import TipsModal from 'features/Home/TipsModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useInterval } from 'react-use';
 import useModal from 'shared/hooks/useModal';
 import { useCategoryList } from 'entities/calendar/hooks/useCategory';
+import { useMailMutation } from 'features/Mail/services/mail.mutation';
 
 const NavigationBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useUser();
+  const { mutate } = useMailMutation();
+  useEffect(() => {
+    const interval = setInterval(() => {
+      mutate();
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [mutate]);
+
   useCategoryList();
 
   const menus = [

@@ -8,4 +8,5 @@ export const container = style({
   flexDirection: 'column',
   alignItems: 'flex-start',
   gap: '24px',
+  overflowY: 'auto',
 });
