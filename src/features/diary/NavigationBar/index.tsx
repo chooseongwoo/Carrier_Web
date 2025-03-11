@@ -1,21 +1,43 @@
 import * as s from './style.css';
 import { ArrowBarIcon } from 'features/diary/ui';
-import { NowDatePeriod, getPrevDate, getNextDate } from 'shared/lib/date';
-import { useState, useMemo } from 'react';
+import { getNextDate, getPrevDate, NowDatePeriod } from 'shared/lib/date';
+import { useMemo, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useDiaryListQuery } from '../services/diary.query.ts';
+
+const getWeekDays = (currentDate: string) => {
+  const dateObj = new Date(currentDate.replace(/\./g, '-'));
+  const dayOfWeek = dateObj.getDay();
+  const startOfWeek = new Date(dateObj);
+  startOfWeek.setDate(dateObj.getDate() - dayOfWeek);
+
+  return Array.from({ length: 7 }, (_, i) => {
+    const day = new Date(startOfWeek);
+    day.setDate(startOfWeek.getDate() + i);
+    return day.toISOString().split('T')[0].replace(/-/g, '.');
+  });
+};
 
 const NavigationBar = () => {
   const [currentDate, setCurrentDate] = useState(NowDatePeriod);
+  const [selectedDate, setSelectedDate] = useState(NowDatePeriod);
+  const startDateTime = '2025-02-21T12:00:00'; // 일기 조회 리스트 api
+  const endDateTime = '2025-03-21T12:00:00';
+  const { data: diaryListData } = useQuery({
+    ...useDiaryListQuery.getDiaryList(startDateTime, endDateTime),
+  });
 
-  const baseDate = useMemo(() => getPrevDate(currentDate, 2), [currentDate]);
-  const days = useMemo(
-    () => Array.from({ length: 7 }, (_, i) => getNextDate(baseDate, i)),
-    [baseDate]
-  );
+  const days = useMemo(() => getWeekDays(currentDate), [currentDate]);
 
-  const nextPeriodDay = useMemo(() => {
-    const nextDate = new Date(getNextDate(currentDate, 5).replace(/\./g, '-'));
-    return nextDate.getDate();
-  }, [currentDate]);
+  const diaryMap = useMemo(() => {
+    if (!diaryListData) return {};
+
+    return diaryListData.reduce((acc: any, diary: any) => {
+      const diaryDate = diary.createDateTime.split('T')[0].replace(/-/g, '.'); // YYYY.MM.DD 형식 변환
+      acc[diaryDate] = diary;
+      return acc;
+    }, {});
+  }, [diaryListData]);
 
   const handlePrevWeek = () => {
     setCurrentDate(getPrevDate(currentDate, 7));
@@ -23,10 +45,6 @@ const NavigationBar = () => {
 
   const handleNextWeek = () => {
     setCurrentDate(getNextDate(currentDate, 7));
-  };
-
-  const handleDateSelection = (day: string) => {
-    setCurrentDate(day);
   };
 
   return (
@@ -40,23 +58,42 @@ const NavigationBar = () => {
       <div className={s.datesContainer}>
         {days.map((day, index) => {
           const dayNumber = day.split('.')[2].replace(/^0+/, '');
-          const isToday = day === currentDate;
-          const dateObj = new Date(day.replace(/-/g, '.'));
-          const isHoliday = [0, 6].includes(dateObj.getDay());
+          const selectedDay = day === selectedDate;
+          const isHoliday = index === 0 || index === 6;
+          const calendarToday = day === NowDatePeriod;
+          const hasDiary = !!diaryMap[day];
 
           return (
             <div
               key={index}
               className={s.dayContainer}
-              onClick={() => handleDateSelection(day)}
+              onClick={() => setSelectedDate(day)}
             >
-              <div className={s.dayBox({ selected: isToday })}>
-                <div className={s.dayText({ isHoliday, selected: isToday })}>
+              <div
+                className={s.dayBox({
+                  selected: selectedDay,
+                  today: calendarToday,
+                })}
+              >
+                <div
+                  className={s.dayText({ isHoliday, selected: selectedDay })}
+                >
                   {dayNumber}
                 </div>
               </div>
-              <div className={s.dayDairyText({ isWritten: false })}>
-                일기 없음
+              <div className={s.dayDairyText({ isWritten: hasDiary })}>
+                {hasDiary ? (
+                  <div className={s.dayDiarySummary}>
+                    <p className={s.dayDiarySummaryEmoji}>
+                      {diaryMap[day].emoji}
+                    </p>
+                    <p className={s.dayDiarySummaryText}>
+                      {diaryMap[day].title}
+                    </p>
+                  </div>
+                ) : (
+                  <p className={s.dayDiarySummaryText}>일기 없음</p>
+                )}
               </div>
             </div>
           );
@@ -64,9 +101,6 @@ const NavigationBar = () => {
       </div>
       <div className={s.buttonContainer}>
         <div className={s.buttonBox} onClick={handleNextWeek}>
-          <div className={s.dayBox()}>
-            <div className={s.dayText({ disabled: true })}>{nextPeriodDay}</div>
-          </div>
           <ArrowBarIcon direction="right" />
           <div className={s.buttonText}>다음 주</div>
         </div>

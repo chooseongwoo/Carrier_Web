@@ -87,6 +87,9 @@ export const dayBox = recipe({
       true: { backgroundColor: theme.blue[500] },
       false: { backgroundColor: theme.white },
     },
+    today: {
+      true: { border: `2px solid ${theme.blue[500]}` },
+    },
   },
   defaultVariants: {
     selected: false,
@@ -122,8 +125,6 @@ export const dayText = recipe({
 export const dayDairyText = recipe({
   base: {
     userSelect: 'none',
-
-    ...font.p1,
   },
   variants: {
     isWritten: {
@@ -134,4 +135,20 @@ export const dayDairyText = recipe({
   defaultVariants: {
     isWritten: false,
   },
+});
+
+export const dayDiarySummary = style({
+  display: 'flex',
+  padding: '4px',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+});
+
+export const dayDiarySummaryEmoji = style({
+  fontSize: '5em',
+});
+
+export const dayDiarySummaryText = style({
+  ...font.p1,
 });

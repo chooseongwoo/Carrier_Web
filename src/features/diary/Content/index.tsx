@@ -1,8 +1,6 @@
 import * as s from './style.css';
 import { EmojiIcon } from 'features/diary/ui';
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { useDiaryListQuery } from '../services/diary.query.ts';
 import { useDiaryAddMutation } from '../services/diary.mutation.ts';
 import EmojiPicker, { Categories } from 'emoji-picker-react';
 
@@ -22,13 +20,12 @@ const Content = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [emoji, setEmoji] = useState('');
-  const startDateTime = '2025-02-21T12:00:00'; // 일기 조회 리스트 api
-  const endDateTime = '2025-03-21T12:00:00';
-  const { data: diaryListData } = useQuery({
-    ...useDiaryListQuery.getDiaryList(startDateTime, endDateTime),
-  });
   const { mutate: addDiaryMutate } = useDiaryAddMutation();
-  console.log(diaryListData);
+
+  // useEffect(() => {
+  //
+  // },[title, content, emoji])
+
   const onAddDiaryBtnClick = () => {
     if (title && content && emoji) {
       const addDiaryBody = {
