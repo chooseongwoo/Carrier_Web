@@ -13,7 +13,6 @@ export const main = style({
   display: 'flex',
   height: 'calc(100% - 160px)',
   justifyContent: 'space-between',
-  alignItems: 'flex-start',
   alignSelf: 'stretch',
 
   backgroundColor: theme.white,

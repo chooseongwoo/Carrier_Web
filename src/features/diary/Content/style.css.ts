@@ -1,6 +1,7 @@
 import { style } from '@vanilla-extract/css';
 import { font } from 'shared/styles/font.css';
 import theme from 'shared/styles/theme.css';
+import { recipe } from '@vanilla-extract/recipes';
 
 export const container = style({
   display: 'flex',
@@ -16,7 +17,8 @@ export const container = style({
 
 export const titleContainer = style({
   display: 'flex',
-  padding: '28px 40px',
+  height: '12vh',
+  padding: '0 40px',
   alignItems: 'center',
   alignSelf: 'stretch',
 
@@ -120,7 +122,7 @@ export const textBox = style({
   marginTop: '20px',
   height: '100%',
 
-  ...font.H4,
+  ...font.H5,
   fontWeight: '500',
   color: theme.black,
   fontFamily: 'Pretendard',
@@ -130,17 +132,36 @@ export const textBox = style({
   },
 });
 
-export const saveDiaryBtn = style({
-  padding: '12px 24px',
-  borderRadius: '8px',
-  backgroundColor: theme.blue[500],
-  color: theme.white,
-  ...font.H5,
-  position: 'absolute',
-  bottom: '40px',
-  right: '45px',
-
-  ':hover': {
-    backgroundColor: theme.blue[600],
+export const saveDiaryBtn = recipe({
+  base: {
+    padding: '12px 24px',
+    borderRadius: '8px',
+    backgroundColor: theme.blue[100],
+    color: theme.white,
+    ...font.H5,
+    position: 'absolute',
+    bottom: '40px',
+    right: '45px',
+    transition: 'background-color 0.2s ease-in-out',
+  },
+  variants: {
+    isWrite: {
+      true: {
+        backgroundColor: theme.blue[500],
+        ':hover': {
+          backgroundColor: theme.blue[600],
+        },
+      },
+      false: {
+        backgroundColor: theme.blue[100],
+        ':hover': {
+          backgroundColor: theme.blue[100],
+          cursor: 'default',
+        },
+      },
+    },
+  },
+  defaultVariants: {
+    isWrite: false,
   },
 });

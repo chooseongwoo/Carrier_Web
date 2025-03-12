@@ -1,4 +1,4 @@
-import { postDiary } from './diary.api.ts';
+import { deleteDiary, postDiary } from './diary.api.ts';
 import { useMutation } from '@tanstack/react-query';
 
 export const useDiaryAddMutation = () => {
@@ -8,5 +8,11 @@ export const useDiaryAddMutation = () => {
       content: string;
       emoji: string;
     }) => postDiary(diaryData),
+  });
+};
+
+export const useDiaryDeleteMutation = () => {
+  return useMutation({
+    mutationFn: (id: number) => deleteDiary(String(id)),
   });
 };

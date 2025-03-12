@@ -1,10 +1,18 @@
 import * as s from './style.css';
 import { EmojiIcon } from 'features/diary/ui';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useDiaryAddMutation } from '../services/diary.mutation.ts';
 import EmojiPicker, { Categories } from 'emoji-picker-react';
+import { useQueryClient } from '@tanstack/react-query';
+import { useDiaryData } from '../../../shared/hooks/useDiaryData.ts';
+import { diaryKeys } from '../services/diary.keys.ts';
 
-const Content = () => {
+interface ContentProps {
+  setIsTodayDiaryExist: Dispatch<SetStateAction<boolean>>;
+}
+
+const Content = ({ setIsTodayDiaryExist }: ContentProps) => {
+  const queryClient = useQueryClient();
   const emojiPickerCategories = [
     { category: Categories.SUGGESTED, name: '자주 사용한 이모지' },
     { category: Categories.SMILEYS_PEOPLE, name: '스마일 & 사람' },
@@ -20,21 +28,37 @@ const Content = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [emoji, setEmoji] = useState('');
+  const [isDiaryFormValid, setIsDiaryFromValid] = useState(false);
   const { mutate: addDiaryMutate } = useDiaryAddMutation();
+  const { startDateTime, endDateTime } = useDiaryData();
 
-  // useEffect(() => {
-  //
-  // },[title, content, emoji])
+  useEffect(() => {
+    if (title && content && emoji) {
+      setIsDiaryFromValid(true);
+    } else {
+      setIsDiaryFromValid(false);
+    }
+  }, [title, content, emoji]);
 
   const onAddDiaryBtnClick = () => {
-    if (title && content && emoji) {
+    if (isDiaryFormValid) {
       const addDiaryBody = {
         title: title,
         content: content,
         emoji: emoji,
       };
 
-      addDiaryMutate(addDiaryBody);
+      addDiaryMutate(addDiaryBody, {
+        onSuccess: () => {
+          setIsTodayDiaryExist(true);
+          queryClient.invalidateQueries({
+            queryKey: [diaryKeys.DIARY_LIST, startDateTime, endDateTime],
+          });
+        },
+        onError: (error) => {
+          alert(`일기 저장에 실패했습니다: ${error.message}`);
+        },
+      });
     }
   };
 
@@ -92,7 +116,10 @@ const Content = () => {
             onChange={(e) => setContent(e.target.value)}
           />
         </div>
-        <button className={s.saveDiaryBtn} onClick={onAddDiaryBtnClick}>
+        <button
+          className={s.saveDiaryBtn({ isWrite: isDiaryFormValid })}
+          onClick={onAddDiaryBtnClick}
+        >
           작성 완료
         </button>
       </div>

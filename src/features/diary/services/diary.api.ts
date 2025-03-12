@@ -21,3 +21,8 @@ export const postDiary = async (diaryData: {
   const { data } = await customAxios.post('/diaries', diaryData);
   return data;
 };
+
+export const deleteDiary = async (diaryId: string) => {
+  const { data } = await customAxios.delete(`/diaries/${diaryId}`);
+  return data;
+};

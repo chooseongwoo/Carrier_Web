@@ -2,38 +2,27 @@ import * as s from './style.css';
 import { ArrowBarIcon } from 'features/diary/ui';
 import { getNextDate, getPrevDate, NowDatePeriod } from 'shared/lib/date';
 import { useMemo, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { useDiaryListQuery } from '../services/diary.query.ts';
+import { useDiaryData } from '../../../shared/hooks/useDiaryData.ts';
 
-const getWeekDays = (currentDate: string) => {
-  const dateObj = new Date(currentDate.replace(/\./g, '-'));
-  const dayOfWeek = dateObj.getDay();
-  const startOfWeek = new Date(dateObj);
-  startOfWeek.setDate(dateObj.getDate() - dayOfWeek);
+interface DiaryEntry {
+  id: number;
+  title: string;
+  content: string;
+  emoji: string;
+  createDateTime: string;
+}
 
-  return Array.from({ length: 7 }, (_, i) => {
-    const day = new Date(startOfWeek);
-    day.setDate(startOfWeek.getDate() + i);
-    return day.toISOString().split('T')[0].replace(/-/g, '.');
-  });
-};
+type DiaryMap = Record<string, DiaryEntry>;
 
 const NavigationBar = () => {
-  const [currentDate, setCurrentDate] = useState(NowDatePeriod);
+  const { currentDate, setCurrentDate, days, diaryListData } = useDiaryData();
   const [selectedDate, setSelectedDate] = useState(NowDatePeriod);
-  const startDateTime = '2025-02-21T12:00:00'; // 일기 조회 리스트 api
-  const endDateTime = '2025-03-21T12:00:00';
-  const { data: diaryListData } = useQuery({
-    ...useDiaryListQuery.getDiaryList(startDateTime, endDateTime),
-  });
-
-  const days = useMemo(() => getWeekDays(currentDate), [currentDate]);
 
   const diaryMap = useMemo(() => {
     if (!diaryListData) return {};
 
-    return diaryListData.reduce((acc: any, diary: any) => {
-      const diaryDate = diary.createDateTime.split('T')[0].replace(/-/g, '.'); // YYYY.MM.DD 형식 변환
+    return diaryListData.reduce((acc: DiaryMap, diary: DiaryEntry) => {
+      const diaryDate = diary.createDateTime.split('T')[0].replace(/-/g, '.');
       acc[diaryDate] = diary;
       return acc;
     }, {});
@@ -49,8 +38,8 @@ const NavigationBar = () => {
 
   return (
     <div className={s.container}>
-      <div className={s.buttonContainer}>
-        <div className={s.buttonBox} onClick={handlePrevWeek}>
+      <div className={s.buttonContainer} onClick={handlePrevWeek}>
+        <div className={s.buttonBox}>
           <ArrowBarIcon direction="left" />
           <div className={s.buttonText}>저번 주</div>
         </div>
@@ -99,8 +88,8 @@ const NavigationBar = () => {
           );
         })}
       </div>
-      <div className={s.buttonContainer}>
-        <div className={s.buttonBox} onClick={handleNextWeek}>
+      <div className={s.buttonContainer} onClick={handleNextWeek}>
+        <div className={s.buttonBox}>
           <ArrowBarIcon direction="right" />
           <div className={s.buttonText}>다음 주</div>
         </div>
