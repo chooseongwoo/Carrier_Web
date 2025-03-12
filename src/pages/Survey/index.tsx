@@ -10,7 +10,7 @@ import * as s from './style.css';
 import Arrow from './ui/Arrow';
 import { useAlarmTimeMutation } from 'features/AlaramTime/services/time.mutation';
 import { useNavigate } from 'react-router-dom';
-// import { useMailBatchSaveMutation } from 'features/Mail/services/mail.mutation';
+import { useMailBatchSaveMutation } from 'features/Mail/services/mail.mutation';
 
 const Survey = () => {
   const navigate = useNavigate();
@@ -25,11 +25,11 @@ const Survey = () => {
   }, [time]);
 
   const { mutate: alarmTimeMutate } = useAlarmTimeMutation();
-  // const { mutate: mailBatchMutate } = useMailBatchSaveMutation();
+  const { mutate: mailBatchMutate } = useMailBatchSaveMutation();
   const handleAlarmTime = (time: string) => {
     alarmTimeMutate(time, {
       onSuccess: () => {
-        // mailBatchMutate();
+        mailBatchMutate();
         navigate('/');
       },
     });
