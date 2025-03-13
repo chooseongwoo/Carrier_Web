@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { MailModalProps } from 'entities/mail/types/MailModalProps';
 
 const SendModal = ({ toggleModalClose }: MailModalProps) => {
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState();
   const [uploadedFiles, setUploadedFiles] = useState<File[] | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
