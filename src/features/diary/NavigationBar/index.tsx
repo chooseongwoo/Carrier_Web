@@ -3,6 +3,7 @@ import { ArrowBarIcon } from 'features/diary/ui';
 import { getNextDate, getPrevDate, NowDatePeriod } from 'shared/lib/date';
 import { useMemo } from 'react';
 import { useDiaryData } from '../../../shared/hooks/useDiaryData.ts';
+import theme from '../../../shared/styles/theme.css.ts';
 
 interface DiaryEntry {
   id: number;
@@ -93,8 +94,15 @@ const NavigationBar = ({
                     </p>
                   </div>
                 ) : shouldShowNoDiaryText ? (
-                  <p className={s.dayDiarySummaryText}>일기 없음</p>
-                ) : null}
+                  <p
+                    className={s.dayDiarySummaryText}
+                    style={{ color: theme.gray[400] }}
+                  >
+                    일기 없음
+                  </p>
+                ) : (
+                  <p className={s.dayDiarySummaryText}></p>
+                )}
               </div>
             </div>
           );

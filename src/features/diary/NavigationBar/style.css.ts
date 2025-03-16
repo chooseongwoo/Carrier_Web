@@ -151,4 +151,17 @@ export const dayDiarySummaryEmoji = style({
 
 export const dayDiarySummaryText = style({
   ...font.p1,
+  width: '100%',
+  color: `${theme.black}`,
+  textAlign: 'center',
+  overflow: 'hidden',
+  display: '-webkit-box',
+  WebkitBoxOrient: 'vertical',
+  wordBreak: 'break-word',
+
+  selectors: {
+    '&': {
+      WebkitLineClamp: 1,
+    },
+  },
 });
