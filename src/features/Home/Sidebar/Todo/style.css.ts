@@ -2,7 +2,7 @@ import { style } from '@vanilla-extract/css';
 import { font } from 'shared/styles/font.css';
 import theme from 'shared/styles/theme.css';
 
-export const TodoListContainer = style({
+export const todoListContainer = style({
   padding: '8px 12px',
   display: 'flex',
   flexDirection: 'column',
@@ -13,7 +13,7 @@ export const TodoListContainer = style({
   backgroundColor: theme.white,
 });
 
-export const TodoListHeader = style({
+export const todoListHeader = style({
   width: '100%',
   display: 'flex',
   flexDirection: 'row',
@@ -21,28 +21,28 @@ export const TodoListHeader = style({
   justifyContent: 'space-between',
 });
 
-export const TodoListTitle = style({
+export const todoListTitle = style({
   color: theme.gray[600],
   fontFamily: 'Pretendard',
   ...font.H5,
   userSelect: 'none',
 });
 
-export const TodoListSetDate = style({
+export const todoListSetDate = style({
   gap: '8px',
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
 });
 
-export const TodoListDateTitle = style({
+export const todoListDateTitle = style({
   color: theme.gray[600],
   fontFamily: 'Pretendard',
   ...font.p2,
   userSelect: 'none',
 });
 
-export const TodoListMain = style({
+export const todoListMain = style({
   display: 'flex',
   paddingLeft: '8px',
   flexDirection: 'column',
@@ -50,13 +50,13 @@ export const TodoListMain = style({
   gap: '8px',
 });
 
-export const TodoListItem = style({
+export const todoListItem = style({
   display: 'flex',
   alignItems: 'center',
   gap: '10px',
 });
 
-export const TodoListItemText = style({
+export const todoListItemText = style({
   color: theme.black,
   fontFamily: 'Pretendard',
   ...font.p1,

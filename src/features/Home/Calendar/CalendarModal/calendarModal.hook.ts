@@ -5,6 +5,11 @@ import {
   usePostScheduleMutation,
   useCreateTodoMutation,
 } from 'features/Home/services/home.mutation';
+import { useAtom } from 'jotai';
+import {
+  todoRenderingAtom,
+  scheduleRenderingAtom,
+} from 'entities/calendar/contexts/eventRendering';
 
 interface UseEventStateProps {
   event?: CalendarEvent;
@@ -13,7 +18,7 @@ interface UseEventStateProps {
 interface EventState {
   eventType: 'Schedule' | 'Todo';
   title: string;
-  memo: string;
+  memo: string | null;
   startDate: string;
   endDate: string | null;
   selectedRepeatId: number;
@@ -40,6 +45,9 @@ const useEventState = ({ event }: UseEventStateProps) => {
   const prevEventRef = useRef<CalendarEvent | undefined>(undefined);
   const isInitial = !event || event.title === '';
 
+  const [, setTodoRendering] = useAtom(todoRenderingAtom);
+  const [, setScheduleRendering] = useAtom(scheduleRenderingAtom);
+
   const updateState = useCallback((updates: Partial<EventState>) => {
     setState((prev) => ({ ...prev, ...updates }));
   }, []);
@@ -65,6 +73,7 @@ const useEventState = ({ event }: UseEventStateProps) => {
 
   const scheduleData = {
     title: state.title,
+    memo: state.memo,
     allDay: state.isAllDay,
     isRepeat: false,
     categoryId: state.selectedCategoryId,
@@ -90,8 +99,14 @@ const useEventState = ({ event }: UseEventStateProps) => {
   const createEvent = useCallback(() => {
     if (state.eventType === 'Schedule') {
       postScheduleMutate(scheduleData);
+      setTimeout(() => {
+        setScheduleRendering((prev) => prev + 1);
+      }, 1000);
     } else if (state.eventType === 'Todo') {
       postTodoMutate(todoData);
+      setTimeout(() => {
+        setTodoRendering((prev) => prev + 1);
+      }, 1000);
     }
   }, [
     postScheduleMutate,
@@ -126,7 +141,7 @@ const useEventState = ({ event }: UseEventStateProps) => {
       setState({
         eventType: event.type,
         title: event.title,
-        memo: event.memo || '',
+        memo: event.memo || null,
         startDate: event?.start || '',
         endDate: event?.end || null,
         selectedRepeatId: 1,

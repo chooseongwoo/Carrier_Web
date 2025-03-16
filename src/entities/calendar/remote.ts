@@ -3,11 +3,15 @@ import { Schedule } from './type';
 export interface GetScheduleListReq {
   startDate: string;
   endDate: string;
-  categoryIds: number[];
 }
 
 export interface GetScheduleListRes {
   dataList: Schedule[];
+}
+
+export interface GetTodoListReq {
+  startDate: string;
+  endDate: string;
 }
 
 export interface PostScheduleReq {

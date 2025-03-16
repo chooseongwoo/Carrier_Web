@@ -2,7 +2,7 @@ import { style } from '@vanilla-extract/css';
 import { font } from 'shared/styles/font.css';
 import theme from 'shared/styles/theme.css';
 
-export const CategoryContainer = style({
+export const categoryContainer = style({
   display: 'flex',
   padding: '8px 12px',
   flexDirection: 'column',
@@ -14,20 +14,20 @@ export const CategoryContainer = style({
   backgroundColor: theme.white,
 });
 
-export const CategoryHeader = style({
+export const categoryHeader = style({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
   alignSelf: 'stretch',
 });
 
-export const CategoryTitle = style({
+export const categoryTitle = style({
   color: theme.gray[600],
   fontFamily: 'Pretendard',
   ...font.H5,
 });
 
-export const CategoryPlusBtn = style({
+export const categoryPlusBtn = style({
   width: '24px',
   height: '25px',
   backgroundColor: theme.white,
@@ -43,7 +43,7 @@ export const CategoryPlusBtn = style({
   },
 });
 
-export const CategoryItemContainer = style({
+export const categoryItemContainer = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',
@@ -51,7 +51,7 @@ export const CategoryItemContainer = style({
   alignSelf: 'stretch',
 });
 
-export const CategoryItem = style({
+export const categoryItem = style({
   display: 'flex',
   padding: '6px 8px',
   alignItems: 'center',
@@ -60,22 +60,22 @@ export const CategoryItem = style({
   borderRadius: '4px',
 });
 
-export const CategoryItemTitle = style({
+export const categoryItemTitle = style({
   flex: '1 0 0',
   color: theme.black,
   fontFamily: 'Pretendard',
   ...font.p1,
 });
 
-export const CategoryNewItemInput = style({
+export const categoryNewItemInput = style({
   padding: '1px 3px',
 });
 
-export const CategoryNewItem = style({
+export const categoryNewItem = style({
   backgroundColor: theme.blue[50],
 });
 
-export const BtnCategoryItemStatic = style({
+export const btnCategoryItemStatic = style({
   width: '24px',
   height: '24px',
   borderRadius: '4px',

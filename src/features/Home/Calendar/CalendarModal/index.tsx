@@ -33,6 +33,9 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
   const handleChangeMemo = (e: React.ChangeEvent<HTMLInputElement>) =>
     updateState({ memo: e.target.value });
 
+  const handleChangeLocation = (e: React.ChangeEvent<HTMLInputElement>) =>
+    updateState({ location: e.target.value });
+
   const handleIsAllday = () =>
     updateState({
       isAllDay: !state.isAllDay,
@@ -76,11 +79,11 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
           <input
             className={s.calendarModalSubTitle}
             placeholder="메모"
-            value={state.memo}
+            value={state.memo || ''}
             onChange={handleChangeMemo}
           />
         </div>
-
+        <div className={s.calendarModalContour} />
         <div className={s.calendarModalBody}>
           {state.eventType === 'Schedule' && (
             <div className={s.calendarModalItem}>
@@ -97,7 +100,7 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
             event?.end &&
             !state.isAllDay &&
             state.eventType === 'Schedule' && (
-              <>
+              <div className={s.calendarModalItemBundle}>
                 <div className={s.calendarModalItem}>
                   <div className={s.calendarModalItemTitle}>시작</div>
                   <div className={s.calendarModalItemAttribute}>
@@ -110,7 +113,7 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
                     {new Date(event.end).toLocaleString()}
                   </div>
                 </div>
-              </>
+              </div>
             )}
 
           <div className={s.calendarModalItem}>
@@ -163,16 +166,25 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
             </div>
           )}
         </div>
-
+        <div className={s.calendarModalContour} />
         <div className={s.calendarModalFooter}>
-          <div className={s.calendarModalLocationPlaceholder}>위치 추가</div>
+          <input
+            className={s.calendarModalLocationTitle}
+            placeholder="위치 추가"
+            value={state.location || ''}
+            onChange={handleChangeLocation}
+          />
         </div>
-
+        <div className={s.calendarModalContour} />
         {isInitial ? (
-          <div className={s.calendarModalCreateBtn}>
-            <div className={s.calendarModalCreateBtnText} onClick={createEvent}>
-              생성
-            </div>
+          <div
+            className={s.calendarModalCreateBtn}
+            onClick={() => {
+              createEvent();
+              onClose();
+            }}
+          >
+            <div className={s.calendarModalCreateBtnText}>추가</div>
           </div>
         ) : (
           <div className={s.calendarModalDeleteBtn}>

@@ -1,26 +1,40 @@
 import { style } from '@vanilla-extract/css';
+import { recipe } from '@vanilla-extract/recipes';
 import { font } from 'shared/styles/font.css';
+
 import theme from 'shared/styles/theme.css';
 
-export const dropdownBtn = style({
-  display: 'flex',
-  padding: '4px 0px 4px 12px',
-  alignItems: 'center',
-  alignSelf: 'stretch',
-  borderRadius: '4px',
-  cursor: 'pointer',
-  gap: '2px',
-  transition: 'all 0.2s ease',
-  selectors: {
-    '&:hover': {
-      backgroundColor: theme.gray[50],
+export const dropdownBtn = recipe({
+  base: {
+    display: 'flex',
+    padding: '4px 4px 4px 12px',
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    gap: '2px',
+    transition: 'all 0.2s ease',
+    selectors: {
+      '&:hover': {
+        backgroundColor: theme.gray[50],
+      },
     },
+  },
+  variants: {
+    hasColor: {
+      true: { padding: '4px' },
+      false: {},
+    },
+  },
+  defaultVariants: {
+    hasColor: false,
   },
 });
 
 export const dropdownContainer = style({
   position: 'fixed',
   display: 'inline-flex',
+  marginTop: '8px',
   padding: '4px 8px',
   flexDirection: 'column',
   alignItems: 'flex-start',
@@ -32,14 +46,32 @@ export const dropdownContainer = style({
   zIndex: '1001',
 });
 
-export const dropdownItem = style({
-  display: 'flex',
-  height: '26px',
-  padding: '0px 8px',
-  alignItems: 'center',
-  gap: '8px',
-  alignSelf: 'stretch',
-  borderRadius: '4px',
+export const dropdownItem = recipe({
+  base: {
+    display: 'flex',
+    width: '100%',
+    height: '26px',
+    padding: '0px 8px',
+    alignItems: 'center',
+    gap: '8px',
+    borderRadius: '4px',
+
+    ...font.p2,
+    color: theme.gray[800],
+    transition: 'all 0.1s ease',
+  },
+  variants: {
+    hovered: {
+      true: {
+        backgroundColor: theme.blue[400],
+        color: theme.white,
+      },
+      false: {},
+    },
+  },
+  defaultVariants: {
+    hovered: false,
+  },
 });
 
 export const dropdownColorBox = style({
@@ -48,7 +80,7 @@ export const dropdownColorBox = style({
   borderRadius: '4px',
 });
 
-export const dropdownText = style({
+export const dropdownBtnText = style({
   color: theme.gray[800],
   ...font.p2,
 });

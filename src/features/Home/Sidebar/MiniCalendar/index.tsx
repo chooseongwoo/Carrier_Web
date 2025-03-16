@@ -51,7 +51,7 @@ const MiniCalendar = () => {
       days.push(
         <div
           key={`prev-${i}`}
-          className={s.MiniCalendarEmptyDay}
+          className={s.miniCalendarDay({ isEmpty: true })}
           style={{
             color:
               isSunday && selectedDate !== prevEndOfMonth - i
@@ -66,12 +66,11 @@ const MiniCalendar = () => {
 
     for (let i = 1; i <= daysInMonth; i++) {
       const isSunday = (startWeek + i - 1) % 7 === 0;
+      const isSelected = selectedDate === i;
       days.push(
         <div
           key={`day-${i}`}
-          className={`${s.MiniCalendarDay} ${
-            selectedDate === i ? s.MiniCalendarSelectedDay : ''
-          }`}
+          className={s.miniCalendarDay({ selected: isSelected })}
           style={{
             color: isSunday && selectedDate !== i ? 'red' : undefined,
           }}
@@ -88,7 +87,7 @@ const MiniCalendar = () => {
       days.push(
         <div
           key={`next-${i}`}
-          className={s.MiniCalendarEmptyDay}
+          className={s.miniCalendarDay({ isEmpty: true })}
           style={{ color: isSunday && selectedDate !== i ? 'red' : undefined }}
         >
           {i}
@@ -100,23 +99,23 @@ const MiniCalendar = () => {
   }, [startWeek, daysInMonth, prevEndOfMonth, selectedDate]);
 
   return (
-    <div className={s.MiniCalendarContainer}>
-      <div className={s.MiniCalendarHeader}>
+    <div className={s.miniCalendarContainer}>
+      <div className={s.miniCalendarHeader}>
         <button onClick={handlePrevMonth}>
           <Arrow direction="left" />
         </button>
-        <div className={s.MiniCalendarTitle}>
+        <div className={s.miniCalendarTitle}>
           {currentDate.getFullYear()}년 {currentDate.getMonth() + 1}월
         </div>
         <button onClick={handleNextMonth}>
           <Arrow direction="right" />
         </button>
       </div>
-      <div className={s.MiniCalendarGrid}>
+      <div className={s.miniCalendarGrid}>
         {WEEKDAYS.map((day, index) => (
           <div
             key={`week-${index}`}
-            className={s.MiniCalendarWeek}
+            className={s.miniCalendarWeek}
             style={{ color: index === 0 ? 'red' : undefined }}
           >
             {day}

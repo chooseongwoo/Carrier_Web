@@ -1,14 +1,15 @@
 import { customAxios } from 'shared/api';
 import {
   GetScheduleListReq,
+  GetTodoListReq,
   PostScheduleReq,
   PostTodoReq,
 } from 'entities/calendar/remote';
 import { Schedule, EVENT_TYPE } from 'entities/calendar/type';
 import { toQueryString } from 'shared/lib/queryString';
 
-export const getTodoList = async (date: string) => {
-  const { data } = await customAxios.get(`/todos?date=${date}`);
+export const getTodoList = async (params: GetTodoListReq) => {
+  const { data } = await customAxios.get(`/todos?${toQueryString(params)}`);
   return data;
 };
 
@@ -46,14 +47,25 @@ export const getScheduleList = async (params: GetScheduleListReq) => {
   );
 
   return data.map(
-    ({ title, allDay, isRepeat, startDate, endDate, category }) => ({
+    ({
+      title,
+      memo,
+      allDay,
+      isRepeat,
+      startDate,
+      endDate,
+      category,
+      location,
+    }) => ({
       type: EVENT_TYPE.Schedule,
       title,
+      memo,
       allDay,
       isRepeat,
       start: startDate,
       end: allDay && !endDate ? startDate : endDate || '',
       category: category.id,
+      location,
       startEditable: true,
       durationEditable: true,
     })
@@ -62,5 +74,10 @@ export const getScheduleList = async (params: GetScheduleListReq) => {
 
 export const postSchedule = async (params: PostScheduleReq) => {
   const { data } = await customAxios.post('/schedules', params);
+  return data;
+};
+
+export const getTips = async () => {
+  const { data } = await customAxios.get('/users/tips');
   return data;
 };

@@ -11,6 +11,7 @@ import { mailQuery } from 'features/Mail/services/mail.query';
 import MailBody from 'features/Mail/MailBody';
 import { useHandleMailClick } from 'features/Mail/hooks/useHandleMailClick';
 import { useMailSummaryMutation } from 'features/Mail/services/mail.mutation';
+import { DotLoader } from 'react-spinners';
 
 const Content = ({ toggleModalOpen }: MailModalProps) => {
   const [mails, setMails] = useAtom(mailsAtom);
@@ -26,6 +27,7 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
   const countOfUnread = mails.filter((mail) => !mail.isRead).length;
   const [mailSummary, setMailSummary] = useState({ gmailId: '', summary: '' });
   const { mutate: mailSummaryMutate } = useMailSummaryMutation();
+  const [isSummaryLoading, setIsSummaryLoading] = useState(false);
 
   const summaryText =
     selectedMailData?.summary ??
@@ -57,9 +59,11 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
                 <div
                   className={s.mailOption_textButton}
                   onClick={() => {
+                    setIsSummaryLoading(true);
                     mailSummaryMutate(selectedMail, {
                       onSuccess: (response) => {
                         setMailSummary(response);
+                        setIsSummaryLoading(false);
                       },
                     });
                   }}
@@ -85,41 +89,47 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
 
       <main className={s.content}>
         <div className={s.content_list}>
-          {mails.map((data) => (
-            <div
-              className={`${s.mailList_container} ${
-                selectedMail === data.gmailId
-                  ? s.mailList_container_selected
-                  : ''
-              }`}
-              onClick={() => handleMailClick(data.gmailId, data.isRead)}
-              key={data.gmailId}
-            >
-              {data.isRead ? '' : <div className={s.mailList_readState} />}
-              <div className={s.mailList_header}>
-                <div className={s.mailList_Sender}>{data.title}</div>
+          {mails.length > 0 ? (
+            mails.map((data) => (
+              <div
+                className={`${s.mailList_container} ${
+                  selectedMail === data.gmailId
+                    ? s.mailList_container_selected
+                    : ''
+                }`}
+                onClick={() => handleMailClick(data.gmailId, data.isRead)}
+                key={data.gmailId}
+              >
+                {data.isRead ? '' : <div className={s.mailList_readState} />}
+                <div className={s.mailList_header}>
+                  <div className={s.mailList_Sender}>{data.title}</div>
+                  <div
+                    className={`${s.mailList_Date} ${
+                      selectedMail === data.gmailId
+                        ? s.mailList_container_selected
+                        : ''
+                    }`}
+                  >
+                    {new Date(data.date).toLocaleDateString()}
+                  </div>
+                </div>
+                <div className={s.mailList_title}>{data.subject}</div>
                 <div
-                  className={`${s.mailList_Date} ${
+                  className={`${s.mailList_description} ${
                     selectedMail === data.gmailId
-                      ? s.mailList_container_selected
+                      ? s.mailList_description_selected
                       : ''
                   }`}
                 >
-                  {new Date(data.date).toLocaleDateString()}
+                  {data.preview}
                 </div>
               </div>
-              <div className={s.mailList_title}>{data.subject}</div>
-              <div
-                className={`${s.mailList_description} ${
-                  selectedMail === data.gmailId
-                    ? s.mailList_description_selected
-                    : ''
-                }`}
-              >
-                {data.preview}
-              </div>
+            ))
+          ) : (
+            <div className={s.listLoadingBox}>
+              <DotLoader color={theme.blue[500]} />
             </div>
-          ))}
+          )}
         </div>
         <div className={s.content_detail}>
           {selectedMail !== '' && selectedMailData ? (
@@ -133,7 +143,12 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
                   </div>
                 </div>
               </div>
-              {summaryText && (
+              {isSummaryLoading && (
+                <div className={s.summaryLoadingBox}>
+                  <DotLoader color={theme.blue[500]} size={20} />
+                </div>
+              )}
+              {summaryText && !isSummaryLoading && (
                 <div className={s.summaryContainer}>
                   <div className={s.hrLine} />
                   <p className={s.summaryTitle}>본문 요약됨</p>

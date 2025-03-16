@@ -12,7 +12,18 @@ import { DotLoader } from 'react-spinners';
 import theme from 'shared/styles/theme.css';
 import Setting from 'pages/Setting';
 
-const LoadingScreen = () => <DotLoader color={theme.blue[500]} />;
+const LoadingScreen = () => (
+  <div
+    style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+    }}
+  >
+    <DotLoader color={theme.blue[500]} />
+  </div>
+);
 
 const PrivateRoute = memo(
   ({ isLoggedIn, isLoading }: { isLoggedIn: boolean; isLoading: boolean }) => {

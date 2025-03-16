@@ -18,10 +18,12 @@ import * as s from './style.css';
 import './root.css';
 import theme from 'shared/styles/theme.css';
 import { useScheduleListQuery } from 'features/Home/services/home.query';
+import { useAtom } from 'jotai';
 import {
-  useCategories,
-  useCategoryList,
-} from 'entities/calendar/hooks/useCategory';
+  scheduleSelectedAtom,
+  todoSelectedAtom,
+} from 'entities/calendar/contexts/eventDisplayState';
+import { scheduleRenderingAtom } from 'entities/calendar/contexts/eventRendering';
 
 const EventContent = memo(({ event }: { event: EventImpl }) => {
   const isSchedule = event.extendedProps.type === 'Schedule';
@@ -54,7 +56,7 @@ const useCalendarNavigation = (calendarRef: React.RefObject<FullCalendar>) => {
       setCalendar(api);
       updateDateRange(api);
     }
-  }, []);
+  }, [calendarRef]);
 
   const updateDateRange = (api: CalendarApi) => {
     setDateRange({
@@ -89,73 +91,104 @@ const Calendar = () => {
   const { navigate, dateRange } = useCalendarNavigation(calendarRef);
   const queryClient = useQueryClient();
 
-  useCategoryList();
-  const categories = useCategories();
-  const categoryIds = categories.map((category) => category.id);
+  const [scheduleSelected] = useAtom(scheduleSelectedAtom);
+  const [todoSelected] = useAtom(todoSelectedAtom);
 
-  useEffect(() => {
+  const [scheduleRendering] = useAtom(scheduleRenderingAtom);
+
+  const fetchScheduleList = useCallback(async () => {
+    if (!dateRange) return;
+
     try {
-      const fetchScheduleList = async () => {
-        const data = await queryClient.fetchQuery(
-          useScheduleListQuery.getScheduleList({
-            startDate: dateRange?.startDate || '',
-            endDate: dateRange?.endDate || '',
-            categoryIds: categoryIds,
-          })
-        );
-        setEvents(data);
-      };
-      fetchScheduleList();
+      const data = await queryClient.fetchQuery(
+        useScheduleListQuery.getScheduleList({
+          startDate: dateRange.startDate,
+          endDate: dateRange.endDate,
+        })
+      );
+      setEvents(data);
     } catch (error) {
-      console.error('에러 발생:', error);
+      console.error('일정 데이터 가져 오기 실패:', error);
+      setEvents([]);
     }
   }, [queryClient, dateRange]);
+
+  useEffect(() => {
+    fetchScheduleList();
+  }, [fetchScheduleList, scheduleSelected, scheduleRendering]);
+
+  const filteredEvents = events.filter((event) => {
+    if (event.type === 'Schedule' && !scheduleSelected) return false;
+    if (event.type === 'Todo' && !todoSelected) return false;
+    return true;
+  });
 
   const toggleCalendar = useCallback(
     () => setIsToggleVisible((prev) => !prev),
     []
   );
   const handleModalOpen = useCallback((event?: CalendarEvent) => {
-    setSelectedEvent(event);
+    const startDate = event?.start ? new Date(event.start) : new Date();
+    const endDate = event?.end ? new Date(event.end) : new Date();
+
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      return;
+    }
+
+    setSelectedEvent({
+      ...event,
+      type: event?.type ?? 'Schedule',
+      start: new Date(startDate.setDate(startDate.getDate() + 1)).toISOString(),
+      end: new Date(endDate.setDate(endDate.getDate() + 1)).toISOString(),
+    } as CalendarEvent);
+
     setIsModalOpen(true);
   }, []);
+
   const handleModalClose = useCallback(() => {
     setIsModalOpen(false);
     setSelectedEvent(undefined);
   }, []);
 
-  const handleDateClick = useCallback(({ date }: { date: Date }) => {
-    handleModalOpen({
-      type: 'Schedule',
-      title: '',
-      start: date.toISOString(),
-      end: date.toISOString(),
-      startEditable: true,
-      durationEditable: true,
-      allDay: true,
-      isRepeat: false,
-      category: 1,
-      location: null,
-    });
-  }, []);
+  const handleDateClick = useCallback(
+    ({ date }: { date: Date }) => {
+      handleModalOpen({
+        type: 'Schedule',
+        title: '',
+        memo: '',
+        start: date.toISOString(),
+        end: date.toISOString(),
+        startEditable: true,
+        durationEditable: true,
+        allDay: true,
+        isRepeat: false,
+        category: 1,
+        location: null,
+      });
+    },
+    [handleModalOpen]
+  );
 
-  const handleEventClick = useCallback((info: EventClickArg) => {
-    const { type, ...props } = info.event.extendedProps;
-    handleModalOpen({
-      title: info.event.title,
-      start: info.event.startStr,
-      end: info.event.endStr,
-      startEditable: true,
-      isRepeat: false,
-      memo: props.memo,
-      location: props.location,
-      durationEditable: type === 'Schedule',
-      allDay: info.event.allDay,
-      category: type === 'Schedule' ? 1 : undefined,
-      priority: type === 'Todo' ? props.priority || 2 : undefined,
-      type,
-    });
-  }, []);
+  const handleEventClick = useCallback(
+    (info: EventClickArg) => {
+      const { type, ...props } = info.event.extendedProps;
+      handleModalOpen({
+        title: info.event.title,
+        start: info.event.startStr,
+        end: info.event.endStr,
+        startEditable: true,
+        isRepeat: false,
+        memo: props.memo,
+        location: props.location,
+        durationEditable: type === 'Schedule',
+        allDay: info.event.allDay,
+        category: type === 'Schedule' ? 1 : undefined,
+        priority: type === 'Todo' ? props.priority || 2 : undefined,
+        type,
+      });
+    },
+    [handleModalOpen]
+  );
 
   const handleDatesSet = ({ view }: DatesSetArg) => {
     setCurrentDate({
@@ -213,7 +246,6 @@ const Calendar = () => {
         headerToolbar={{ left: '', end: '' }}
         fixedWeekCount={false}
         height="calc(100% - 80px)"
-        dayMaxEventRows
         editable
         selectable
         locale="ko"
@@ -225,8 +257,9 @@ const Calendar = () => {
         eventContent={({ event }) => <EventContent event={event} />}
         eventClick={handleEventClick}
         dateClick={handleDateClick}
+        dayMaxEvents={3}
         moreLinkText={(num) => `+${num}`}
-        events={events}
+        events={filteredEvents}
       />
       {isModalOpen && (
         <CalendarModal onClose={handleModalClose} event={selectedEvent} />

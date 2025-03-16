@@ -153,6 +153,21 @@ export const mailList_description = style({
   WebkitLineClamp: 2,
 });
 
+export const listLoadingBox = style({
+  display: 'flex',
+  width: '100%',
+  height: '100%',
+  justifyContent: 'center',
+  alignItems: 'center',
+});
+
+export const summaryLoadingBox = style({
+  display: 'flex',
+  width: '100%',
+  justifyContent: 'center',
+  alignItems: 'center',
+});
+
 export const content_detail = style({
   height: 'calc(100vh - 72px)',
   overflow: 'auto',
