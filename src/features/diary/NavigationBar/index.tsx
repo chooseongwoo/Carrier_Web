@@ -1,7 +1,7 @@
 import * as s from './style.css';
 import { ArrowBarIcon } from 'features/diary/ui';
 import { getNextDate, getPrevDate, NowDatePeriod } from 'shared/lib/date';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useDiaryData } from '../../../shared/hooks/useDiaryData.ts';
 
 interface DiaryEntry {
@@ -14,9 +14,16 @@ interface DiaryEntry {
 
 type DiaryMap = Record<string, DiaryEntry>;
 
-const NavigationBar = () => {
+interface NavigationBarProps {
+  selectedDate: string;
+  setSelectedDate: (date: string) => void;
+}
+
+const NavigationBar = ({
+  selectedDate,
+  setSelectedDate,
+}: NavigationBarProps) => {
   const { currentDate, setCurrentDate, days, diaryListData } = useDiaryData();
-  const [selectedDate, setSelectedDate] = useState(NowDatePeriod);
 
   const diaryMap = useMemo(() => {
     if (!diaryListData) return {};
@@ -36,6 +43,12 @@ const NavigationBar = () => {
     setCurrentDate(getNextDate(currentDate, 7));
   };
 
+  const handleDateClick = (day: string) => {
+    if (day <= NowDatePeriod) {
+      setSelectedDate(day);
+    }
+  };
+
   return (
     <div className={s.container}>
       <div className={s.buttonContainer} onClick={handlePrevWeek}>
@@ -44,29 +57,28 @@ const NavigationBar = () => {
           <div className={s.buttonText}>저번 주</div>
         </div>
       </div>
+
       <div className={s.datesContainer}>
         {days.map((day, index) => {
           const dayNumber = day.split('.')[2].replace(/^0+/, '');
-          const selectedDay = day === selectedDate;
+          const isSelected = day === selectedDate;
           const isHoliday = index === 0 || index === 6;
-          const calendarToday = day === NowDatePeriod;
           const hasDiary = !!diaryMap[day];
+          const shouldShowNoDiaryText = !hasDiary && day < NowDatePeriod;
 
           return (
             <div
               key={index}
               className={s.dayContainer}
-              onClick={() => setSelectedDate(day)}
+              onClick={() => handleDateClick(day)}
+              style={{ cursor: day > NowDatePeriod ? 'default' : 'pointer' }}
             >
               <div
                 className={s.dayBox({
-                  selected: selectedDay,
-                  today: calendarToday,
+                  selected: isSelected,
                 })}
               >
-                <div
-                  className={s.dayText({ isHoliday, selected: selectedDay })}
-                >
+                <div className={s.dayText({ isHoliday, selected: isSelected })}>
                   {dayNumber}
                 </div>
               </div>
@@ -80,14 +92,15 @@ const NavigationBar = () => {
                       {diaryMap[day].title}
                     </p>
                   </div>
-                ) : (
+                ) : shouldShowNoDiaryText ? (
                   <p className={s.dayDiarySummaryText}>일기 없음</p>
-                )}
+                ) : null}
               </div>
             </div>
           );
         })}
       </div>
+
       <div className={s.buttonContainer} onClick={handleNextWeek}>
         <div className={s.buttonBox}>
           <ArrowBarIcon direction="right" />

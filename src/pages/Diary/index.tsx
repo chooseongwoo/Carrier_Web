@@ -4,8 +4,8 @@ import Content from 'features/diary/Content';
 import Chatbar from 'features/diary/Chatbar';
 import { useDiaryData } from '../../shared/hooks/useDiaryData.ts';
 import { useEffect, useState } from 'react';
-import { NowDatePeriod } from '../../shared/lib/date';
 import ReadContent from '../../features/diary/ReadContent';
+import { NowDatePeriod } from '../../shared/lib/date';
 
 interface DiaryEntry {
   id: number;
@@ -17,31 +17,32 @@ interface DiaryEntry {
 
 const Diary = () => {
   const { diaryListData } = useDiaryData();
-  const [isTodayDiaryExist, setIsTodayDiaryExist] = useState(true);
+  const [selectedDate, setSelectedDate] = useState<string>(NowDatePeriod);
+  const [selectedDiaryId, setSelectedDiaryId] = useState<number | null>(null);
 
   useEffect(() => {
-    if (!diaryListData) return;
+    if (!diaryListData || !selectedDate) return;
 
-    const todayDiary = diaryListData.some(
+    const diaryForSelectedDate = diaryListData.find(
       (diary: DiaryEntry) =>
-        diary.createDateTime.split('T')[0].replace(/-/g, '.') === NowDatePeriod
+        diary.createDateTime.split('T')[0].replace(/-/g, '.') === selectedDate
     );
 
-    if (todayDiary) {
-      setIsTodayDiaryExist(true);
-    } else {
-      setIsTodayDiaryExist(false);
-    }
-  }, [diaryListData]);
+    setSelectedDiaryId(diaryForSelectedDate ? diaryForSelectedDate.id : null);
+  }, [diaryListData, selectedDate]);
+
   return (
     <div className={s.container}>
-      <NavigationBar />
+      <NavigationBar
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+      />
       <div className={s.main}>
-        {isTodayDiaryExist ? (
-          <ReadContent />
+        {selectedDiaryId ? (
+          <ReadContent diaryId={selectedDiaryId} />
         ) : (
           <>
-            <Content setIsTodayDiaryExist={setIsTodayDiaryExist} />
+            <Content setIsTodayDiaryExist={() => {}} />
             <Chatbar />
           </>
         )}

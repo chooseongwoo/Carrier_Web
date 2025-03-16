@@ -4,7 +4,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useDiaryAddMutation } from '../services/diary.mutation.ts';
 import EmojiPicker, { Categories } from 'emoji-picker-react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useDiaryData } from '../../../shared/hooks/useDiaryData.ts';
 import { diaryKeys } from '../services/diary.keys.ts';
 
 interface ContentProps {
@@ -30,7 +29,6 @@ const Content = ({ setIsTodayDiaryExist }: ContentProps) => {
   const [emoji, setEmoji] = useState('');
   const [isDiaryFormValid, setIsDiaryFromValid] = useState(false);
   const { mutate: addDiaryMutate } = useDiaryAddMutation();
-  const { startDateTime, endDateTime } = useDiaryData();
 
   useEffect(() => {
     if (title && content && emoji) {
@@ -52,7 +50,7 @@ const Content = ({ setIsTodayDiaryExist }: ContentProps) => {
         onSuccess: () => {
           setIsTodayDiaryExist(true);
           queryClient.invalidateQueries({
-            queryKey: [diaryKeys.DIARY_LIST, startDateTime, endDateTime],
+            queryKey: [diaryKeys.DIARY_LIST],
           });
         },
         onError: (error) => {

@@ -22,6 +22,11 @@ export const postDiary = async (diaryData: {
   return data;
 };
 
+export const getDiary = async (id: number) => {
+  const { data } = await customAxios.get(`/diaries/${id}`);
+  return data;
+};
+
 export const deleteDiary = async (diaryId: string) => {
   const { data } = await customAxios.delete(`/diaries/${diaryId}`);
   return data;
