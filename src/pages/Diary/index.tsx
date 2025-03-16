@@ -19,6 +19,8 @@ const Diary = () => {
   const { diaryListData } = useDiaryData();
   const [selectedDate, setSelectedDate] = useState<string>(NowDatePeriod);
   const [selectedDiaryId, setSelectedDiaryId] = useState<number | null>(null);
+  const isPastDate = selectedDate < NowDatePeriod;
+  const isNoDiary = selectedDiaryId === null;
 
   useEffect(() => {
     if (!diaryListData || !selectedDate) return;
@@ -38,7 +40,7 @@ const Diary = () => {
         setSelectedDate={setSelectedDate}
       />
       <div className={s.main}>
-        {selectedDiaryId ? (
+        {isPastDate && isNoDiary ? null : selectedDiaryId ? (
           <ReadContent diaryId={selectedDiaryId} />
         ) : (
           <>
