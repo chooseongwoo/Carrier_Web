@@ -24,7 +24,6 @@ const ReadContent = ({ diaryId }: ReadContentProps) => {
   if (error) return <p>에러가 발생했습니다: {error.message}</p>;
   if (!diaryData) return <p>일기 데이터를 찾을 수 없습니다.</p>;
 
-  console.log(diaryData.title);
   return (
     <div className={s.readDiaryContainer}>
       <div className={s.TitleContainer}>
