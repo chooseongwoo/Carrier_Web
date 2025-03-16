@@ -16,7 +16,7 @@ interface DiaryEntry {
 }
 
 const Diary = () => {
-  const { diaryListData } = useDiaryData();
+  const { diaryListData, setCurrentDate } = useDiaryData();
   const [selectedDate, setSelectedDate] = useState<string>(NowDatePeriod);
   const [selectedDiaryId, setSelectedDiaryId] = useState<number | null>(null);
   const isPastDate = selectedDate < NowDatePeriod;
@@ -32,6 +32,10 @@ const Diary = () => {
 
     setSelectedDiaryId(diaryForSelectedDate ? diaryForSelectedDate.id : null);
   }, [diaryListData, selectedDate]);
+
+  useEffect(() => {
+    setCurrentDate(selectedDate);
+  }, [selectedDate, setCurrentDate]);
 
   return (
     <div className={s.container}>

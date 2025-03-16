@@ -5,7 +5,7 @@ import { diaryKeys } from './diary.keys.ts';
 export const useDiaryQuery = {
   getDiaryList: (startDateTime: string, endDateTime: string) =>
     queryOptions({
-      queryKey: [diaryKeys.DIARY_LIST],
+      queryKey: [diaryKeys.DIARY_LIST, startDateTime, endDateTime],
       queryFn: () => getDiaryList({ startDateTime, endDateTime }),
     }),
   getDiary: (id: number) =>

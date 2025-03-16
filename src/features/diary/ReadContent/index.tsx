@@ -12,8 +12,11 @@ const ReadContent = ({ diaryId }: ReadContentProps) => {
     isLoading,
     error,
   } = useQuery({
-    ...useDiaryQuery.getDiary(diaryId as number),
-    enabled: diaryId !== null,
+    queryKey: ['diary', diaryId ? diaryId.toString() : 'null'],
+    queryFn: diaryId
+      ? useDiaryQuery.getDiary(diaryId).queryFn
+      : () => Promise.resolve(null),
+    enabled: !!diaryId,
   });
 
   if (diaryId === null) return null;
