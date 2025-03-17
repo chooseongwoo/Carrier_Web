@@ -56,6 +56,7 @@ export const miniCalendarDay = recipe({
     ...font.p1,
     fontWeight: '500',
     borderRadius: '8px',
+    cursor: 'pointer',
   },
   variants: {
     selected: {
