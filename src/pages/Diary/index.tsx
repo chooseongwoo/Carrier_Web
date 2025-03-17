@@ -48,7 +48,7 @@ const Diary = () => {
           <ReadContent diaryId={selectedDiaryId} />
         ) : (
           <>
-            <Content setIsTodayDiaryExist={() => {}} />
+            <Content setSelectedDiaryId={setSelectedDiaryId} />
             <Chatbar />
           </>
         )}

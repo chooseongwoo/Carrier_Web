@@ -1,44 +1,40 @@
 import * as s from './style.css';
 import { EmojiIcon } from 'features/diary/ui';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useDiaryAddMutation } from '../services/diary.mutation.ts';
+import {
+  useDiaryAddMutation,
+  useDiaryDeleteMutation,
+} from '../services/diary.mutation.ts';
 import EmojiPicker from 'emoji-picker-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { diaryKeys } from '../services/diary.keys.ts';
 import { emojiPickerCategories } from '../constants/emojiCategories.ts';
 
 interface ContentProps {
-  setIsTodayDiaryExist: Dispatch<SetStateAction<boolean>>;
+  setSelectedDiaryId: Dispatch<SetStateAction<number | null>>;
 }
 
-const Content = ({ setIsTodayDiaryExist }: ContentProps) => {
+const Content = ({ setSelectedDiaryId }: ContentProps) => {
   const queryClient = useQueryClient();
   const [isEmojiClicked, setIsEmojiClicked] = useState(false);
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [emoji, setEmoji] = useState('');
+  const [diary, setDiary] = useState({ title: '', content: '', emoji: '' });
   const [isDiaryFormValid, setIsDiaryFromValid] = useState(false);
   const { mutate: addDiaryMutate } = useDiaryAddMutation();
+  // const { mutate: removeDiaryMutate } = useDiaryDeleteMutation();
+  //
+  // useEffect(() => {
+  //   removeDiaryMutate(34);
+  // }, []);
 
   useEffect(() => {
-    if (title && content && emoji) {
-      setIsDiaryFromValid(true);
-    } else {
-      setIsDiaryFromValid(false);
-    }
-  }, [title, content, emoji]);
+    setIsDiaryFromValid(!!(diary.title && diary.content && diary.emoji));
+  }, [diary.title, diary.content, diary.emoji]);
 
   const onAddDiaryBtnClick = () => {
     if (isDiaryFormValid) {
-      const addDiaryBody = {
-        title: title,
-        content: content,
-        emoji: emoji,
-      };
-
-      addDiaryMutate(addDiaryBody, {
-        onSuccess: () => {
-          setIsTodayDiaryExist(true);
+      addDiaryMutate(diary, {
+        onSuccess: (newDiary) => {
+          setSelectedDiaryId(newDiary);
           queryClient.invalidateQueries({
             queryKey: [diaryKeys.DIARY_LIST],
           });
@@ -56,8 +52,10 @@ const Content = ({ setIsTodayDiaryExist }: ContentProps) => {
         <input
           className={s.titleText}
           placeholder="제목을 입력해주세요."
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={diary.title}
+          onChange={(e) =>
+            setDiary((prev) => ({ ...prev, title: e.target.value }))
+          }
         />
       </div>
       <div className={s.mainContainer}>
@@ -67,9 +65,9 @@ const Content = ({ setIsTodayDiaryExist }: ContentProps) => {
               className={s.emojiPicker}
               onClick={() => setIsEmojiClicked((prev) => !prev)}
             >
-              {emoji ? (
+              {diary.emoji ? (
                 <div className={s.emojiTextLayout}>
-                  <p className={s.emojiText}>{emoji}</p>
+                  <p className={s.emojiText}>{diary.emoji}</p>
                 </div>
               ) : (
                 <div className={s.emojiCircle}>
@@ -90,7 +88,7 @@ const Content = ({ setIsTodayDiaryExist }: ContentProps) => {
                   }}
                   categories={emojiPickerCategories}
                   onEmojiClick={(emojiObject) => {
-                    setEmoji(emojiObject.emoji);
+                    setDiary((prev) => ({ ...prev, emoji: emojiObject.emoji }));
                     setIsEmojiClicked(false);
                   }}
                 />
@@ -100,8 +98,10 @@ const Content = ({ setIsTodayDiaryExist }: ContentProps) => {
           <textarea
             className={s.textBox}
             placeholder="오늘 하루는 어땠나요?"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            value={diary.content}
+            onChange={(e) =>
+              setDiary((prev) => ({ ...prev, content: e.target.value }))
+            }
           />
         </div>
         <button
