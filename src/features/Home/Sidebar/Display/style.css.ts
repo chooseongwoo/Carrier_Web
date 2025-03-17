@@ -29,6 +29,7 @@ export const displayTitle = style({
 
 export const displayBtnLayout = recipe({
   base: {
+    cursor: 'pointer',
     display: 'flex',
     height: '24px',
     padding: '2px 2px 2px 22px',
