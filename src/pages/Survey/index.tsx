@@ -49,7 +49,7 @@ const Survey = () => {
         <div
           className={s.skipButton}
           onClick={() => {
-            handleAlarmTime('06:00');
+            handleAlarmTime('09:00');
           }}
         >
           건너뛰기

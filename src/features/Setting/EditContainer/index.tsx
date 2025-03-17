@@ -38,13 +38,13 @@ interface EditContainerProps {
   userInfos: {
     name: string;
     email: string;
-    profileImage: string;
+    profileImage: string | File;
     notificationTime: string;
   };
   setUserInfos: (userInfos: {
     name: string;
     email: string;
-    profileImage: string;
+    profileImage: string | File;
     notificationTime: string;
   }) => void;
   time: string[];
@@ -71,14 +71,10 @@ const EditContainer = ({
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setUserInfos({
-          ...userInfos,
-          profileImage: reader.result as string,
-        });
-      };
-      reader.readAsDataURL(file);
+      setUserInfos({
+        ...userInfos,
+        profileImage: file,
+      });
     }
   };
 
@@ -113,7 +109,13 @@ const EditContainer = ({
           </div>
           <div
             className={s.profileImage}
-            style={{ backgroundImage: `url(${userInfos.profileImage})` }}
+            style={{
+              backgroundImage: `url(${
+                typeof userInfos.profileImage === 'string'
+                  ? userInfos.profileImage
+                  : URL.createObjectURL(userInfos.profileImage)
+              })`,
+            }}
             onClick={triggerFileSelect}
           >
             <PencilIcon />
