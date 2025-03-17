@@ -41,8 +41,14 @@ const PublicRoute = memo(
   }
 );
 
+const SurveyRoute = memo(({ isSurvey }: { isSurvey: boolean }) => {
+  if (isSurvey) return <Navigate to="/" replace />; // isSurvey가 true면 홈으로 리디렉트
+  return <Outlet />;
+});
+
 export default function Router() {
-  const { isLoggedIn, isLoading } = useUser();
+  const { isLoggedIn, isLoading, user } = useUser();
+  const { isSurvey } = user;
 
   return (
     <Suspense fallback={<LoadingScreen />}>
@@ -68,8 +74,9 @@ export default function Router() {
           <Route path="/login" element={<Login />} />
           <Route path="/google/callback" element={<OAuth />} />
         </Route>
-
-        <Route path="/survey" element={<Survey />} />
+        <Route element={<SurveyRoute isSurvey={isSurvey} />}>
+          <Route path="/survey" element={<Survey />} />
+        </Route>
       </Routes>
     </Suspense>
   );
