@@ -1,14 +1,22 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Arrow } from 'shared/icons';
 import * as s from './style.css';
+import { todoSelectedDateAtom } from 'entities/calendar/contexts/todoDate';
+import { useAtom } from 'jotai';
+import { formatDateToPeriod, parseDateString } from 'shared/lib/date';
 
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
 const MiniCalendar = () => {
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [dateString, setDateString] = useAtom(todoSelectedDateAtom);
+  const currentDate = useMemo(() => parseDateString(dateString), [dateString]);
   const [selectedDate, setSelectedDate] = useState<number | null>(
-    new Date().getDate()
+    currentDate.getDate()
   );
+
+  useEffect(() => {
+    setSelectedDate(currentDate.getDate());
+  }, [currentDate]);
 
   const { startWeek, daysInMonth, prevEndOfMonth } = useMemo(() => {
     const year = currentDate.getFullYear();
@@ -16,31 +24,38 @@ const MiniCalendar = () => {
 
     const startOfMonth = new Date(year, month, 1);
     const endOfMonth = new Date(year, month + 1, 0);
-    const prevEndOfMonth = new Date(year, month, 0);
+    const prevEndOfMonthDate = new Date(year, month, 0);
 
     return {
       startWeek: startOfMonth.getDay(),
       daysInMonth: endOfMonth.getDate(),
-      prevEndOfMonth: prevEndOfMonth.getDate(),
+      prevEndOfMonth: prevEndOfMonthDate.getDate(),
     };
   }, [currentDate]);
 
+  const updateDate = (newDate: Date) => {
+    setDateString(formatDateToPeriod(newDate));
+    setSelectedDate(newDate.getDate());
+  };
+
   const handlePrevMonth = () => {
-    setCurrentDate(
-      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
-    );
-    setSelectedDate(null);
+    const newDate = new Date(currentDate);
+    newDate.setMonth(newDate.getMonth() - 1);
+    newDate.setDate(1);
+    updateDate(newDate);
   };
 
   const handleNextMonth = () => {
-    setCurrentDate(
-      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
-    );
-    setSelectedDate(null);
+    const newDate = new Date(currentDate);
+    newDate.setMonth(newDate.getMonth() + 1);
+    newDate.setDate(1);
+    updateDate(newDate);
   };
 
   const handleDateClick = (day: number) => {
-    setSelectedDate(day);
+    const newDate = new Date(currentDate);
+    newDate.setDate(day);
+    updateDate(newDate);
   };
 
   const renderDays = useMemo(() => {
@@ -96,7 +111,7 @@ const MiniCalendar = () => {
     }
 
     return days;
-  }, [startWeek, daysInMonth, prevEndOfMonth, selectedDate]);
+  }, [startWeek, daysInMonth, prevEndOfMonth, selectedDate, dateString]);
 
   return (
     <div className={s.miniCalendarContainer}>
