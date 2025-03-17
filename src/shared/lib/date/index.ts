@@ -33,3 +33,7 @@ export const ChangeDateToDash = (dateStr: string): string => {
   const day = ('0' + date.getDate()).slice(-2);
   return `${year}-${month}-${day}`;
 };
+
+export const parseDateString = (dateStr: string): Date => {
+  return new Date(dateStr.replace(/\./g, '-'));
+};

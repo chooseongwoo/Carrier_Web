@@ -9,3 +9,12 @@ export const patchUserInfo = async (nickname: string) => {
   const { data } = await customAxios.patch('/users', { nickname });
   return data;
 };
+
+export const patchUserPicture = async (formData: FormData) => {
+  const { data } = await customAxios.patch('/users/picture', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return data;
+};
