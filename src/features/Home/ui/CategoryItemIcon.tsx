@@ -41,7 +41,7 @@ const BtnCategoryItem = ({
         width="23"
         height="23"
         rx="3.5"
-        fill={isClicked ? theme.gray[50] : initialBgColor}
+        fill={initialBgColor}
       />
       <rect
         x="0.5"
