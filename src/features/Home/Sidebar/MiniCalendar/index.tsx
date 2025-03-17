@@ -52,9 +52,19 @@ const MiniCalendar = () => {
     updateDate(newDate);
   };
 
-  const handleDateClick = (day: number) => {
+  const handleDateClick = (day: number, type: 'prev' | 'next' | 'day') => {
     const newDate = new Date(currentDate);
-    newDate.setDate(day);
+    console.log(day);
+    if (type === 'prev') {
+      newDate.setMonth(newDate.getMonth() - 1);
+      newDate.setDate(day);
+    } else if (type === 'next') {
+      newDate.setMonth(newDate.getMonth() + 1);
+      newDate.setDate(day);
+    } else if (type === 'day') {
+      newDate.setDate(day);
+    }
+
     updateDate(newDate);
   };
 
@@ -63,6 +73,7 @@ const MiniCalendar = () => {
 
     for (let i = startWeek - 1; i >= 0; i--) {
       const isSunday = (startWeek - i - 1) % 7 === 0;
+      console.log(i);
       days.push(
         <div
           key={`prev-${i}`}
@@ -73,6 +84,7 @@ const MiniCalendar = () => {
                 ? 'red'
                 : undefined,
           }}
+          onClick={() => handleDateClick(prevEndOfMonth - i, 'prev')}
         >
           {prevEndOfMonth - i}
         </div>
@@ -89,7 +101,7 @@ const MiniCalendar = () => {
           style={{
             color: isSunday && selectedDate !== i ? 'red' : undefined,
           }}
-          onClick={() => handleDateClick(i)}
+          onClick={() => handleDateClick(i, 'day')}
         >
           {i}
         </div>
@@ -104,6 +116,7 @@ const MiniCalendar = () => {
           key={`next-${i}`}
           className={s.miniCalendarDay({ isEmpty: true })}
           style={{ color: isSunday && selectedDate !== i ? 'red' : undefined }}
+          onClick={() => handleDateClick(i, 'next')}
         >
           {i}
         </div>
@@ -111,7 +124,7 @@ const MiniCalendar = () => {
     }
 
     return days;
-  }, [startWeek, daysInMonth, prevEndOfMonth, selectedDate, dateString]);
+  }, [startWeek, daysInMonth, prevEndOfMonth, selectedDate]);
 
   return (
     <div className={s.miniCalendarContainer}>
