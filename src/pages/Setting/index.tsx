@@ -4,7 +4,10 @@ import SettingIcon from 'pages/Setting/ui/SettingIcon';
 import EditContainer from 'features/Setting/EditContainer';
 import LogoutModal from 'features/Setting/LogoutModal';
 import useUser from 'features/user/hooks/useUser';
-import { useUpdateUserInfo } from 'features/user/services/user.mutation';
+import {
+  useUpdateUserInfo,
+  useUpdateUserPictrue,
+} from 'features/user/services/user.mutation';
 import { useAlarmTimeMutation } from 'features/AlaramTime/services/time.mutation';
 
 const Setting = () => {
@@ -13,9 +16,15 @@ const Setting = () => {
 
   const { user } = useUser();
   const { mutate: updateUserInfoMutate } = useUpdateUserInfo();
+  const { mutate: updateUserPictureMutate } = useUpdateUserPictrue();
   const { mutate: updateAlarmTimeMutate } = useAlarmTimeMutation();
 
-  const [userInfos, setUserInfos] = useState({
+  const [userInfos, setUserInfos] = useState<{
+    name: string;
+    email: string;
+    profileImage: string | File;
+    notificationTime: string;
+  }>({
     name: user?.nickname || '',
     email: user?.email || '',
     profileImage: user?.picture || '',
@@ -57,18 +66,46 @@ const Setting = () => {
 
   const isButtonDisabled = useMemo(() => {
     return (
-      user.nickname === userInfos.name && user.notificationTime === formatTime
+      user.nickname === userInfos.name &&
+      user.notificationTime === formatTime &&
+      user.picture === userInfos.profileImage
     );
   }, [user, userInfos, formatTime]);
+
+  const handleSave = () => {
+    if (user.notificationTime !== userInfos.notificationTime) {
+      updateAlarmTimeMutate(formatTime);
+    }
+    if (user.nickname !== userInfos.name) {
+      updateUserInfoMutate(userInfos.name);
+    }
+    if (userInfos.profileImage instanceof File) {
+      const formData = new FormData();
+      formData.append('picture', userInfos.profileImage);
+      updateUserPictureMutate(formData);
+    }
+  };
 
   return (
     <main className={s.container}>
       <header className={s.header}>
         <div className={s.userInfos}>
-          <img
-            src={userInfos.profileImage}
-            alt="프로필 사진"
-            className={s.headerProfileImg}
+          <label htmlFor="profile-upload">
+            <img
+              src={
+                typeof userInfos.profileImage === 'string'
+                  ? userInfos.profileImage
+                  : URL.createObjectURL(userInfos.profileImage)
+              }
+              alt="프로필 사진"
+              className={s.headerProfileImg}
+            />
+          </label>
+          <input
+            type="file"
+            id="profile-upload"
+            style={{ display: 'none' }}
+            accept="image/*"
           />
           <div className={s.textBox}>
             <p className={s.nameText}>{userInfos.name}</p>
@@ -79,10 +116,7 @@ const Setting = () => {
           className={s.button({
             type: isButtonDisabled ? 'disabled' : 'enabled',
           })}
-          onClick={() => {
-            updateAlarmTimeMutate(formatTime);
-            updateUserInfoMutate(userInfos.name);
-          }}
+          onClick={handleSave}
           disabled={isButtonDisabled}
         >
           저장하기
