@@ -72,29 +72,3 @@ export const miniCalendarDay = recipe({
     isEmpty: false,
   },
 });
-
-export const miniCalendarSelectedDay = style({
-  display: 'flex',
-  width: '24px',
-  height: '24px',
-  margin: '-3px -5px -3px -5px',
-  justifyContent: 'center',
-  alignItems: 'center',
-  flexShrink: '0',
-  textAlign: 'center',
-  borderRadius: '12px',
-  color: theme.white,
-
-  backgroundColor: theme.blue[400],
-  ...font.H5,
-});
-
-export const miniCalendarEmptyDay = style({
-  width: '34px',
-  textAlign: 'center',
-  color: theme.black,
-  opacity: 0.3,
-  fontFamily: 'Pretendard',
-  ...font.p1,
-  fontWeight: '500',
-});
