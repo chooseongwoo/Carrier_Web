@@ -1,10 +1,7 @@
 import * as s from './style.css';
 import { EmojiIcon } from 'features/diary/ui';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import {
-  useDiaryAddMutation,
-  useDiaryDeleteMutation,
-} from '../services/diary.mutation.ts';
+import { useDiaryAddMutation } from '../services/diary.mutation.ts';
 import EmojiPicker from 'emoji-picker-react';
 import { emojiPickerCategories } from '../constants/emojiCategories.ts';
 
@@ -17,11 +14,6 @@ const Content = ({ setSelectedDiaryId }: ContentProps) => {
   const [diary, setDiary] = useState({ title: '', content: '', emoji: '' });
   const [isDiaryFormValid, setIsDiaryFromValid] = useState(false);
   const { mutate: addDiaryMutate } = useDiaryAddMutation(setSelectedDiaryId);
-  // const { mutate: removeDiaryMutate } = useDiaryDeleteMutation();
-  //
-  // useEffect(() => {
-  //   removeDiaryMutate(37);
-  // }, []);
 
   useEffect(() => {
     setIsDiaryFromValid(!!(diary.title && diary.content && diary.emoji));

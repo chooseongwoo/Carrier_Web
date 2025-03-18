@@ -1,7 +1,7 @@
 import * as s from './style.css';
 import { ArrowBarIcon } from 'features/diary/ui';
 import { getNextDate, getPrevDate, NowDatePeriod } from 'shared/lib/date';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useDiaryData } from 'features/diary/hooks/useDiaryData';
 import theme from 'shared/styles/theme.css.ts';
 
@@ -34,10 +34,6 @@ const NavigationBar = ({
       acc[diaryDate] = diary;
       return acc;
     }, {});
-  }, [diaryListData]);
-
-  useEffect(() => {
-    console.log('🔄 diaryListData 변경됨:', diaryListData);
   }, [diaryListData]);
 
   const handlePrevWeek = () => {
@@ -81,6 +77,7 @@ const NavigationBar = ({
               <div
                 className={s.dayBox({
                   selected: isSelected,
+                  today: day === NowDatePeriod,
                 })}
               >
                 <div className={s.dayText({ isHoliday, selected: isSelected })}>
