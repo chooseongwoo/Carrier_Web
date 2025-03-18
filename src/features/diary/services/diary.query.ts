@@ -10,7 +10,7 @@ export const useDiaryQuery = {
     }),
   getDiary: (id: number) =>
     queryOptions({
-      queryKey: [diaryKeys.DiARY],
+      queryKey: [diaryKeys.DIARY],
       queryFn: () => getDiary(id),
     }),
 };
