@@ -19,7 +19,7 @@ const Diary = () => {
   const { diaryListData, setCurrentDate } = useDiaryData();
   const [selectedDate, setSelectedDate] = useState<string>(NowDatePeriod);
   const [selectedDiaryId, setSelectedDiaryId] = useState<number | null>(null);
-  const isPastDate = selectedDate < NowDatePeriod;
+  const isPastDate = selectedDate <= NowDatePeriod;
   const isNoDiary = selectedDiaryId === null;
 
   useEffect(() => {
