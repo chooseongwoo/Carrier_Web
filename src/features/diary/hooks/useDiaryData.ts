@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { NowDatePeriod } from 'shared/lib/date';
 import { useQuery } from '@tanstack/react-query';
-import { useDiaryQuery } from '../../features/diary/services/diary.query.ts';
+import { useDiaryQuery } from 'features/diary/services/diary.query.ts';
 
 export const getWeekDays = (currentDate: string) => {
   const dateObj = new Date(currentDate.replace(/\./g, '-'));

@@ -2,10 +2,10 @@ import * as s from './style.css';
 import NavigationBar from 'features/diary/NavigationBar';
 import Content from 'features/diary/Content';
 import Chatbar from 'features/diary/Chatbar';
-import { useDiaryData } from '../../shared/hooks/useDiaryData.ts';
+import { useDiaryData } from 'features/diary/hooks/useDiaryData.ts';
 import { useEffect, useState } from 'react';
-import ReadContent from '../../features/diary/ReadContent';
-import { NowDatePeriod } from '../../shared/lib/date';
+import ReadContent from 'features/diary/ReadContent';
+import { NowDatePeriod } from 'shared/lib/date';
 
 interface DiaryEntry {
   id: number;

@@ -17,8 +17,7 @@ export const container = style({
 
 export const titleContainer = style({
   display: 'flex',
-  height: '12vh',
-  padding: '0 40px',
+  padding: '28px 40px',
   alignItems: 'center',
   alignSelf: 'stretch',
 
@@ -41,7 +40,7 @@ export const titleText = style({
 });
 
 export const mainContainer = style({
-  padding: '28px 40px 86px 40px',
+  padding: '28px 40px 86px',
   width: '100%',
   display: 'flex',
   flexGrow: 1,

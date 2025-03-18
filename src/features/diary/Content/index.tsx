@@ -6,8 +6,6 @@ import {
   useDiaryDeleteMutation,
 } from '../services/diary.mutation.ts';
 import EmojiPicker from 'emoji-picker-react';
-import { useQueryClient } from '@tanstack/react-query';
-import { diaryKeys } from '../services/diary.keys.ts';
 import { emojiPickerCategories } from '../constants/emojiCategories.ts';
 
 interface ContentProps {
@@ -15,15 +13,14 @@ interface ContentProps {
 }
 
 const Content = ({ setSelectedDiaryId }: ContentProps) => {
-  const queryClient = useQueryClient();
   const [isEmojiClicked, setIsEmojiClicked] = useState(false);
   const [diary, setDiary] = useState({ title: '', content: '', emoji: '' });
   const [isDiaryFormValid, setIsDiaryFromValid] = useState(false);
-  const { mutate: addDiaryMutate } = useDiaryAddMutation();
+  const { mutate: addDiaryMutate } = useDiaryAddMutation(setSelectedDiaryId);
   // const { mutate: removeDiaryMutate } = useDiaryDeleteMutation();
   //
   // useEffect(() => {
-  //   removeDiaryMutate(34);
+  //   removeDiaryMutate(37);
   // }, []);
 
   useEffect(() => {
@@ -32,17 +29,7 @@ const Content = ({ setSelectedDiaryId }: ContentProps) => {
 
   const onAddDiaryBtnClick = () => {
     if (isDiaryFormValid) {
-      addDiaryMutate(diary, {
-        onSuccess: (newDiary) => {
-          setSelectedDiaryId(newDiary);
-          queryClient.invalidateQueries({
-            queryKey: [diaryKeys.DIARY_LIST],
-          });
-        },
-        onError: (error) => {
-          alert(`일기 저장에 실패했습니다: ${error.message}`);
-        },
-      });
+      addDiaryMutate(diary);
     }
   };
 

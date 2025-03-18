@@ -1,15 +1,13 @@
-import { customAxios } from '../../../shared/api';
+import { customAxios } from 'shared/api';
+import { toQueryString } from 'shared/lib/queryString';
 
-export const getDiaryList = async ({
-  startDateTime,
-  endDateTime,
-}: {
+export interface DiaryListReq {
   startDateTime: string;
   endDateTime: string;
-}) => {
-  const { data } = await customAxios.get(
-    `/diaries?startDateTime=${startDateTime}&endDateTime=${endDateTime}`
-  );
+}
+
+export const getDiaryList = async (params: DiaryListReq) => {
+  const { data } = await customAxios.get(`/diaries?${toQueryString(params)}`);
   return data;
 };
 

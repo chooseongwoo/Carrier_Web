@@ -1,9 +1,9 @@
 import * as s from './style.css';
 import { ArrowBarIcon } from 'features/diary/ui';
 import { getNextDate, getPrevDate, NowDatePeriod } from 'shared/lib/date';
-import { useMemo } from 'react';
-import { useDiaryData } from '../../../shared/hooks/useDiaryData.ts';
-import theme from '../../../shared/styles/theme.css.ts';
+import { useEffect, useMemo } from 'react';
+import { useDiaryData } from 'features/diary/hooks/useDiaryData';
+import theme from 'shared/styles/theme.css.ts';
 
 interface DiaryEntry {
   id: number;
@@ -34,6 +34,10 @@ const NavigationBar = ({
       acc[diaryDate] = diary;
       return acc;
     }, {});
+  }, [diaryListData]);
+
+  useEffect(() => {
+    console.log('🔄 diaryListData 변경됨:', diaryListData);
   }, [diaryListData]);
 
   const handlePrevWeek = () => {
