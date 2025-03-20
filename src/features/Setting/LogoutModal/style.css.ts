@@ -15,7 +15,7 @@ export const container = style({
 });
 
 export const modalContent = style({
-  padding: '36px 20px 16px',
+  paddingTop: '16px',
   display: 'flex',
   background: `${theme.white}`,
   width: '28rem',
@@ -28,11 +28,12 @@ export const explainText = style({
   ...font.p1,
   color: `${theme.gray[700]}`,
   textAlign: 'center',
-  padding: '12px',
+  padding: '20px 32px 12px 32px',
 });
 
 export const buttons = style({
   display: 'flex',
+  height: '78px',
   width: '100%',
   cursor: 'pointer',
 });
@@ -44,15 +45,27 @@ export const button = recipe({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '48px',
+    height: '100%',
+    transition: 'background-color 0.2s ease',
+    padding: '12px',
   },
   variants: {
     type: {
       cancel: {
         color: `${theme.black}`,
+        borderRadius: '0 0 0 16px',
+        ':hover': {
+          backgroundColor: `${theme.gray[50]}`,
+          borderRadius: '0 0 0 16px',
+        },
       },
       leave: {
         color: `${theme.red[500]}`,
+        borderRadius: '0 0 16px 0',
+        ':hover': {
+          backgroundColor: `${theme.gray[50]}`,
+          borderRadius: '0 0 16px 0',
+        },
       },
     },
   },
