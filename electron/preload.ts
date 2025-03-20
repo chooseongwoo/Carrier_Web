@@ -1,4 +1,4 @@
-import { contextBridge } from 'electron';
+import { contextBridge, ipcRenderer, shell } from 'electron';
 import { electronAPI } from '@electron-toolkit/preload';
 
 type IpcApiResponse<T = void> = Promise<{
@@ -9,7 +9,9 @@ type IpcApiResponse<T = void> = Promise<{
 const api = {};
 if (process.contextIsolated) {
   try {
-    contextBridge.exposeInMainWorld('electron', electronAPI);
+    contextBridge.exposeInMainWorld('electron', {
+      openExternal: (url: string) => shell.openExternal(url),
+    });
     contextBridge.exposeInMainWorld('api', api);
   } catch (error) {
     console.error(

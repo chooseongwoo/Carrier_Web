@@ -52,3 +52,10 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
+
+app.on('web-contents-created', (_, contents) => {
+  contents.setWindowOpenHandler(({ url }) => {
+    shell.openExternal(url);
+    return { action: 'deny' };
+  });
+});
