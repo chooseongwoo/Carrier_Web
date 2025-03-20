@@ -42,7 +42,7 @@ const PublicRoute = memo(
 );
 
 const SurveyRoute = memo(({ isSurvey }: { isSurvey: boolean }) => {
-  if (isSurvey) return <Navigate to="/" replace />; // isSurvey가 true면 홈으로 리디렉트
+  if (isSurvey) return <Navigate to="/" replace />;
   return <Outlet />;
 });
 
