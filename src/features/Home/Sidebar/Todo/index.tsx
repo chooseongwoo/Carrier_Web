@@ -3,16 +3,12 @@ import { Arrow } from 'shared/icons';
 import { TodoNormalIcon, TodoCheckedIcon } from 'features/Home/ui';
 import * as s from './style.css';
 import { useQueryClient } from '@tanstack/react-query';
-import {
-  ChangeDateToDash,
-  NowDatePeriod,
-  getNextDate,
-  getPrevDate,
-} from 'shared/lib/date';
+import { ChangeDateToDash, getNextDate, getPrevDate } from 'shared/lib/date';
 import { usePatchTodoMutation } from 'features/Home/services/home.mutation';
 import { useTodoListQuery } from 'features/Home/services/home.query';
 import { useAtom } from 'jotai';
 import { todoRenderingAtom } from 'entities/calendar/contexts/eventRendering';
+import { todoSelectedDateAtom } from 'entities/calendar/contexts/todoDate';
 
 interface TodoItem {
   id: number;
@@ -22,8 +18,7 @@ interface TodoItem {
 
 const Todo = () => {
   const queryClient = useQueryClient();
-  const NowDate = NowDatePeriod;
-  const [date, setDate] = useState(NowDate);
+  const [date, setDate] = useAtom(todoSelectedDateAtom);
   const [todoItems, setTodoItems] = useState<TodoItem[]>([]);
   const [todoRendering] = useAtom(todoRenderingAtom);
 

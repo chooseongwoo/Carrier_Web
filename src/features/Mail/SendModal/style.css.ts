@@ -91,6 +91,10 @@ export const editor = style({
   height: '100%',
 });
 
+globalStyle(`${editor} p`, {
+  display: 'block',
+});
+
 export const fileList = style({
   display: 'flex',
   flexDirection: 'column',

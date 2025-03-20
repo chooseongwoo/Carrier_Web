@@ -45,9 +45,6 @@ export const category = style({
   padding: '8px 12px',
   borderRadius: '8px',
   cursor: 'pointer',
-  ':hover': {
-    background: `${theme.gray[100]}`,
-  },
 });
 
 export const selected = style({
