@@ -9,20 +9,31 @@ import {
 import { authQuery } from 'features/auth/services/auth.query';
 import { useQueryClient } from '@tanstack/react-query';
 import { Storage } from 'shared/lib/storage';
+import { TOKEN } from 'shared/constants';
 
 const Login = () => {
   const queryClient = useQueryClient();
 
   const handleLogin = async () => {
+    const isElectron = !!window.electron;
+
     try {
-      Storage.delItem('accessToken');
-      Storage.delItem('refreshToken');
+      Storage.delItem(TOKEN.ACCESS);
+      Storage.delItem(TOKEN.REFRESH);
       const url = await queryClient.fetchQuery(authQuery.loginLink());
-      if (url) {
-        window.location.href = `${url}${import.meta.env.VITE_APPLICATION_REDIRECT}`;
-      } else {
+
+      if (!url) {
         /* eslint-disable no-console */
         console.error('로그인 링크를 찾을 수 없습니다.');
+        return;
+      }
+
+      if (isElectron) {
+        window.electron.openExternal(
+          `${url}${import.meta.env.VITE_APPLICATION_REDIRECT_APP}`
+        );
+      } else {
+        window.location.href = `${url}${import.meta.env.VITE_APPLICATION_REDIRECT}`;
       }
     } catch (error) {
       console.error('에러 발생:', error);
