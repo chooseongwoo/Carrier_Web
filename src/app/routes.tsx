@@ -4,7 +4,7 @@ import Layout from './Layout';
 import Login from 'pages/Login';
 import Home from 'pages/Home';
 import Survey from 'pages/Survey';
-import OAuth from 'pages/OAuth';
+import { OAuthApp, OAuthWeb } from 'pages/OAuth';
 import Mail from 'pages/Mail';
 import useUser from 'features/user/hooks/useUser';
 import Diary from 'pages/Diary';
@@ -72,7 +72,8 @@ export default function Router() {
           }
         >
           <Route path="/login" element={<Login />} />
-          <Route path="/google/callback" element={<OAuth />} />
+          <Route path="/google/callback" element={<OAuthWeb />} />
+          <Route path="/app/google/callback" element={<OAuthApp />} />
         </Route>
         <Route element={<SurveyRoute isSurvey={isSurvey} />}>
           <Route path="/survey" element={<Survey />} />
