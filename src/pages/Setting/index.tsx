@@ -7,6 +7,7 @@ import useUser from 'features/user/hooks/useUser';
 import {
   useUpdateUserInfo,
   useUpdateUserPictrue,
+  useUserSecession,
 } from 'features/user/services/user.mutation';
 import { useAlarmTimeMutation } from 'features/AlaramTime/services/time.mutation';
 import { useNavigate } from 'react-router-dom';
@@ -21,6 +22,7 @@ const Setting = () => {
   const { mutate: updateUserInfoMutate } = useUpdateUserInfo();
   const { mutate: updateUserPictureMutate } = useUpdateUserPictrue();
   const { mutate: updateAlarmTimeMutate } = useAlarmTimeMutation();
+  const { mutate: deleteSecession } = useUserSecession();
 
   const [userInfos, setUserInfos] = useState<{
     name: string;
@@ -92,22 +94,6 @@ const Setting = () => {
   const navigate = useNavigate();
   const { mutate: logoutMutate } = useLogoutMutation();
 
-  // 브라우저 닫을 때 경고창
-  useEffect(() => {
-    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      if (!isButtonDisabled) {
-        event.preventDefault();
-        event.returnValue = ''; // Chrome
-      }
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [isButtonDisabled]);
-
   // 브라우저 뒤로가기 경고창
   useEffect(() => {
     const handleBlockNavigation = (event: Event) => {
@@ -126,6 +112,20 @@ const Setting = () => {
       window.removeEventListener('popstate', handleBlockNavigation);
     };
   }, [isButtonDisabled, navigate]);
+
+  const handleVerification = () => {
+    if (isOpenedModal === 'Logout') {
+      logoutMutate();
+    }
+    if (isOpenedModal === 'Secession') {
+      deleteSecession();
+      window.location.href = '/';
+    }
+    if (isOpenedModal === 'Warning') {
+      navigate(-1);
+    }
+    setIsOpenedModal(false);
+  };
 
   return (
     <main className={s.container}>
@@ -183,14 +183,7 @@ const Setting = () => {
           toggleCloseModal={() => {
             setIsOpenedModal(false);
           }}
-          verification={() => {
-            isOpenedModal === 'Logout'
-              ? logoutMutate()
-              : isOpenedModal === 'Warning'
-                ? navigate(-1)
-                : '';
-            setIsOpenedModal(false);
-          }}
+          verification={handleVerification}
           type={isOpenedModal}
           text={
             isOpenedModal === 'Logout'
