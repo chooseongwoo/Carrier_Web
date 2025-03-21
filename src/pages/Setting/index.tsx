@@ -12,6 +12,7 @@ import {
 import { useAlarmTimeMutation } from 'features/AlaramTime/services/time.mutation';
 import { useNavigate } from 'react-router-dom';
 import { useLogoutMutation } from 'features/auth/services/auth.mutation';
+import { Storage } from 'shared/lib/storage';
 
 const Setting = () => {
   const [isOpenedModal, setIsOpenedModal] = useState<
@@ -119,6 +120,8 @@ const Setting = () => {
     }
     if (isOpenedModal === 'Secession') {
       deleteSecession();
+      Storage.delItem('accessToken');
+      Storage.delItem('accessToken');
       window.location.href = '/';
     }
     if (isOpenedModal === 'Warning') {
