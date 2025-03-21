@@ -34,7 +34,7 @@ const InputContainer = ({
 };
 
 interface EditContainerProps {
-  toggleModal: () => void;
+  toggleModal: (type: 'Logout' | 'Secession') => void;
   userInfos: {
     name: string;
     email: string;
@@ -144,7 +144,10 @@ const EditContainer = ({
           이곳에서는 로그아웃을 진행할 수 있으며, 로그아웃 후에도 계정 정보는
           유지되며 언제든지 다시 로그인할 수 있습니다.
         </p>
-        <button className={s.logoutButton} onClick={toggleModal}>
+        <button
+          className={s.logoutButton}
+          onClick={() => toggleModal('Logout')}
+        >
           로그아웃
         </button>
       </div>
@@ -156,7 +159,10 @@ const EditContainer = ({
           탈퇴 시 계정과 모든 데이터가 영구적으로 삭제되며, 복구할 수 없으니
           신중하게 결정해 주세요.
         </p>
-        <button className={s.logoutButton} onClick={toggleModal}>
+        <button
+          className={s.logoutButton}
+          onClick={() => toggleModal('Secession')}
+        >
           계정 탈퇴
         </button>
       </div>

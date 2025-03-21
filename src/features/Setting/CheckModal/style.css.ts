@@ -1,5 +1,7 @@
+import { C } from '@fullcalendar/core/internal-common';
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
+import { center } from 'pages/Login/style.css';
 import { font } from 'shared/styles/font.css';
 import theme from 'shared/styles/theme.css';
 
@@ -69,4 +71,18 @@ export const button = recipe({
       },
     },
   },
+});
+
+export const secessionInputContainer = style({
+  width: '100%',
+  padding: '0 20px',
+});
+
+export const secessionInput = style({
+  width: '100%',
+  ...font.p2,
+  padding: '8px 0',
+  border: `1px solid ${theme.gray[200]}`,
+  borderRadius: '8px',
+  textAlign: 'center',
 });

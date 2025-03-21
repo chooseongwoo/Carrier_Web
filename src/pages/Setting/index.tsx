@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import * as s from './style.css';
 import SettingIcon from 'pages/Setting/ui/SettingIcon';
 import EditContainer from 'features/Setting/EditContainer';
-import CheckModal from 'features/Setting/LogoutModal';
+import CheckModal from 'features/Setting/CheckModal';
 import useUser from 'features/user/hooks/useUser';
 import {
   useUpdateUserInfo,
@@ -14,9 +14,8 @@ import { useLogoutMutation } from 'features/auth/services/auth.mutation';
 
 const Setting = () => {
   const [isOpenedModal, setIsOpenedModal] = useState<
-    'Logout' | 'Warning' | false
+    'Logout' | 'Warning' | 'Secession' | false
   >(false);
-  const toggleModal = () => setIsOpenedModal('Logout');
 
   const { user } = useUser();
   const { mutate: updateUserInfoMutate } = useUpdateUserInfo();
@@ -172,7 +171,7 @@ const Setting = () => {
           </div>
         </div>
         <EditContainer
-          toggleModal={toggleModal}
+          toggleModal={setIsOpenedModal}
           userInfos={userInfos}
           setUserInfos={setUserInfos}
           time={time}
@@ -192,12 +191,13 @@ const Setting = () => {
                 : '';
             setIsOpenedModal(false);
           }}
+          type={isOpenedModal}
           text={
             isOpenedModal === 'Logout'
               ? '정말 로그아웃하시겠습니까?'
               : isOpenedModal === 'Warning'
                 ? '저장하지 않은 변경 사항이 있습니다. 페이지를 떠나시겠습니까?'
-                : '계정을 삭제하시면 모든 데이터가 삭제됩니다. 그래도 삭제하시겠습니까?'
+                : '정말로 계정 탈퇴를 진행하시겠습니까? 계속 진행하려면 아래 입력란에 “계정 탈퇴"를 입력해주세요'
           }
         />
       )}
