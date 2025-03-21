@@ -1,7 +1,5 @@
-import { C } from '@fullcalendar/core/internal-common';
 import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
-import { center } from 'pages/Login/style.css';
 import { font } from 'shared/styles/font.css';
 import theme from 'shared/styles/theme.css';
 
