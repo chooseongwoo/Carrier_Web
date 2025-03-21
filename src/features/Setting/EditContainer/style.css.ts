@@ -24,6 +24,10 @@ export const categoryText = style({
   fontWeight: 600,
 });
 
+export const colorRed = style({
+  color: theme.red[500],
+});
+
 export const profileContent = style({
   width: '100%',
   display: 'flex',
