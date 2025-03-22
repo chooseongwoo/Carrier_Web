@@ -16,9 +16,9 @@ const Chatbar = () => {
           오후 4시 30분에 있었던 화영 거래처와의 미팅은 어떠셨나요?
         </div>
       </div>
-      <div className={s.suggestionButton}>
+      <button className={s.suggestionButton}>
         <div className={s.suggestionButtonText}>일기 주제 추천받기</div>
-      </div>
+      </button>
     </div>
   );
 };
