@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer, shell } from 'electron';
+import { contextBridge, shell } from 'electron';
 import { electronAPI } from '@electron-toolkit/preload';
 
 type IpcApiResponse<T = void> = Promise<{
