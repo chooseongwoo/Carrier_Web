@@ -1,4 +1,5 @@
 import { customAxios } from 'shared/api';
+import { isElectron } from 'shared/lib/isElectron';
 
 export const getLoginLink = async () => {
   const { data } = await customAxios.get('/auth');
@@ -8,7 +9,9 @@ export const getLoginLink = async () => {
 export const postLogin = async (code: string) => {
   const { data } = await customAxios.post('/auth', {
     token: code,
-    redirectUrl: import.meta.env.VITE_APPLICATION_REDIRECT,
+    redirectUrl: isElectron
+      ? import.meta.env.VITE_APPLICATION_REDIRECT_APP
+      : import.meta.env.VITE_APPLICATION_REDIRECT,
   });
   return data;
 };

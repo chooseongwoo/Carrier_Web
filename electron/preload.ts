@@ -13,6 +13,9 @@ if (process.contextIsolated) {
       openExternal: (url: string) => shell.openExternal(url),
     });
     contextBridge.exposeInMainWorld('api', api);
+    contextBridge.exposeInMainWorld('env', {
+      isElectron: true,
+    });
   } catch (error) {
     console.error(
       'renderer에서 Electron API를 호출하는 데 실패했습니다:',

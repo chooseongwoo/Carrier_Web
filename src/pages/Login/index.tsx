@@ -10,13 +10,12 @@ import { authQuery } from 'features/auth/services/auth.query';
 import { useQueryClient } from '@tanstack/react-query';
 import { Storage } from 'shared/lib/storage';
 import { TOKEN } from 'shared/constants';
+import { isElectron } from 'shared/lib/isElectron';
 
 const Login = () => {
   const queryClient = useQueryClient();
 
   const handleLogin = async () => {
-    const isElectron = !!window.electron;
-
     try {
       Storage.delItem(TOKEN.ACCESS);
       Storage.delItem(TOKEN.REFRESH);

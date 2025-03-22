@@ -4,9 +4,7 @@ import 'shared/styles/global.css';
 import App from 'app/App';
 import ReactQueryProviders from 'app/providers/ReactQueryProviders';
 
-const isElectron = window.navigator.userAgent
-  .toLowerCase()
-  .includes('electron');
+const isElectron = window.env?.isElectron === true;
 
 const Router = isElectron ? HashRouter : BrowserRouter;
 
