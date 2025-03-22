@@ -35,3 +35,12 @@ export const useLogoutMutation = () => {
     },
   });
 };
+
+export const useAppLoginMutation = () => {
+  return useMutation({
+    mutationFn: postLogin,
+    onError: (error) => {
+      console.error('로그인 중 에러 발생:', error);
+    },
+  });
+};
