@@ -17,7 +17,6 @@ function createWindow(): void {
   mainWindow.on('ready-to-show', () => {
     mainWindow.maximize();
     mainWindow.show();
-    mainWindow.webContents.openDevTools();
   });
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -26,8 +25,8 @@ function createWindow(): void {
   });
 
   const rendererPath =
-    is.dev && process.env['ELECTRON_RENDERER_URL']
-      ? process.env['ELECTRON_RENDERER_URL']
+    is.dev && process.env.ELECTRON_RENDERER_URL
+      ? process.env.ELECTRON_RENDERER_URL
       : `file://${path.join(app.getAppPath(), 'out/renderer/index.html')}`;
 
   mainWindow.loadURL(rendererPath);
