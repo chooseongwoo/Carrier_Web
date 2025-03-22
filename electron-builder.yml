@@ -1,6 +1,6 @@
 appId: com.5Jings.Carrier
 productName: Carrier
-asar: false
+asar: true
 
 directories:
   buildResources: resources/installer
@@ -32,3 +32,9 @@ nsis:
   oneClick: false
   allowToChangeInstallationDirectory: false
   createDesktopShortcut: true
+
+protocols:
+  - name: Carrier Protocol
+    schemes:
+      - Carrier
+    role: Viewer
