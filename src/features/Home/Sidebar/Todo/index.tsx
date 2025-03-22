@@ -20,7 +20,7 @@ const Todo = () => {
   const queryClient = useQueryClient();
   const [date, setDate] = useAtom(todoSelectedDateAtom);
   const [todoItems, setTodoItems] = useState<TodoItem[]>([]);
-  const [todoRendering] = useAtom(todoRenderingAtom);
+  const [todoRendering, setTodoRendering] = useAtom(todoRenderingAtom);
 
   const dashDate = ChangeDateToDash(date);
   const dates = {
@@ -51,6 +51,7 @@ const Todo = () => {
       )
     );
     mutate(id);
+    setTodoRendering((prev) => prev + 1);
   };
 
   const handlePrevDate = () => {
