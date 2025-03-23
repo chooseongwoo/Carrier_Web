@@ -9,13 +9,17 @@ directories:
 
 files:
   - out/main/**
-  - out/preload/**
+  - out/preload/**/*
   - out/renderer/**
   - package.json
+
+asarUnpack:
+  - out/preload/**/*
 
 mac:
   target: dmg
   icon: electron/assets/icons.icns
+  entitlements: build/entitlements.mac.plist
 
 dmg:
   title: Carrier
@@ -36,5 +40,5 @@ nsis:
 protocols:
   - name: Carrier Protocol
     schemes:
-      - Carrier
+      - carrier
     role: Viewer
