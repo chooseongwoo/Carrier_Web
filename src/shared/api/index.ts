@@ -9,10 +9,10 @@ export const customAxios = axios.create({
 });
 
 const refresh = async () => {
-  Storage.delItem(TOKEN.ACCESS);
+  await Storage.delItem(TOKEN.ACCESS);
   const { data } = await customAxios.post('/auth/reissue', refreshToken());
   const newAccessToken = data.accessToken;
-  Storage.setItem(TOKEN.ACCESS, newAccessToken);
+  await Storage.setItem(TOKEN.ACCESS, newAccessToken);
   return newAccessToken;
 };
 
@@ -45,11 +45,13 @@ customAxios.interceptors.response.use(
   }
 );
 
-// request interceptor는 한 번만 등록
-customAxios.interceptors.request.use((config) => {
-  const token = Storage.getItem(TOKEN.ACCESS);
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+customAxios.interceptors.request.use(
+  async (config) => {
+    const token = await Storage.getItem(TOKEN.ACCESS);
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
