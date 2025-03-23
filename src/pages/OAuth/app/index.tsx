@@ -31,7 +31,7 @@ const OAuthApp = () => {
       refreshToken: refreshToken,
       isSignUp: String(isSignUp),
     });
-    window.location.href = `carrier://${isSignUp ? '/survey' : '/'}?${params.toString()}`;
+    window.location.href = `carrier://?${params.toString()}?route=${isSignUp ? '/survey' : '/'}`;
   };
 
   return (
