@@ -66,9 +66,14 @@ const useCalendarNavigation = (calendarRef: React.RefObject<FullCalendar>) => {
   }, [calendarRef]);
 
   const updateDateRange = (api: CalendarApi) => {
+    const view = api.view;
+    const visibleStart = new Date(
+      view.activeStart.getTime() + 1000 * 60 * 60 * 24
+    );
+    const visibleEnd = view.activeEnd;
     setDateRange({
-      startDate: api.view.activeStart.toISOString().split('T')[0] + 'T00:00:00',
-      endDate: api.view.activeEnd.toISOString().split('T')[0] + 'T00:00:00',
+      startDate: visibleStart.toISOString().split('T')[0] + 'T00:00:00',
+      endDate: visibleEnd.toISOString().split('T')[0] + 'T23:59:59',
     });
   };
 
