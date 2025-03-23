@@ -67,9 +67,8 @@ const useCalendarNavigation = (calendarRef: React.RefObject<FullCalendar>) => {
 
   const updateDateRange = (api: CalendarApi) => {
     setDateRange({
-      startDate:
-        api.view.currentStart.toISOString().split('T')[0] + 'T00:00:00',
-      endDate: api.view.currentEnd.toISOString().split('T')[0] + 'T00:00:00',
+      startDate: api.view.activeStart.toISOString().split('T')[0] + 'T00:00:00',
+      endDate: api.view.activeEnd.toISOString().split('T')[0] + 'T00:00:00',
     });
   };
 
