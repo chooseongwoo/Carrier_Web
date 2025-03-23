@@ -17,10 +17,16 @@ export default defineConfig({
   },
   preload: {
     build: {
+      outDir: 'out/preload',
       rollupOptions: {
         input: {
-          index: path.resolve(__dirname, 'electron/preload.ts'),
+          preload: path.resolve(__dirname, 'electron/preload.ts'),
         },
+      },
+      lib: {
+        entry: path.resolve(__dirname, 'electron/preload.ts'),
+        formats: ['cjs'],
+        fileName: () => 'preload.cjs',
       },
     },
     plugins: [externalizeDepsPlugin()],
