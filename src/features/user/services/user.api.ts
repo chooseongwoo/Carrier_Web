@@ -18,3 +18,8 @@ export const patchUserPicture = async (formData: FormData) => {
   });
   return data;
 };
+
+export const deleteUser = async () => {
+  const { data } = await customAxios.delete('/users');
+  return data;
+};
