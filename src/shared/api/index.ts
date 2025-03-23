@@ -39,8 +39,7 @@ customAxios.interceptors.response.use(
       request.headers.Authorization = `Bearer ${newToken}`;
       return customAxios(request);
     } catch (refreshError) {
-      Storage.delItem(TOKEN.ACCESS);
-      Storage.delItem(TOKEN.REFRESH);
+      Storage.clear();
       return Promise.reject(refreshError);
     }
   }

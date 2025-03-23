@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { Storage } from 'shared/lib/storage';
 import { TOKEN } from 'shared/constants';
-import { deleteLogout, postLogin } from './auth.api';
+import { deleteLogout, postAppLogin, postLogin } from './auth.api';
 
 /* eslint-disable no-console */
 
@@ -30,15 +30,14 @@ export const useLogoutMutation = () => {
       window.location.reload();
     },
     onSettled: () => {
-      Storage.delItem(TOKEN.ACCESS);
-      Storage.delItem(TOKEN.REFRESH);
+      Storage.clear();
     },
   });
 };
 
 export const useAppLoginMutation = () => {
   return useMutation({
-    mutationFn: postLogin,
+    mutationFn: postAppLogin,
     onError: (error) => {
       console.error('로그인 중 에러 발생:', error);
     },

@@ -5,7 +5,7 @@ declare global {
     electron: {
       openExternal: (url: string) => void;
     };
-    env: {
+    env?: {
       isElectron: boolean;
     };
   }

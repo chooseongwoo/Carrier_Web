@@ -9,7 +9,6 @@ import {
 import { authQuery } from 'features/auth/services/auth.query';
 import { useQueryClient } from '@tanstack/react-query';
 import { Storage } from 'shared/lib/storage';
-import { TOKEN } from 'shared/constants';
 import { isElectron } from 'shared/lib/isElectron';
 
 const Login = () => {
@@ -17,8 +16,13 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      Storage.delItem(TOKEN.ACCESS);
-      Storage.delItem(TOKEN.REFRESH);
+      Storage.clear();
+
+      const isInApp = isElectron();
+      const redirect = isInApp
+        ? import.meta.env.VITE_APPLICATION_REDIRECT_APP
+        : import.meta.env.VITE_APPLICATION_REDIRECT;
+
       const url = await queryClient.fetchQuery(authQuery.loginLink());
 
       if (!url) {
@@ -27,13 +31,11 @@ const Login = () => {
         return;
       }
 
-      if (isElectron) {
-        window.electron.openExternal(
-          `${url}${import.meta.env.VITE_APPLICATION_REDIRECT_APP}`
-        );
-      } else {
-        window.location.href = `${url}${import.meta.env.VITE_APPLICATION_REDIRECT}`;
-      }
+      const finalUrl = `${url}${redirect}`;
+
+      isInApp
+        ? window.electron.openExternal(finalUrl)
+        : (window.location.href = finalUrl);
     } catch (error) {
       console.error('에러 발생:', error);
     }
