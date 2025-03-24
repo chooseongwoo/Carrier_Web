@@ -17,8 +17,7 @@
     "formats": "prettier --cache --write .",
     "lints": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "deploy:osx": "electron-builder --mac",
-    "deploy:win": "concurrently \"pnpm run deploy:win32\" \"pnpm run deploy:win64\"",
-    "deploy:win32": "npx electron-builder --win nsis:ia32",
+    "deploy:win": "pnpm run deploy:win64",
     "deploy:win64": "npx electron-builder --win nsis:x64"
   },
   "lint-staged": {
