@@ -11,6 +11,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Storage } from 'shared/lib/storage';
 import { isElectron } from 'shared/lib/isElectron';
 import Download from 'pages/Login/ui/Download';
+import { getDownloadUrl } from 'pages/Login/utils/getDownloadUrl';
 
 const Login = () => {
   const queryClient = useQueryClient();
@@ -42,6 +43,21 @@ const Login = () => {
     }
   };
 
+  const handleDownload = () => {
+    const url = getDownloadUrl();
+    if (!url) {
+      alert('현재 OS는 지원하지 않습니다.');
+      return;
+    }
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = '';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <main className={s.container}>
       <img src={LandingAsterisk} className={`${s.shape} ${s.Asterisk}`} />
@@ -59,12 +75,17 @@ const Login = () => {
             <Google />
             <p className={s.buttonText({ type: 'login' })}>구글 로그인</p>
           </div>
-          <div className={s.loginButton({ type: 'download' })}>
-            <Download />
-            <p className={s.buttonText({ type: 'download' })}>
-              앱으로 다운로드
-            </p>
-          </div>
+          {!isElectron() && (
+            <div
+              className={s.loginButton({ type: 'download' })}
+              onClick={handleDownload}
+            >
+              <Download />
+              <p className={s.buttonText({ type: 'download' })}>
+                앱으로 다운로드
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </main>
