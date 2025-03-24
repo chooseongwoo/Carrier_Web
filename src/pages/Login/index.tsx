@@ -10,6 +10,7 @@ import { authQuery } from 'features/auth/services/auth.query';
 import { useQueryClient } from '@tanstack/react-query';
 import { Storage } from 'shared/lib/storage';
 import { isElectron } from 'shared/lib/isElectron';
+import Download from 'pages/Login/ui/Download';
 
 const Login = () => {
   const queryClient = useQueryClient();
@@ -50,9 +51,20 @@ const Login = () => {
       <div className={s.center}>
         <AppTitle />
         <p className={s.explain}>오늘의 작은 계획이 내일의 큰 꿈으로,</p>
-        <div className={s.loginButton} onClick={handleLogin}>
-          <Google />
-          <p className={s.loginText}>구글 로그인</p>
+        <div className={s.buttons}>
+          <div
+            className={s.loginButton({ type: 'login' })}
+            onClick={handleLogin}
+          >
+            <Google />
+            <p className={s.buttonText({ type: 'login' })}>구글 로그인</p>
+          </div>
+          <div className={s.loginButton({ type: 'download' })}>
+            <Download />
+            <p className={s.buttonText({ type: 'download' })}>
+              앱으로 다운로드
+            </p>
+          </div>
         </div>
       </div>
     </main>
