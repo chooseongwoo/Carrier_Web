@@ -2,6 +2,7 @@ import { customAxios } from 'shared/api';
 import {
   GetScheduleListReq,
   GetTodoListReq,
+  PatchScheduleReq,
   PostScheduleReq,
   PostTodoReq,
 } from 'entities/calendar/remote';
@@ -88,6 +89,11 @@ export const getScheduleList = async (params: GetScheduleListReq) => {
 
 export const postSchedule = async (params: PostScheduleReq) => {
   const { data } = await customAxios.post('/schedules', params);
+  return data;
+};
+
+export const patchSchedule = async (params: PatchScheduleReq) => {
+  const { data } = await customAxios.patch('/schedules', params);
   return data;
 };
 
