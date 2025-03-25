@@ -27,7 +27,10 @@ export interface PatchScheduleReq {
   location: string | null;
 }
 
-export interface PostTodoReq {
+export type PostTodoReq = Omit<PatchTodoReq, 'id'>;
+
+export interface PatchTodoReq {
+  id: number;
   title: string;
   date: string;
   isRepeat: boolean;

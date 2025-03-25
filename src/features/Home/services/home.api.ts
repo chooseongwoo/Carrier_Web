@@ -3,6 +3,7 @@ import {
   GetScheduleListReq,
   GetTodoListReq,
   PatchScheduleReq,
+  PatchTodoReq,
   PostScheduleReq,
   PostTodoReq,
 } from 'entities/calendar/remote';
@@ -30,6 +31,11 @@ export const getTodoList = async (params: GetTodoListReq) => {
 
 export const postTodo = async (params: PostTodoReq) => {
   const { data } = await customAxios.post('/todos', params);
+  return data;
+};
+
+export const patchTodo = async (params: PatchTodoReq) => {
+  const { data } = await customAxios.patch('/todos', params);
   return data;
 };
 
