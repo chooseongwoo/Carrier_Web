@@ -5,6 +5,7 @@ import {
   postCategory,
   postTodo,
   postSchedule,
+  patchSchedule,
 } from './home.api';
 
 export const useCreateTodoMutation = () => {
@@ -34,5 +35,11 @@ export const useCreateCategoryMutation = () => {
 export const usePostScheduleMutation = () => {
   return useMutation({
     mutationFn: postSchedule,
+  });
+};
+
+export const usePatchScheduleMutation = () => {
+  return useMutation({
+    mutationFn: patchSchedule,
   });
 };
