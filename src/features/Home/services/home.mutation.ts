@@ -7,11 +7,18 @@ import {
   postSchedule,
   patchSchedule,
   deleteSchedule,
+  patchTodo,
 } from './home.api';
 
 export const useCreateTodoMutation = () => {
   return useMutation({
     mutationFn: postTodo,
+  });
+};
+
+export const usePatchTodoMutation = () => {
+  return useMutation({
+    mutatinFn: patchTodo,
   });
 };
 
