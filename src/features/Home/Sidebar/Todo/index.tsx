@@ -4,7 +4,7 @@ import { TodoNormalIcon, TodoCheckedIcon } from 'features/Home/ui';
 import * as s from './style.css';
 import { useQueryClient } from '@tanstack/react-query';
 import { ChangeDateToDash, getNextDate, getPrevDate } from 'shared/lib/date';
-import { usePatchTodoMutation } from 'features/Home/services/home.mutation';
+import { usePatchTodoStateMutation } from 'features/Home/services/home.mutation';
 import { useTodoListQuery } from 'features/Home/services/home.query';
 import { useAtom } from 'jotai';
 import { todoRenderingAtom } from 'entities/calendar/contexts/eventRendering';
@@ -42,7 +42,7 @@ const Todo = () => {
     }
   }, [queryClient, date, todoRendering]);
 
-  const { mutate } = usePatchTodoMutation();
+  const { mutate } = usePatchTodoStateMutation();
   const handleToggle = async (id: number) => {
     console.log(id);
     setTodoItems((prevItems) =>

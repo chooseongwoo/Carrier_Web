@@ -33,7 +33,7 @@ export const postTodo = async (params: PostTodoReq) => {
   return data;
 };
 
-export const patchTodo = async (id: number) => {
+export const patchTodoState = async (id: number) => {
   const { data } = await customAxios.patch(`todos/change/${id}`);
   return data;
 };
