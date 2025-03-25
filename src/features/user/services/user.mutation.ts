@@ -4,6 +4,7 @@ import {
   patchUserInfo,
   patchUserPicture,
 } from 'features/user/services/user.api';
+import { Storage } from 'shared/lib/storage';
 
 export const useUpdateUserInfo = () => {
   return useMutation({ mutationFn: patchUserInfo });
@@ -14,5 +15,12 @@ export const useUpdateUserPictrue = () => {
 };
 
 export const useUserSecession = () => {
-  return useMutation({ mutationFn: deleteUser });
+  return useMutation({
+    mutationFn: deleteUser,
+    onSuccess: () => {
+      Storage.delItem('accessToken');
+      Storage.delItem('accessToken');
+      window.location.href = '/';
+    },
+  });
 };
