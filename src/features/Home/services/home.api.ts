@@ -97,6 +97,11 @@ export const patchSchedule = async (params: PatchScheduleReq) => {
   return data;
 };
 
+export const deleteSchedule = async (id: number) => {
+  const { data } = await customAxios.delete(`/schedules/${id}`);
+  return data;
+};
+
 export const getTips = async () => {
   const { data } = await customAxios.get('/users/tips');
   return data;
