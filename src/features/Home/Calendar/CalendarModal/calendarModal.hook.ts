@@ -4,6 +4,8 @@ import { priority } from 'entities/calendar/model';
 import {
   useCreateScheduleMutation,
   useCreateTodoMutation,
+  useDeleteScheduleMutation,
+  useDeleteTodoMutation,
   usePatchScheduleMutation,
   usePatchTodoMutation,
 } from 'features/Home/services/home.mutation';
@@ -92,6 +94,8 @@ const useEventState = ({ event }: UseEventStateProps) => {
   const { mutate: postTodoMutate } = useCreateTodoMutation();
   const { mutate: patchScheduleMutate } = usePatchScheduleMutation();
   const { mutate: patchTodoMutate } = usePatchTodoMutation();
+  const { mutate: deleteScheduleMutate } = useDeleteScheduleMutation();
+  const { mutate: deleteTodoMutate } = useDeleteTodoMutation();
 
   const createEvent = useCallback(() => {
     if (state.eventType === 'Schedule') {
@@ -132,6 +136,24 @@ const useEventState = ({ event }: UseEventStateProps) => {
     todoData,
   ]);
 
+  const deleteEvent = useCallback(() => {
+    if (!event?.eventId || isInitial) return;
+    if (state.eventType === 'Schedule') {
+      deleteScheduleMutate(event.eventId);
+      setTimeout(() => setScheduleRendering((prev) => prev + 1), 100);
+    } else {
+      deleteTodoMutate(event.eventId);
+      setTimeout(() => setTodoRendering((prev) => prev + 1), 100);
+    }
+  }, [
+    event,
+    state.eventType,
+    deleteScheduleMutate,
+    deleteTodoMutate,
+    scheduleData,
+    todoData,
+  ]);
+
   useEffect(() => {
     if (!event) return;
 
@@ -164,6 +186,7 @@ const useEventState = ({ event }: UseEventStateProps) => {
     isInitial,
     createEvent,
     updateEvent,
+    deleteEvent,
   };
 };
 

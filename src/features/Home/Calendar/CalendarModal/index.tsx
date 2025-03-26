@@ -18,6 +18,7 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
     isInitial,
     createEvent,
     updateEvent,
+    deleteEvent,
   } = useEventState({
     event,
   });
@@ -199,7 +200,13 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
             <div className={s.calendarModalCreateBtnText}>추가</div>
           </div>
         ) : (
-          <div className={s.calendarModalDeleteBtn}>
+          <div
+            className={s.calendarModalDeleteBtn}
+            onClick={() => {
+              deleteEvent();
+              onClose();
+            }}
+          >
             <div className={s.calendarModalDeleteBtnText}>삭제</div>
           </div>
         )}
