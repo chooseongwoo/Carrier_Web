@@ -14,7 +14,7 @@ export interface Category {
 
 export interface CalendarEvent {
   type: EventType;
-  todoId?: number;
+  eventId?: number;
   title: string;
   memo: string | null;
   isRepeat: boolean;
@@ -30,6 +30,7 @@ export interface CalendarEvent {
 }
 
 export interface Schedule {
+  id: number;
   title: string;
   memo: string | null;
   allDay: boolean;

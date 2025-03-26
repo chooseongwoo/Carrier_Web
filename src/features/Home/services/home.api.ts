@@ -17,7 +17,7 @@ export const getTodoList = async (params: GetTodoListReq) => {
 
   return data.map(({ id, title, memo, isDone, date }) => ({
     type: EVENT_TYPE.Todo,
-    todoId: id,
+    eventId: id,
     title,
     memo,
     isRepeat: false,
@@ -74,6 +74,7 @@ export const getScheduleList = async (params: GetScheduleListReq) => {
 
   return data.map(
     ({
+      id,
       title,
       memo,
       allDay,
@@ -84,6 +85,7 @@ export const getScheduleList = async (params: GetScheduleListReq) => {
       location,
     }) => ({
       type: EVENT_TYPE.Schedule,
+      eventId: id,
       title,
       memo,
       allDay,
