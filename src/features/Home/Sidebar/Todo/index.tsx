@@ -11,7 +11,7 @@ import { todoRenderingAtom } from 'entities/calendar/contexts/eventRendering';
 import { todoSelectedDateAtom } from 'entities/calendar/contexts/todoDate';
 
 interface TodoItem {
-  todoId: number;
+  eventId: number;
   title: string;
   isDone: boolean;
 }
@@ -47,7 +47,7 @@ const Todo = () => {
     console.log(id);
     setTodoItems((prevItems) =>
       prevItems.map((item) =>
-        item.todoId === id ? { ...item, isDone: !item.isDone } : item
+        item.eventId === id ? { ...item, isDone: !item.isDone } : item
       )
     );
     mutate(id);
@@ -75,9 +75,9 @@ const Todo = () => {
       <div className={s.todoListMain}>
         {todoItems.map((item) => (
           <div
-            key={item.todoId}
+            key={item.eventId}
             className={s.todoListItem}
-            onClick={() => handleToggle(item.todoId)}
+            onClick={() => handleToggle(item.eventId)}
           >
             {item.isDone ? <TodoCheckedIcon /> : <TodoNormalIcon />}
             <span className={s.todoListItemText}>{item.title}</span>

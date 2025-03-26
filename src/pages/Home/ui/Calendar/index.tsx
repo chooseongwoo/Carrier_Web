@@ -129,6 +129,7 @@ const Calendar = () => {
         ]);
 
         setEvents([...schedules, ...todos]);
+        console.log(events);
       } catch (error) {
         console.error('데이터 가져오기 실패:', error);
       }
@@ -192,7 +193,9 @@ const Calendar = () => {
   const handleEventClick = useCallback(
     (info: EventClickArg) => {
       const { type, ...props } = info.event.extendedProps;
+
       handleModalOpen({
+        eventId: props.eventId,
         title: info.event.title,
         start: info.event.startStr,
         end: info.event.endStr,
