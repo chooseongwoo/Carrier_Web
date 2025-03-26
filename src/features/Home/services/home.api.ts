@@ -44,6 +44,11 @@ export const patchTodoState = async (id: number) => {
   return data;
 };
 
+export const deleteTodo = async (id: number) => {
+  const { data } = await customAxios.delete(`/todos/${id}`);
+  return data;
+};
+
 export const getCategory = async () => {
   const { data } = await customAxios.get('/categories');
   return data;
