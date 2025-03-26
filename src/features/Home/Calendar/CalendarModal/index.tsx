@@ -11,10 +11,16 @@ interface CalendarModalProps {
 }
 
 const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
-  const { state, updateState, switchEventType, isInitial, createEvent } =
-    useEventState({
-      event,
-    });
+  const {
+    state,
+    updateState,
+    switchEventType,
+    isInitial,
+    createEvent,
+    updateEvent,
+  } = useEventState({
+    event,
+  });
 
   const handleChangeRepeat = (id: number) =>
     updateState({ selectedRepeatId: id });
@@ -44,7 +50,13 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
   const categories = useCategories();
 
   return (
-    <div className={s.calendarModalOverlay} onClick={onClose}>
+    <div
+      className={s.calendarModalOverlay}
+      onClick={() => {
+        updateEvent();
+        onClose();
+      }}
+    >
       <div className={s.calendarModal} onClick={(e) => e.stopPropagation()}>
         {isInitial ? (
           <div className={s.calendarEventButtonLayout}>

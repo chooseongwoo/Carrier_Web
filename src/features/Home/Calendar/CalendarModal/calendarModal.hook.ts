@@ -4,6 +4,8 @@ import { priority } from 'entities/calendar/model';
 import {
   useCreateScheduleMutation,
   useCreateTodoMutation,
+  usePatchScheduleMutation,
+  usePatchTodoMutation,
 } from 'features/Home/services/home.mutation';
 import { useAtom } from 'jotai';
 import {
@@ -57,15 +59,8 @@ const useEventState = ({ event }: UseEventStateProps) => {
       updateState({
         eventType: type,
         ...(type === 'Schedule'
-          ? {
-              selectedCategoryId: 1,
-              isAllDay: true,
-              selectedPriorityId: 1,
-            }
-          : {
-              selectedPriorityId: 1,
-              isAllDay: false,
-            }),
+          ? { selectedCategoryId: 1, isAllDay: true, selectedPriorityId: 1 }
+          : { selectedPriorityId: 1, isAllDay: false }),
       });
     },
     [updateState]
@@ -89,24 +84,22 @@ const useEventState = ({ event }: UseEventStateProps) => {
     priority:
       priority.find((item) => item.id === state.selectedPriorityId)?.value ||
       'HIGH',
-    memo: state.memo ? state.memo : null,
+    memo: state.memo || null,
     location: '임시 위치',
   };
 
   const { mutate: postScheduleMutate } = useCreateScheduleMutation();
   const { mutate: postTodoMutate } = useCreateTodoMutation();
+  const { mutate: patchScheduleMutate } = usePatchScheduleMutation();
+  const { mutate: patchTodoMutate } = usePatchTodoMutation();
 
   const createEvent = useCallback(() => {
     if (state.eventType === 'Schedule') {
       postScheduleMutate(scheduleData);
-      setTimeout(() => {
-        setScheduleRendering((prev) => prev + 1);
-      }, 1000);
-    } else if (state.eventType === 'Todo') {
+      setTimeout(() => setScheduleRendering((prev) => prev + 1), 100);
+    } else {
       postTodoMutate(todoData);
-      setTimeout(() => {
-        setTodoRendering((prev) => prev + 1);
-      }, 1000);
+      setTimeout(() => setTodoRendering((prev) => prev + 1), 100);
     }
   }, [
     postScheduleMutate,
@@ -116,34 +109,43 @@ const useEventState = ({ event }: UseEventStateProps) => {
     todoData,
   ]);
 
+  const updateEvent = useCallback(() => {
+    if (!event?.eventId || isInitial) return;
+
+    if (state.eventType === 'Schedule') {
+      patchScheduleMutate({
+        id: event.eventId,
+        ...scheduleData,
+      });
+
+      setTimeout(() => setScheduleRendering((prev) => prev + 1), 100);
+    } else {
+      patchTodoMutate({ id: event.eventId, ...todoData });
+      setTimeout(() => setTodoRendering((prev) => prev + 1), 100);
+    }
+  }, [
+    event,
+    state.eventType,
+    patchScheduleMutate,
+    patchTodoMutate,
+    scheduleData,
+    todoData,
+  ]);
+
   useEffect(() => {
     if (!event) return;
 
-    const hasChanged = () => {
-      const prev = prevEventRef.current;
-
-      if (!prev) return true;
-
-      return (
-        prev.type !== event.type ||
-        prev.title !== event.title ||
-        prev.memo !== event.memo ||
-        prev.start !== event.start ||
-        prev.end !== event.end ||
-        prev.location !== event.location ||
-        prev.category !== event.category ||
-        prev.priority !== event.priority ||
-        prev.allDay !== event.allDay
-      );
-    };
-
-    if (hasChanged()) {
+    if (
+      prevEventRef.current?.title !== event.title ||
+      prevEventRef.current?.start !== event.start ||
+      prevEventRef.current?.end !== event.end
+    ) {
       setState({
         eventType: event.type,
         title: event.title,
         memo: event.memo || null,
-        startDate: event?.start || '',
-        endDate: event?.end || null,
+        startDate: event.start || '',
+        endDate: event.end || null,
         selectedRepeatId: 1,
         location: event.location || '',
         selectedCategoryId: event.type === 'Schedule' ? event.category || 1 : 1,
@@ -161,6 +163,7 @@ const useEventState = ({ event }: UseEventStateProps) => {
     switchEventType,
     isInitial,
     createEvent,
+    updateEvent,
   };
 };
 
