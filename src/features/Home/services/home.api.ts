@@ -40,7 +40,7 @@ export const patchTodo = async (params: PatchTodoReq) => {
 };
 
 export const patchTodoState = async (id: number) => {
-  const { data } = await customAxios.patch(`todos/change/${id}`);
+  const { data } = await customAxios.patch(`/todos/change/${id}`);
   return data;
 };
 
@@ -63,7 +63,7 @@ export const postCategory = async (category: {
 };
 
 export const patchCategory = async (id: number) => {
-  const { data } = await customAxios.patch(`categories/change/${id}`);
+  const { data } = await customAxios.patch(`/categories/change/${id}`);
   return data;
 };
 
