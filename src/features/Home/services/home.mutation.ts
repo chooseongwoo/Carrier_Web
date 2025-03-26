@@ -8,6 +8,7 @@ import {
   patchSchedule,
   deleteSchedule,
   patchTodo,
+  deleteTodo,
 } from './home.api';
 
 export const useCreateTodoMutation = () => {
@@ -25,6 +26,12 @@ export const usePatchTodoMutation = () => {
 export const usePatchTodoStateMutation = () => {
   return useMutation({
     mutationFn: patchTodoState,
+  });
+};
+
+export const useDeleteTodoMutation = () => {
+  return useMutation({
+    mutationFn: deleteTodo,
   });
 };
 
