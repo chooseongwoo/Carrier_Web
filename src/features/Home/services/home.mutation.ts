@@ -47,7 +47,7 @@ export const useCreateCategoryMutation = () => {
   });
 };
 
-export const usePostScheduleMutation = () => {
+export const useCreateScheduleMutation = () => {
   return useMutation({
     mutationFn: postSchedule,
   });

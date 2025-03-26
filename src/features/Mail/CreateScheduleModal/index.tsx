@@ -10,7 +10,7 @@ import { useAtom } from 'jotai';
 import { selectedMailIdAtom } from 'features/Mail/contexts/mail';
 import { useQuery } from '@tanstack/react-query';
 import { mailQuery } from 'features/Mail/services/mail.query';
-import { usePostScheduleMutation } from 'features/Home/services/home.mutation';
+import { useCreateScheduleMutation } from 'features/Home/services/home.mutation';
 import { useCategories } from 'entities/calendar/hooks/useCategory';
 
 const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
@@ -79,7 +79,7 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
     location: state.location,
   };
 
-  const { mutate: postScheduleMutate } = usePostScheduleMutation();
+  const { mutate: postScheduleMutate } = useCreateScheduleMutation();
 
   const createEvent = useCallback(() => {
     postScheduleMutate(scheduleData);

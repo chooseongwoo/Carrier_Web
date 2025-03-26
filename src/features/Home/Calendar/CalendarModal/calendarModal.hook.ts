@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { CalendarEvent } from 'entities/calendar/type';
 import { priority } from 'entities/calendar/model';
 import {
-  usePostScheduleMutation,
+  useCreateScheduleMutation,
   useCreateTodoMutation,
 } from 'features/Home/services/home.mutation';
 import { useAtom } from 'jotai';
@@ -93,7 +93,7 @@ const useEventState = ({ event }: UseEventStateProps) => {
     location: '임시 위치',
   };
 
-  const { mutate: postScheduleMutate } = usePostScheduleMutation();
+  const { mutate: postScheduleMutate } = useCreateScheduleMutation();
   const { mutate: postTodoMutate } = useCreateTodoMutation();
 
   const createEvent = useCallback(() => {
