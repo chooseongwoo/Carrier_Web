@@ -19,7 +19,7 @@ export const useCreateTodoMutation = () => {
 
 export const usePatchTodoMutation = () => {
   return useMutation({
-    mutatinFn: patchTodo,
+    mutationFn: patchTodo,
   });
 };
 
