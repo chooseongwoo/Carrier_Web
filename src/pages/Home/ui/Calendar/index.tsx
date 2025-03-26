@@ -150,7 +150,7 @@ const Calendar = () => {
   );
   const handleModalOpen = useCallback((event?: CalendarEvent) => {
     const startDate = event?.start ? new Date(event.start) : new Date();
-    const endDate = event?.end ? new Date(event.end) : new Date();
+    const endDate = event?.end ? new Date(event.end) : startDate;
 
     if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
       return;
@@ -159,8 +159,8 @@ const Calendar = () => {
     setSelectedEvent({
       ...event,
       type: event?.type ?? 'Schedule',
-      start: new Date(startDate.setDate(startDate.getDate() + 1)).toISOString(),
-      end: new Date(endDate.setDate(endDate.getDate() + 1)).toISOString(),
+      start: startDate.toISOString(),
+      end: endDate.toISOString(),
     } as CalendarEvent);
 
     setIsModalOpen(true);
@@ -272,6 +272,7 @@ const Calendar = () => {
         editable
         selectable
         locale="ko"
+        timeZone="Asia/Seoul"
         datesSet={handleDatesSet}
         dayCellContent={({ dayNumberText }: DayCellContentArg) =>
           dayNumberText.replace('일', '')
