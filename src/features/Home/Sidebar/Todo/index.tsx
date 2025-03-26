@@ -44,7 +44,6 @@ const Todo = () => {
 
   const { mutate } = usePatchTodoStateMutation();
   const handleToggle = async (id: number) => {
-    console.log(id);
     setTodoItems((prevItems) =>
       prevItems.map((item) =>
         item.eventId === id ? { ...item, isDone: !item.isDone } : item

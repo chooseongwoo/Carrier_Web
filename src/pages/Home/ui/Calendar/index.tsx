@@ -129,7 +129,6 @@ const Calendar = () => {
         ]);
 
         setEvents([...schedules, ...todos]);
-        console.log(events);
       } catch (error) {
         console.error('데이터 가져오기 실패:', error);
       }
