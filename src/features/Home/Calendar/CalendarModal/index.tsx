@@ -1,6 +1,6 @@
 import * as s from './style.css';
 import Dropdown from '../Dropdown';
-import useEventState from './calendarModal.hook';
+import { useEventState, useInputHandlers } from './calendarModal.hook';
 import { CalendarEvent } from 'entities/calendar/type';
 import { priority } from 'entities/calendar/model';
 import { useCategories } from 'entities/calendar/hooks/useCategory';
@@ -23,6 +23,8 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
     event,
   });
 
+  const { handleInputChange } = useInputHandlers(updateState);
+
   const handleChangeRepeat = (id: number) =>
     updateState({ selectedRepeatId: id });
 
@@ -33,15 +35,6 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
     updateState({
       selectedPriorityId: id,
     });
-
-  const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) =>
-    updateState({ title: e.target.value });
-
-  const handleChangeMemo = (e: React.ChangeEvent<HTMLInputElement>) =>
-    updateState({ memo: e.target.value });
-
-  const handleChangeLocation = (e: React.ChangeEvent<HTMLInputElement>) =>
-    updateState({ location: e.target.value });
 
   const handleIsAllday = () =>
     updateState({
@@ -84,16 +77,18 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
 
         <div className={s.calendarModalHeader}>
           <input
+            name="title"
             className={s.calendarModalTitle}
             placeholder="새 일정"
             value={state.title}
-            onChange={handleChangeTitle}
+            onChange={handleInputChange}
           />
           <input
+            name="memo"
             className={s.calendarModalSubTitle}
             placeholder="메모"
             value={state.memo || ''}
-            onChange={handleChangeMemo}
+            onChange={handleInputChange}
           />
         </div>
         <div className={s.calendarModalContour} />
@@ -182,10 +177,11 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
         <div className={s.calendarModalContour} />
         <div className={s.calendarModalFooter}>
           <input
+            name="location"
             className={s.calendarModalLocationTitle}
             placeholder="위치 추가"
             value={state.location || ''}
-            onChange={handleChangeLocation}
+            onChange={handleInputChange}
           />
         </div>
         <div className={s.calendarModalContour} />

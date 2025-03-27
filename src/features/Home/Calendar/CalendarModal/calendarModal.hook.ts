@@ -32,7 +32,7 @@ interface EventState {
   location: string;
 }
 
-const useEventState = ({ event }: UseEventStateProps) => {
+export const useEventState = ({ event }: UseEventStateProps) => {
   const [state, setState] = useState<EventState>({
     eventType: event?.type || 'Schedule',
     title: event?.title || '',
@@ -190,4 +190,12 @@ const useEventState = ({ event }: UseEventStateProps) => {
   };
 };
 
-export default useEventState;
+export const useInputHandlers = (updateState: (updates: any) => void) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    updateState({ [e.target.name]: e.target.value });
+  };
+
+  return {
+    handleInputChange,
+  };
+};
