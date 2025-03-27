@@ -32,7 +32,7 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
 
   const handleChangePriority = (id: number) =>
     updateState({
-      selectedPriorityId: id,
+      priority: id,
     });
 
   const handleIsAllday = () =>
@@ -166,7 +166,7 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
               <div className={s.calendarModalItemTitle}>우선순위</div>
               <Dropdown
                 name="priority"
-                id={state.selectedPriorityId}
+                id={state.priority}
                 data={priority}
                 onChange={handleChangePriority}
               />

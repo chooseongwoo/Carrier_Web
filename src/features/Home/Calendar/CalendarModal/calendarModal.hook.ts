@@ -27,7 +27,7 @@ interface EventState {
   endDate: string | null;
   selectedRepeatId: number;
   category: number;
-  selectedPriorityId: number;
+  priority: number;
   isAllDay: boolean;
   location: string;
 }
@@ -41,7 +41,7 @@ export const useEventState = ({ event }: UseEventStateProps) => {
     endDate: event?.end || null,
     selectedRepeatId: 1,
     category: event?.type === 'Schedule' ? event.category || 1 : 1,
-    selectedPriorityId: event?.type === 'Todo' ? event.priority || 1 : 1,
+    priority: event?.type === 'Todo' ? event.priority || 1 : 1,
     isAllDay: event?.type === 'Schedule' ? event.allDay || false : false,
     location: event?.location || '',
   });
@@ -53,6 +53,8 @@ export const useEventState = ({ event }: UseEventStateProps) => {
   const [, setScheduleRendering] = useAtom(scheduleRenderingAtom);
 
   const updateState = useCallback((updates: Partial<EventState>) => {
+    console.log('업데이트해봐');
+    console.log(state.priority);
     setState((prev) => ({ ...prev, ...updates }));
   }, []);
 
@@ -81,10 +83,9 @@ export const useEventState = ({ event }: UseEventStateProps) => {
     date: state.startDate.split('T')[0],
     isRepeat: false,
     priority:
-      priority.find((item) => item.id === state.selectedPriorityId)?.value ||
-      'HIGH',
-    memo: state.memo || null,
-    location: '임시 위치',
+      priority.find((item) => item.id === state.priority)?.value || 'HIGH',
+    memo: state.memo,
+    location: state.location,
   };
 
   const { mutate: postScheduleMutate } = useCreateScheduleMutation();
@@ -112,7 +113,7 @@ export const useEventState = ({ event }: UseEventStateProps) => {
 
   const updateEvent = useCallback(() => {
     if (!event?.eventId || isInitial) return;
-
+    console.log(state.priority);
     if (state.eventType === 'Schedule') {
       patchScheduleMutate({
         id: event.eventId,
@@ -168,10 +169,10 @@ export const useEventState = ({ event }: UseEventStateProps) => {
         selectedRepeatId: 1,
         location: event.location || '',
         category: event.type === 'Schedule' ? event.category || 1 : 1,
-        selectedPriorityId: event.type === 'Todo' ? event.priority || 1 : 1,
+        priority: event.type === 'Todo' ? event.priority || 1 : 1,
         isAllDay: event.type === 'Schedule' ? event.allDay || false : false,
       });
-
+      console.log(state.priority);
       prevEventRef.current = { ...event };
     }
   }, [event]);

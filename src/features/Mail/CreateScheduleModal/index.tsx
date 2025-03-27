@@ -59,8 +59,7 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
 
   const handleChangeCategory = (id: number) => updateState({ category: id });
 
-  const handleChangePriority = (id: number) =>
-    updateState({ selectedPriorityId: id });
+  const handleChangePriority = (id: number) => updateState({ priority: id });
 
   const handleIsAllday = () =>
     updateState({
@@ -186,7 +185,7 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
                   <div className={s.calendarModalItemTitle}>우선순위</div>
                   <EventDropdown
                     name="priority"
-                    id={state.selectedPriorityId}
+                    id={state.priority}
                     data={[
                       { id: 1, value: 'LOW', name: '낮음' },
                       { id: 2, value: 'MEDIUM', name: '중간' },
