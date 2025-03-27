@@ -1,8 +1,7 @@
 import { style } from '@vanilla-extract/css';
 
 export const container = style({
-  width: '100%',
+  width: 'calc(100vw - 80px)',
   height: '100vh',
-  display: 'flex',
-  paddingLeft: '80px',
+  backgroundColor: 'red',
 });
