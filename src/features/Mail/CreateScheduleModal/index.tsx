@@ -54,8 +54,7 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
     updateState({ [key]: value });
   };
 
-  const handleChangeRepeat = (id: number) =>
-    updateState({ selectedRepeatId: id });
+  const handleChangeRepeat = (id: number) => updateState({ repeat: id });
 
   const handleChangeCategory = (id: number) => updateState({ category: id });
 
@@ -146,7 +145,7 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
                 <div className={s.calendarModalItemTitle}>반복</div>
                 <EventDropdown
                   name="repeat"
-                  id={state.selectedRepeatId}
+                  id={state.repeat}
                   data={
                     state.eventType === 'Schedule'
                       ? [

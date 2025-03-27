@@ -25,7 +25,7 @@ interface EventState {
   memo: string | null;
   startDate: string;
   endDate: string | null;
-  selectedRepeatId: number;
+  repeat: number;
   category: number;
   priority: number;
   isAllDay: boolean;
@@ -39,7 +39,7 @@ export const useEventState = ({ event }: UseEventStateProps) => {
     memo: event?.memo || '',
     startDate: event?.start || '',
     endDate: event?.end || null,
-    selectedRepeatId: 1,
+    repeat: event?.isRepeat ? +event.isRepeat : 0,
     category: event?.type === 'Schedule' ? event.category || 1 : 1,
     priority: event?.type === 'Todo' ? event.priority || 1 : 1,
     isAllDay: event?.type === 'Schedule' ? event.allDay || false : false,
@@ -71,7 +71,7 @@ export const useEventState = ({ event }: UseEventStateProps) => {
     title: state.title,
     memo: state.memo,
     allDay: state.isAllDay,
-    isRepeat: false,
+    isRepeat: Boolean(state.repeat),
     categoryId: state.category,
     startDate: state.startDate,
     endDate: state.endDate,
@@ -81,7 +81,7 @@ export const useEventState = ({ event }: UseEventStateProps) => {
   const todoData = {
     title: state.title,
     date: state.startDate.split('T')[0],
-    isRepeat: false,
+    isRepeat: Boolean(state.repeat),
     priority:
       priority.find((item) => item.id === state.priority)?.value || 'HIGH',
     memo: state.memo,
@@ -166,7 +166,7 @@ export const useEventState = ({ event }: UseEventStateProps) => {
         memo: event.memo || null,
         startDate: event.start || '',
         endDate: event.end || null,
-        selectedRepeatId: 1,
+        repeat: +event.isRepeat,
         location: event.location || '',
         category: event.type === 'Schedule' ? event.category || 1 : 1,
         priority: event.type === 'Todo' ? event.priority || 1 : 1,

@@ -25,8 +25,7 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
 
   const { handleInputChange } = useInputHandlers(updateState);
 
-  const handleChangeRepeat = (id: number) =>
-    updateState({ selectedRepeatId: id });
+  const handleChangeRepeat = (id: number) => updateState({ repeat: id });
 
   const handleChangeCategory = (id: number) => updateState({ category: id });
 
@@ -127,26 +126,11 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
             <div className={s.calendarModalItemTitle}>반복</div>
             <Dropdown
               name="repeat"
-              id={state.selectedRepeatId}
-              data={
-                state.eventType === 'Schedule'
-                  ? [
-                      { id: 1, value: 'NONE', name: '없음' },
-                      { id: 2, value: 'DAILY', name: '매일' },
-                      { id: 3, value: 'WEEKLY', name: '매주' },
-                      { id: 4, value: 'MONTHLY', name: '매달' },
-                    ]
-                  : [
-                      { id: 1, value: 'NONE', name: '없음' },
-                      { id: 2, value: 'DAILY', name: '매일' },
-                      { id: 3, value: 'WEEKLY', name: '매주' },
-                      { id: 4, value: 'BIWEEKLY', name: '격주' },
-                      { id: 5, value: 'MONTHLY', name: '매달' },
-                      { id: 6, value: 'QUARTERLY', name: '3개월마다' },
-                      { id: 7, value: 'SEMIANNUALLY', name: '6개월마다' },
-                      { id: 8, value: 'YEARLY', name: '매년' },
-                    ]
-              }
+              id={state.repeat}
+              data={[
+                { id: 0, value: 'false', name: '없음' },
+                { id: 1, value: 'true', name: '있음' },
+              ]}
               onChange={handleChangeRepeat}
             />
           </div>
