@@ -60,9 +60,6 @@ export const useEventState = ({ event }: UseEventStateProps) => {
     (type: 'Schedule' | 'Todo') => {
       updateState({
         eventType: type,
-        ...(type === 'Schedule'
-          ? { selectedCategoryId: 1, isAllDay: true, selectedPriorityId: 1 }
-          : { selectedPriorityId: 1, isAllDay: false }),
       });
     },
     [updateState]
