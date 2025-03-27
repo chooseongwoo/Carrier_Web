@@ -2,7 +2,7 @@ import { MailModalProps } from 'entities/mail/types/MailModalProps';
 import * as s from './style.css';
 import AlertMark from 'features/Mail/ui/AlertMark';
 import { CalendarEvent } from 'entities/calendar/type';
-import useEventState from 'features/Home/Calendar/CalendarModal/calendarModal.hook';
+import { useEventState } from 'features/Home/Calendar/CalendarModal/calendarModal.hook';
 import EventDropdown from 'features/Home/Calendar/Dropdown';
 import { useCallback, useEffect, useState } from 'react';
 import LoadingStatus from 'features/Mail/CreateScheduleModal/LoadingStatus';
