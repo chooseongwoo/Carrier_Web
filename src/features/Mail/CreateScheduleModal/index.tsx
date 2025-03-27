@@ -57,8 +57,7 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
   const handleChangeRepeat = (id: number) =>
     updateState({ selectedRepeatId: id });
 
-  const handleChangeCategory = (id: number) =>
-    updateState({ selectedCategoryId: id });
+  const handleChangeCategory = (id: number) => updateState({ category: id });
 
   const handleChangePriority = (id: number) =>
     updateState({ selectedPriorityId: id });
@@ -73,7 +72,7 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
     memo: state.memo,
     allDay: state.isAllDay,
     isRepeat: false,
-    categoryId: state.selectedCategoryId,
+    categoryId: state.category,
     startDate: state.startDate,
     endDate: state.endDate,
     location: state.location,
@@ -177,7 +176,7 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
                   <div className={s.calendarModalItemTitle}>카테고리</div>
                   <EventDropdown
                     name="category"
-                    id={state.selectedCategoryId}
+                    id={state.category}
                     data={categories}
                     onChange={handleChangeCategory}
                   />

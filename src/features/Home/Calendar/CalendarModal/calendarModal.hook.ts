@@ -26,7 +26,7 @@ interface EventState {
   startDate: string;
   endDate: string | null;
   selectedRepeatId: number;
-  selectedCategoryId: number;
+  category: number;
   selectedPriorityId: number;
   isAllDay: boolean;
   location: string;
@@ -40,7 +40,7 @@ export const useEventState = ({ event }: UseEventStateProps) => {
     startDate: event?.start || '',
     endDate: event?.end || null,
     selectedRepeatId: 1,
-    selectedCategoryId: event?.type === 'Schedule' ? event.category || 1 : 1,
+    category: event?.type === 'Schedule' ? event.category || 1 : 1,
     selectedPriorityId: event?.type === 'Todo' ? event.priority || 1 : 1,
     isAllDay: event?.type === 'Schedule' ? event.allDay || false : false,
     location: event?.location || '',
@@ -73,7 +73,7 @@ export const useEventState = ({ event }: UseEventStateProps) => {
     memo: state.memo,
     allDay: state.isAllDay,
     isRepeat: false,
-    categoryId: state.selectedCategoryId,
+    categoryId: state.category,
     startDate: state.startDate,
     endDate: state.endDate,
     location: state.location,
@@ -170,7 +170,7 @@ export const useEventState = ({ event }: UseEventStateProps) => {
         endDate: event.end || null,
         selectedRepeatId: 1,
         location: event.location || '',
-        selectedCategoryId: event.type === 'Schedule' ? event.category || 1 : 1,
+        category: event.type === 'Schedule' ? event.category || 1 : 1,
         selectedPriorityId: event.type === 'Todo' ? event.priority || 1 : 1,
         isAllDay: event.type === 'Schedule' ? event.allDay || false : false,
       });

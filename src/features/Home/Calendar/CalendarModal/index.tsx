@@ -28,8 +28,7 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
   const handleChangeRepeat = (id: number) =>
     updateState({ selectedRepeatId: id });
 
-  const handleChangeCategory = (id: number) =>
-    updateState({ selectedCategoryId: id });
+  const handleChangeCategory = (id: number) => updateState({ category: id });
 
   const handleChangePriority = (id: number) =>
     updateState({
@@ -157,7 +156,7 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
               <div className={s.calendarModalItemTitle}>카테고리</div>
               <Dropdown
                 name="category"
-                id={state.selectedCategoryId}
+                id={state.category}
                 data={categories}
                 onChange={handleChangeCategory}
               />
