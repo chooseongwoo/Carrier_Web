@@ -154,7 +154,6 @@ const Calendar = () => {
     if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
       return;
     }
-
     setSelectedEvent({
       ...event,
       type: event?.type ?? 'Schedule',
@@ -199,13 +198,13 @@ const Calendar = () => {
         start: info.event.startStr,
         end: info.event.endStr,
         startEditable: true,
-        isRepeat: false,
+        isRepeat: props.isRepeat,
         memo: props.memo,
         location: props.location,
         durationEditable: type === 'Schedule',
         allDay: info.event.allDay,
-        category: type === 'Schedule' ? 1 : undefined,
-        priority: type === 'Todo' ? props.priority || 2 : undefined,
+        category: type === 'Schedule' ? props.category : null,
+        priority: type === 'Todo' ? props.priority : null,
         type,
       });
     },
