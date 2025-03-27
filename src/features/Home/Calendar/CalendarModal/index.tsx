@@ -23,16 +23,8 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
     event,
   });
 
-  const { handleInputChange } = useInputHandlers(updateState);
-
-  const handleChangeRepeat = (id: number) => updateState({ repeat: id });
-
-  const handleChangeCategory = (id: number) => updateState({ category: id });
-
-  const handleChangePriority = (id: number) =>
-    updateState({
-      priority: id,
-    });
+  const { handleInputChange, handleDropdownChange } =
+    useInputHandlers(updateState);
 
   const handleIsAllday = () =>
     updateState({
@@ -131,7 +123,7 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
                 { id: 0, value: 'false', name: '없음' },
                 { id: 1, value: 'true', name: '있음' },
               ]}
-              onChange={handleChangeRepeat}
+              onChange={handleDropdownChange}
             />
           </div>
 
@@ -142,7 +134,7 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
                 name="category"
                 id={state.category}
                 data={categories}
-                onChange={handleChangeCategory}
+                onChange={handleDropdownChange}
               />
             </div>
           ) : (
@@ -152,7 +144,7 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
                 name="priority"
                 id={state.priority}
                 data={priority}
-                onChange={handleChangePriority}
+                onChange={handleDropdownChange}
               />
             </div>
           )}

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { isEqual } from 'lodash';
 import { CalendarEvent } from 'entities/calendar/type';
 import { priority } from 'entities/calendar/model';
 import {
@@ -53,9 +54,10 @@ export const useEventState = ({ event }: UseEventStateProps) => {
   const [, setScheduleRendering] = useAtom(scheduleRenderingAtom);
 
   const updateState = useCallback((updates: Partial<EventState>) => {
-    console.log('업데이트해봐');
-    console.log(state.priority);
-    setState((prev) => ({ ...prev, ...updates }));
+    setState((prev) => {
+      if (isEqual(prev, { ...prev, ...updates })) return prev;
+      return { ...prev, ...updates };
+    });
   }, []);
 
   const switchEventType = useCallback(
@@ -113,7 +115,6 @@ export const useEventState = ({ event }: UseEventStateProps) => {
 
   const updateEvent = useCallback(() => {
     if (!event?.eventId || isInitial) return;
-    console.log(state.priority);
     if (state.eventType === 'Schedule') {
       patchScheduleMutate({
         id: event.eventId,
@@ -155,11 +156,7 @@ export const useEventState = ({ event }: UseEventStateProps) => {
   useEffect(() => {
     if (!event) return;
 
-    if (
-      prevEventRef.current?.title !== event.title ||
-      prevEventRef.current?.start !== event.start ||
-      prevEventRef.current?.end !== event.end
-    ) {
+    if (!isEqual(prevEventRef.current, event)) {
       setState({
         eventType: event.type,
         title: event.title,
@@ -172,7 +169,6 @@ export const useEventState = ({ event }: UseEventStateProps) => {
         priority: event.type === 'Todo' ? event.priority || 1 : 1,
         isAllDay: event.type === 'Schedule' ? event.allDay || false : false,
       });
-      console.log(state.priority);
       prevEventRef.current = { ...event };
     }
   }, [event]);
@@ -193,7 +189,12 @@ export const useInputHandlers = (updateState: (updates: any) => void) => {
     updateState({ [e.target.name]: e.target.value });
   };
 
+  const handleDropdownChange = (id: number, _value: string, name: string) => {
+    updateState({ [name]: id });
+  };
+
   return {
     handleInputChange,
+    handleDropdownChange,
   };
 };
