@@ -1,6 +1,13 @@
+import { useState } from 'react';
 import * as s from './style.css';
 
 const ProceedContent = () => {
+  const [recordState, setRecordState] = useState(false);
+
+  const handelRecordButtonClick = () => {
+    setRecordState((prev) => !prev);
+  };
+
   return (
     <div className={s.container}>
       <div className={s.sidebar}>
@@ -25,7 +32,25 @@ const ProceedContent = () => {
           </div>
         </div>
       </div>
-      <div></div>
+
+      <div className={s.mainContent({ isRecord: recordState })}>
+        {recordState && <div className={s.animatedBg} />}
+        {recordState ? (
+          <div
+            className={s.mainRecordButtonIconLayout}
+            onClick={handelRecordButtonClick}
+          >
+            <div className={s.mainRecordButtonIcon} />
+          </div>
+        ) : (
+          <div
+            className={s.mainRecordButtonText}
+            onClick={handelRecordButtonClick}
+          >
+            눌러서 녹음 시작
+          </div>
+        )}
+      </div>
     </div>
   );
 };

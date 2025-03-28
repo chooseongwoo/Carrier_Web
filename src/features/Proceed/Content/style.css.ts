@@ -1,10 +1,14 @@
-import { style } from '@vanilla-extract/css';
+import { keyframes, style } from '@vanilla-extract/css';
+import { recipe } from '@vanilla-extract/recipes';
 import { font } from 'shared/styles/font.css';
 import theme from 'shared/styles/theme.css';
 
 export const container = style({
   width: 'calc(100vw - 80px)',
   height: '100vh',
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
 });
 
 export const sidebar = style({
@@ -91,4 +95,83 @@ export const recordButtonInner = style({
   height: '44px',
   borderRadius: '100%',
   backgroundColor: theme.red[500],
+});
+
+// 애니메이션
+const expandBg = keyframes({
+  '0%': {
+    borderRadius: '100%',
+    transform: 'scale(0)',
+    opacity: 0,
+  },
+  '50%': {
+    borderRadius: '50%',
+  },
+  '100%': {
+    borderRadius: '0',
+    transform: 'scale(1)',
+    opacity: 1,
+  },
+});
+
+export const animatedBg = style({
+  position: 'absolute',
+  width: '100%',
+  height: '100%',
+  backgroundColor: theme.blue[50],
+  transform: 'scale(0)',
+  animation: `${expandBg} 0.8s ease-out forwards`,
+});
+
+export const mainContent = recipe({
+  base: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  variants: {
+    isRecord: {
+      true: {
+        backgroundColor: 'transparent',
+        position: 'relative',
+      },
+      false: {},
+    },
+  },
+});
+
+export const mainRecordButtonText = style({
+  ...font.H3,
+  color: theme.white,
+  width: '220px',
+  height: '220px',
+  backgroundColor: theme.blue[500],
+  borderRadius: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+});
+
+export const mainRecordButtonIconLayout = style({
+  width: '220px',
+  height: '220px',
+  backgroundColor: theme.blue[500],
+  borderRadius: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  position: 'relative',
+  zIndex: 10,
+});
+
+export const mainRecordButtonIcon = style({
+  width: '82px',
+  height: '82px',
+  backgroundColor: theme.white,
+  borderRadius: '12px',
 });
