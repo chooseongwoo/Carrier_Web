@@ -97,7 +97,7 @@ export const recordButtonInner = style({
   backgroundColor: theme.red[500],
 });
 
-// 애니메이션
+// 애니메이션 정의
 const expandBg = keyframes({
   '0%': {
     borderRadius: '100%',
@@ -123,7 +123,16 @@ export const animatedBg = style({
   animation: `${expandBg} 0.8s ease-out forwards`,
 });
 
-export const mainContent = recipe({
+export const mainContent = style({
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+});
+
+export const mainRecordContent = recipe({
   base: {
     width: '100%',
     height: '100%',
@@ -175,3 +184,52 @@ export const mainRecordButtonIcon = style({
   backgroundColor: theme.white,
   borderRadius: '12px',
 });
+
+export const mainContentNoneSelect = style({
+  ...font.H3,
+  color: theme.gray[400],
+});
+
+export const mainSummarizeContentLayout = style({
+  width: '100%',
+  height: '100%',
+});
+
+export const SummarizeContent = style({
+  width: '100%',
+  padding: '80px',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '40px',
+  overflowY: 'scroll',
+  height: 'calc(100% - 220px)',
+});
+
+export const mainContentListenBar = style({
+  width: '100%',
+  height: '220px',
+  padding: '24px',
+  backgroundColor: theme.gray[50],
+});
+
+export const SummarizeMainTitle = style({
+  ...font.H1,
+});
+
+export const SummarizeTitle = style({
+  ...font.H3,
+  color: theme.blue[500],
+});
+
+export const SummarizeSubTitle = style({
+  ...font.H4,
+  fontWeight: 400,
+});
+
+export const SummarizeContentDetail = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '20px',
+});
+
+export const AudioVisualizer = style({});
