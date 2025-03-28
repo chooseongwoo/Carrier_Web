@@ -76,18 +76,19 @@ const Setting = () => {
     );
   }, [user, userInfos, formatTime]);
 
-  const handleSave = () => {
-    if (user.notificationTime !== userInfos.notificationTime) {
-      updateAlarmTimeMutate(formatTime);
+  const handleSave = async () => {
+    if (user.notificationTime !== formatTime) {
+      await updateAlarmTimeMutate(formatTime);
     }
     if (user.nickname !== userInfos.name) {
-      updateUserInfoMutate(userInfos.name);
+      await updateUserInfoMutate(userInfos.name);
     }
     if (userInfos.profileImage instanceof File) {
       const formData = new FormData();
       formData.append('picture', userInfos.profileImage);
-      updateUserPictureMutate(formData);
+      await updateUserPictureMutate(formData);
     }
+    window.location.reload();
   };
 
   const navigate = useNavigate();
