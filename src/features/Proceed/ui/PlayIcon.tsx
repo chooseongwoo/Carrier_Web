@@ -1,4 +1,4 @@
-const PauseIcon = () => {
+const PlayIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -15,4 +15,4 @@ const PauseIcon = () => {
   );
 };
 
-export default PauseIcon;
+export default PlayIcon;

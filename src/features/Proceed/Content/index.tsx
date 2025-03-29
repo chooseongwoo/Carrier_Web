@@ -1,37 +1,253 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import * as s from './style.css';
+import { BeforeIcon, NextIcon, PauseIcon } from '../ui';
+import WaveformVisualizer from '../Visualizer';
+
+interface RecordingItem {
+  id: string;
+  title: string;
+  date: string;
+  duration: string;
+  audioUrl: string;
+}
 
 const ProceedContent = () => {
   const [recordState, setRecordState] = useState<'Record' | 'Select' | 'None'>(
-    'Select'
+    'None'
   );
   const [recordingState, setRecordingState] = useState(false);
+  const [recordings, setRecordings] = useState<RecordingItem[]>([]);
+  const [selectedRecording, setSelectedRecording] =
+    useState<RecordingItem | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [recordingDuration, setRecordingDuration] = useState(0);
+  const [recordingTitle, setRecordingTitle] = useState('새 녹음');
+  const [volumeLevel, setVolumeLevel] = useState(0);
+
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const streamRef = useRef<MediaStream | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const animationFrameRef = useRef<number | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+
+  const updateVolume = useCallback(() => {
+    if (analyserRef.current) {
+      const bufferLength = analyserRef.current.fftSize;
+      const dataArray = new Uint8Array(bufferLength);
+      analyserRef.current.getByteTimeDomainData(dataArray);
+      let sum = 0;
+      for (let i = 0; i < bufferLength; i++) {
+        const normalized = (dataArray[i] - 128) / 128;
+        sum += normalized * normalized;
+      }
+      const rms = Math.sqrt(sum / bufferLength);
+      setVolumeLevel(rms);
+    }
+    animationFrameRef.current = requestAnimationFrame(updateVolume);
+  }, []);
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      streamRef.current = stream;
+
+      const audioContext = new AudioContext();
+      audioContextRef.current = audioContext;
+      const analyser = audioContext.createAnalyser();
+      analyser.fftSize = 2048;
+      analyserRef.current = analyser;
+      const source = audioContext.createMediaStreamSource(stream);
+      source.connect(analyser);
+
+      animationFrameRef.current = requestAnimationFrame(updateVolume);
+
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+
+      audioChunksRef.current = [];
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
+        }
+      };
+
+      mediaRecorder.start();
+      setRecordingState(true);
+
+      let seconds = 0;
+      timerRef.current = setInterval(() => {
+        seconds++;
+        setRecordingDuration(seconds);
+      }, 1000);
+    } catch (error) {
+      /* eslint-disable no-console */
+      console.error('Error accessing microphone:', error);
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && streamRef.current) {
+      mediaRecorderRef.current.stop();
+
+      mediaRecorderRef.current.onstop = () => {
+        if (animationFrameRef.current) {
+          cancelAnimationFrame(animationFrameRef.current);
+        }
+        if (timerRef.current) {
+          clearInterval(timerRef.current);
+        }
+        if (audioContextRef.current) {
+          audioContextRef.current.close();
+          audioContextRef.current = null;
+          analyserRef.current = null;
+        }
+        setVolumeLevel(0);
+
+        const audioBlob = new Blob(audioChunksRef.current, {
+          type: 'audio/wav',
+        });
+        const audioUrl = URL.createObjectURL(audioBlob);
+
+        const minutes = Math.floor(recordingDuration / 60);
+        const seconds = recordingDuration % 60;
+        const formattedDuration = `${minutes.toString().padStart(2, '0')}.${seconds
+          .toString()
+          .padStart(2, '0')}초`;
+
+        const now = new Date();
+        const formattedDate = `${now.getFullYear()}.${(now.getMonth() + 1)
+          .toString()
+          .padStart(2, '0')}.${now.getDate().toString().padStart(2, '0')}`;
+
+        const newRecording: RecordingItem = {
+          id: Date.now().toString(),
+          title: recordingTitle,
+          date: formattedDate,
+          duration: formattedDuration,
+          audioUrl: audioUrl,
+        };
+
+        setRecordings((prev) => [...prev, newRecording]);
+        setSelectedRecording(newRecording);
+        setRecordState('Select');
+        setIsPlaying(false);
+
+        if (audioRef.current) {
+          audioRef.current.pause();
+          audioRef.current.currentTime = 0;
+        }
+        if (streamRef.current) {
+          streamRef.current.getTracks().forEach((track) => track.stop());
+        }
+      };
+
+      setRecordingState(false);
+      setRecordingDuration(0);
+    }
+  };
 
   const handelRecordingButtonClick = () => {
-    setRecordingState((prev) => !prev);
+    if (recordingState) {
+      stopRecording();
+    } else {
+      startRecording();
+    }
   };
 
   const handelRecordButtonClick = () => {
     setRecordState('Record');
+    setRecordingTitle('새 녹음');
   };
+
+  const handleSelectRecording = (recording: RecordingItem) => {
+    setSelectedRecording(recording);
+    setRecordState('Select');
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+    setIsPlaying(false);
+  };
+
+  const handlePlayPause = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const handleSkipBackward = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = Math.max(
+        0,
+        audioRef.current.currentTime - 10
+      );
+    }
+  };
+
+  const handleSkipForward = () => {
+    if (audioRef.current && audioRef.current.duration) {
+      audioRef.current.currentTime = Math.min(
+        audioRef.current.duration,
+        audioRef.current.currentTime + 10
+      );
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop());
+      }
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      if (audioContextRef.current) {
+        audioContextRef.current.close();
+      }
+    };
+  }, []);
+
+  const buttonScale = 1 + volumeLevel * 0.5;
 
   return (
     <div className={s.container}>
       <div className={s.sidebar}>
         <div className={s.title}>모든 녹음 요약</div>
         <div className={s.recordContents}>
-          {/* Map */}
-
-          <div className={s.recordContent}>
-            <div className={s.recordTitle}>
-              <div className={s.recordTitleText}>제목</div>
-              <div className={s.recordTitleDate}>2025.02.30</div>
+          {recordings.length > 0 ? (
+            recordings.map((recording) => (
+              <div
+                key={recording.id}
+                className={s.recordContent}
+                onClick={() => handleSelectRecording(recording)}
+                style={{ cursor: 'pointer' }}
+              >
+                <div className={s.recordTitle}>
+                  <div className={s.recordTitleText}>{recording.title}</div>
+                  <div className={s.recordTitleDate}>{recording.date}</div>
+                </div>
+                <div className={s.recordTime}>{recording.duration}</div>
+              </div>
+            ))
+          ) : (
+            <div
+              style={{ padding: '20px', color: '#666', textAlign: 'center' }}
+            >
+              녹음된 내용이 없습니다.
             </div>
-
-            <div className={s.recordTime}>00.00초</div>
-          </div>
-
-          {/* Map */}
+          )}
         </div>
         <div className={s.recordButtonLayout}>
           <div className={s.recordButton} onClick={handelRecordButtonClick}>
@@ -45,14 +261,29 @@ const ProceedContent = () => {
           <div className={s.mainContentNoneSelect}>선택된 녹음 없음</div>
         ) : recordState === 'Record' ? (
           <div className={s.mainRecordContent({ isRecord: recordingState })}>
-            {recordingState && <div className={s.animatedBg} />}
             {recordingState ? (
-              <div
-                className={s.mainRecordButtonIconLayout}
-                onClick={handelRecordingButtonClick}
-              >
-                <div className={s.mainRecordButtonIcon} />
-              </div>
+              <>
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '30%',
+                    fontSize: '24px',
+                    color: '#666',
+                  }}
+                >
+                  {Math.floor(recordingDuration / 60)
+                    .toString()
+                    .padStart(2, '0')}
+                  :{(recordingDuration % 60).toString().padStart(2, '0')}
+                </div>
+                <div
+                  className={s.mainRecordButtonIconLayout}
+                  onClick={handelRecordingButtonClick}
+                  style={{ transform: `scale(${buttonScale})` }}
+                >
+                  <div className={s.mainRecordButtonIcon} />
+                </div>
+              </>
             ) : (
               <div
                 className={s.mainRecordButtonText}
@@ -64,98 +295,38 @@ const ProceedContent = () => {
           </div>
         ) : (
           <div className={s.mainSummarizeContentLayout}>
-            <div className={s.SummarizeContent}>
-              <div className={s.SummarizeMainTitle}>AI 요약됨</div>
-
-              <div className={s.SummarizeContentDetail}>
-                <div>
-                  <div className={s.SummarizeTitle}>회의 주제</div>
-                  <div className={s.SummarizeSubTitle}>회의 주제입니다</div>
-                </div>
-
-                <div>
-                  <div className={s.SummarizeTitle}>회의 내용</div>
-                  <div className={s.SummarizeSubTitle}>
-                    이번 회의에서는 자사 앱의 차기 버전에 포함될 신규 기능에
-                    대한 아이디어를 자유롭게 제안하고, 그 중 실현 가능한 기능을
-                    선별하는 데 중점을 두었다. 주요 논의는 사용자 경험 개선과 AI
-                    기술 활용이라는 두 가지 축을 중심으로 진행되었다. 우선, 최근
-                    사용자 피드백 중 가장 빈번하게 등장한 문제로는 알림 기능의
-                    과도한 반복성과 유저 몰입 부족이 있었다. 이에 따라 ‘상황
-                    기반 맞춤 알림’ 기능이 제안되었으며, 이는 사용자의 위치,
-                    시간대, 행동 패턴 등을 분석하여 적절한 시점에 유용한 알림을
-                    제공하는 방식이다. 예를 들어, 사용자가 매일 저녁 8시에 정적
-                    상태일 경우 “오늘 하루 정리해볼까요?”와 같은 제안을 자동으로
-                    띄우는 구조다. 두 번째로 제안된 기능은 ‘AI 요약 피드’다.
-                    사용자가 저장해 둔 텍스트, 음성 메모, 캘린더 일정 등을
-                    자동으로 분석하여 하루에 한 번 요약 콘텐츠 형태로 제공하는
-                    방식이며, 이는 Notion, Google Calendar와의 연동도 염두에
-                    두고 있다. 이 기능은 특히 업무 생산성 앱 사용자층에게 유용할
-                    것으로 예상된다. 세 번째로 논의된 기능은 회의나 일상 대화를
-                    실시간으로 음성 인식(STT)하고 자동 요약하는 기능이었다.
-                    Whisper API를 기반으로 한 초기 테스트 결과는 긍정적이었으며,
-                    키워드 추출 및 자동 분류 기능까지 확장하는 방향으로 발전
-                    가능성이 언급되었다. 기술적으로 가장 빠르게 프로토타입
-                    구현이 가능한 기능은 위치 기반 알림으로 평가되었고, 다음
-                    스프린트 내 MVP로 구현해보기로 합의되었다. AI 요약 피드는
-                    데이터 처리 방식에 대한 추가 논의가 필요하며, 음성 기록
-                    기능은 타사 STT 엔진 비교를 거친 후 방향을 결정하기로 했다.
-                    이번 회의에서는 자사 앱의 차기 버전에 포함될 신규 기능에
-                    대한 아이디어를 자유롭게 제안하고, 그 중 실현 가능한 기능을
-                    선별하는 데 중점을 두었다. 주요 논의는 사용자 경험 개선과 AI
-                    기술 활용이라는 두 가지 축을 중심으로 진행되었다. 우선, 최근
-                    사용자 피드백 중 가장 빈번하게 등장한 문제로는 알림 기능의
-                    과도한 반복성과 유저 몰입 부족이 있었다. 이에 따라 ‘상황
-                    기반 맞춤 알림’ 기능이 제안되었으며, 이는 사용자의 위치,
-                    시간대, 행동 패턴 등을 분석하여 적절한 시점에 유용한 알림을
-                    제공하는 방식이다. 예를 들어, 사용자가 매일 저녁 8시에 정적
-                    상태일 경우 “오늘 하루 정리해볼까요?”와 같은 제안을 자동으로
-                    띄우는 구조다. 두 번째로 제안된 기능은 ‘AI 요약 피드’다.
-                    사용자가 저장해 둔 텍스트, 음성 메모, 캘린더 일정 등을
-                    자동으로 분석하여 하루에 한 번 요약 콘텐츠 형태로 제공하는
-                    방식이며, 이는 Notion, Google Calendar와의 연동도 염두에
-                    두고 있다. 이 기능은 특히 업무 생산성 앱 사용자층에게 유용할
-                    것으로 예상된다. 세 번째로 논의된 기능은 회의나 일상 대화를
-                    실시간으로 음성 인식(STT)하고 자동 요약하는 기능이었다.
-                    Whisper API를 기반으로 한 초기 테스트 결과는 긍정적이었으며,
-                    키워드 추출 및 자동 분류 기능까지 확장하는 방향으로 발전
-                    가능성이 언급되었다. 기술적으로 가장 빠르게 프로토타입
-                    구현이 가능한 기능은 위치 기반 알림으로 평가되었고, 다음
-                    스프린트 내 MVP로 구현해보기로 합의되었다. AI 요약 피드는
-                    데이터 처리 방식에 대한 추가 논의가 필요하며, 음성 기록
-                    기능은 타사 STT 엔진 비교를 거친 후 방향을 결정하기로 했다.
-                    이번 회의에서는 자사 앱의 차기 버전에 포함될 신규 기능에
-                    대한 아이디어를 자유롭게 제안하고, 그 중 실현 가능한 기능을
-                    선별하는 데 중점을 두었다. 주요 논의는 사용자 경험 개선과 AI
-                    기술 활용이라는 두 가지 축을 중심으로 진행되었다. 우선, 최근
-                    사용자 피드백 중 가장 빈번하게 등장한 문제로는 알림 기능의
-                    과도한 반복성과 유저 몰입 부족이 있었다. 이에 따라 ‘상황
-                    기반 맞춤 알림’ 기능이 제안되었으며, 이는 사용자의 위치,
-                    시간대, 행동 패턴 등을 분석하여 적절한 시점에 유용한 알림을
-                    제공하는 방식이다. 예를 들어, 사용자가 매일 저녁 8시에 정적
-                    상태일 경우 “오늘 하루 정리해볼까요?”와 같은 제안을 자동으로
-                    띄우는 구조다. 두 번째로 제안된 기능은 ‘AI 요약 피드’다.
-                    사용자가 저장해 둔 텍스트, 음성 메모, 캘린더 일정 등을
-                    자동으로 분석하여 하루에 한 번 요약 콘텐츠 형태로 제공하는
-                    방식이며, 이는 Notion, Google Calendar와의 연동도 염두에
-                    두고 있다. 이 기능은 특히 업무 생산성 앱 사용자층에게 유용할
-                    것으로 예상된다. 세 번째로 논의된 기능은 회의나 일상 대화를
-                    실시간으로 음성 인식(STT)하고 자동 요약하는 기능이었다.
-                    Whisper API를 기반으로 한 초기 테스트 결과는 긍정적이었으며,
-                    키워드 추출 및 자동 분류 기능까지 확장하는 방향으로 발전
-                    가능성이 언급되었다. 기술적으로 가장 빠르게 프로토타입
-                    구현이 가능한 기능은 위치 기반 알림으로 평가되었고, 다음
-                    스프린트 내 MVP로 구현해보기로 합의되었다. AI 요약 피드는
-                    데이터 처리 방식에 대한 추가 논의가 필요하며, 음성 기록
-                    기능은 타사 STT 엔진 비교를 거친 후 방향을 결정하기로 했다.
+            {selectedRecording && (
+              <>
+                <div className={s.SummarizeContent}>
+                  <div className={s.SummarizeMainTitle}>AI 요약됨</div>
+                  <div className={s.SummarizeContentDetail}>
+                    <div>
+                      <div className={s.SummarizeTitle}>녹음 제목</div>
+                      <div className={s.SummarizeSubTitle}>
+                        {selectedRecording.title}
+                      </div>
+                    </div>
+                    <div>
+                      <div className={s.SummarizeTitle}>녹음 내용</div>
+                      <div className={s.SummarizeSubTitle}>
+                        녹음 요약한거 여기에 들어감
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div className={s.mainContentListenBar}>
-              <div className={s.AudioVisualizer}></div>
-              <div></div>
-            </div>
+                <div className={s.mainContentListenBar}>
+                  <div className={s.AudioVisualizer}>
+                    {selectedRecording.audioUrl && (
+                      <>
+                        <WaveformVisualizer
+                          audioSrc={selectedRecording.audioUrl}
+                        />
+                      </>
+                    )}
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         )}
       </div>

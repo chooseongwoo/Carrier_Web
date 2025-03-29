@@ -1,4 +1,4 @@
-import { keyframes, style } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { font } from 'shared/styles/font.css';
 import theme from 'shared/styles/theme.css';
@@ -97,32 +97,6 @@ export const recordButtonInner = style({
   backgroundColor: theme.red[500],
 });
 
-// 애니메이션 정의
-const expandBg = keyframes({
-  '0%': {
-    borderRadius: '100%',
-    transform: 'scale(0)',
-    opacity: 0,
-  },
-  '50%': {
-    borderRadius: '50%',
-  },
-  '100%': {
-    borderRadius: '0',
-    transform: 'scale(1)',
-    opacity: 1,
-  },
-});
-
-export const animatedBg = style({
-  position: 'absolute',
-  width: '100%',
-  height: '100%',
-  backgroundColor: theme.blue[50],
-  transform: 'scale(0)',
-  animation: `${expandBg} 0.8s ease-out forwards`,
-});
-
 export const mainContent = style({
   width: '100%',
   height: '100%',
@@ -164,6 +138,7 @@ export const mainRecordButtonText = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  cursor: 'pointer',
 });
 
 export const mainRecordButtonIconLayout = style({
