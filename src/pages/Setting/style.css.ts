@@ -41,6 +41,7 @@ export const textBox = style({
 export const nameText = style({
   ...font.H2,
   color: `${theme.black}`,
+  minHeight: '33.6px',
 });
 
 export const emailText = style({
