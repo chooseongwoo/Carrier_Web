@@ -156,6 +156,7 @@ const ProceedContent = () => {
   };
 
   const handelRecordButtonClick = () => {
+    setSelectedRecording(null);
     setRecordState('Record');
     setRecordingTitle('새 녹음');
   };
@@ -196,15 +197,39 @@ const ProceedContent = () => {
           {recordings.length > 0 ? (
             recordings.map((recording) => (
               <div
+                className={s.recordContentContainer({
+                  isSelected:
+                    selectedRecording?.id === recording.id ? true : false,
+                })}
                 key={recording.id}
-                className={s.recordContent}
-                onClick={() => handleSelectRecording(recording)}
               >
-                <div className={s.recordTitle}>
-                  <div className={s.recordTitleText}>{recording.title}</div>
-                  <div className={s.recordTitleDate}>{recording.date}</div>
+                <div
+                  className={s.recordContent({
+                    isSelected:
+                      selectedRecording?.id === recording.id ? true : false,
+                  })}
+                  onClick={() => handleSelectRecording(recording)}
+                >
+                  <div className={s.recordTitle}>
+                    <div className={s.recordTitleText}>{recording.title}</div>
+                    <div
+                      className={s.recordTitleDate({
+                        isSelected:
+                          selectedRecording?.id === recording.id ? true : false,
+                      })}
+                    >
+                      {recording.date}
+                    </div>
+                  </div>
+                  <div
+                    className={s.recordTime({
+                      isSelected:
+                        selectedRecording?.id === recording.id ? true : false,
+                    })}
+                  >
+                    {recording.duration}
+                  </div>
                 </div>
-                <div className={s.recordTime}>{recording.duration}</div>
               </div>
             ))
           ) : (

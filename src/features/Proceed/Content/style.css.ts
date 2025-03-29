@@ -35,40 +35,86 @@ export const recordContents = style({
   alignItems: 'center',
   justifyContent: 'start',
   overflowY: 'scroll',
-  padding: '0 20px',
 });
 
-export const recordContent = style({
-  width: '100%',
-  borderBottom: `1px solid ${theme.gray[100]}`,
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  padding: '20px 12px',
-  cursor: 'pointer',
+export const recordContentContainer = recipe({
+  base: {
+    width: '100%',
+    padding: '0 20px',
+  },
+  variants: {
+    isSelected: {
+      true: {
+        backgroundColor: theme.blue[500],
+      },
+      false: {},
+    },
+  },
+});
+
+export const recordContent = recipe({
+  base: {
+    width: '100%',
+    borderBottom: `1px solid ${theme.gray[100]}`,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: '20px 12px',
+    cursor: 'pointer',
+  },
+  variants: {
+    isSelected: {
+      true: {
+        border: 'none',
+        color: theme.white,
+      },
+      false: {},
+    },
+  },
 });
 
 export const recordTitle = style({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
+  gap: '4px',
 });
 
 export const recordTitleText = style({
   ...font.H4,
 });
 
-export const recordTitleDate = style({
-  ...font.p2,
-  color: theme.gray[600],
+export const recordTitleDate = recipe({
+  base: {
+    ...font.p2,
+    color: theme.gray[600],
+  },
+  variants: {
+    isSelected: {
+      true: {
+        color: theme.blue[100],
+      },
+      false: {},
+    },
+  },
 });
 
-export const recordTime = style({
-  ...font.p2,
-  color: theme.gray[600],
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'end',
+export const recordTime = recipe({
+  base: {
+    ...font.p2,
+    color: theme.gray[600],
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'end',
+  },
+  variants: {
+    isSelected: {
+      true: {
+        color: theme.blue[100],
+      },
+      false: {},
+    },
+  },
 });
 
 export const recordButtonLayout = style({
