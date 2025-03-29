@@ -9,7 +9,7 @@ import {
   DayCellContentArg,
 } from '@fullcalendar/core';
 import { EventImpl } from '@fullcalendar/core/internal';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { Arrow } from 'shared/icons';
 import { CalendarPlusIcon, CalendarSearchIcon } from 'features/Home/ui';
 import { CalendarModal, CalendarToggle } from 'features/Home/Calendar';
@@ -26,8 +26,6 @@ import {
   scheduleSelectedAtom,
   todoSelectedAtom,
 } from 'entities/calendar/contexts/eventDisplayState';
-import { scheduleRenderingAtom } from 'entities/calendar/contexts/eventRendering';
-import { todoRenderingAtom } from 'entities/calendar/contexts/eventRendering';
 
 const EventContent = memo(({ event }: { event: EventImpl }) => {
   const isSchedule = event.extendedProps.type === 'Schedule';
@@ -100,42 +98,38 @@ const Calendar = () => {
   const calendarRef = useRef<FullCalendar | null>(null);
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const { navigate, dateRange } = useCalendarNavigation(calendarRef);
-  const queryClient = useQueryClient();
 
   const [scheduleSelected] = useAtom(scheduleSelectedAtom);
   const [todoSelected] = useAtom(todoSelectedAtom);
 
-  const [scheduleRendering] = useAtom(scheduleRenderingAtom);
-  const [todoRendering] = useAtom(todoRenderingAtom);
+  const scheduleQuery = useScheduleListQuery.getScheduleList({
+    startDate: dateRange?.startDate || '',
+    endDate: dateRange?.endDate || '',
+  });
+
+  const todoQuery = useTodoListQuery.getTodoList({
+    startDate: dateRange?.startDate || '',
+    endDate: dateRange?.endDate || '',
+  });
+
+  const { data: schedules = [] } = useQuery({
+    ...scheduleQuery,
+    enabled: !!dateRange,
+    staleTime: 1000 * 60 * 5,
+  });
+
+  const { data: todos = [] } = useQuery({
+    ...todoQuery,
+    enabled: !!dateRange,
+    staleTime: 1000 * 60 * 5,
+  });
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (!dateRange) return;
+    if (schedules.length > 0 || todos.length > 0) {
+      setEvents([...schedules, ...todos]);
+    }
+  }, [schedules, todos]);
 
-      try {
-        const scheduleQuery = useScheduleListQuery.getScheduleList({
-          startDate: dateRange.startDate,
-          endDate: dateRange.endDate,
-        });
-
-        const todoQuery = useTodoListQuery.getTodoList({
-          startDate: dateRange.startDate,
-          endDate: dateRange.endDate,
-        });
-
-        const [schedules, todos] = await Promise.all([
-          queryClient.fetchQuery(scheduleQuery),
-          queryClient.fetchQuery(todoQuery),
-        ]);
-
-        setEvents([...schedules, ...todos]);
-      } catch (error) {
-        console.error('데이터 가져오기 실패:', error);
-      }
-    };
-
-    fetchData();
-  }, [dateRange, scheduleRendering, todoRendering]);
   const filteredEvents = events.filter((event) => {
     if (event.type === 'Schedule' && !scheduleSelected) return false;
     if (event.type === 'Todo' && !todoSelected) return false;
