@@ -27,7 +27,7 @@ export const useCategoryListQuery = {
 export const useScheduleListQuery = {
   getScheduleList: (params: GetScheduleListReq) =>
     queryOptions({
-      queryKey: [homeKeys.SCHEDULE_LIST],
+      queryKey: [homeKeys.SCHEDULE_LIST, params],
       queryFn: () => getScheduleList(params),
     }),
 };
