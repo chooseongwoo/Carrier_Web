@@ -74,7 +74,7 @@ export const useEventState = ({ event }: UseEventStateProps) => {
 
   const todoData = {
     title: state.title,
-    date: state.startDate.split('T')[0],
+    date: state.endDate?.split('T')[0] || state.startDate.split('T')[0],
     isRepeat: Boolean(state.repeat),
     priority:
       priority.find((item) => item.id === state.priority)?.value || 'HIGH',
