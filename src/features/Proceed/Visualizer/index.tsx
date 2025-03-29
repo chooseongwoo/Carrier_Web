@@ -6,7 +6,6 @@ import { BeforeIcon, NextIcon } from '../ui';
 interface WaveformVisualizerProps {
   audioSrc: string;
 }
-
 const WaveformVisualizer: React.FC<WaveformVisualizerProps> = ({
   audioSrc,
 }) => {
@@ -25,8 +24,12 @@ const WaveformVisualizer: React.FC<WaveformVisualizerProps> = ({
     const fetchAudioData = async () => {
       const response = await fetch(audioSrc);
       const arrayBuffer = await response.arrayBuffer();
-      const audioContext = new (window.AudioContext ||
-        (window as any).webkitAudioContext)();
+      const audioContext = new (
+        window as unknown as {
+          AudioContext: typeof AudioContext;
+          webkitAudioContext?: typeof AudioContext;
+        }
+      ).AudioContext();
       const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
       const channelData = audioBuffer.getChannelData(0);
 
