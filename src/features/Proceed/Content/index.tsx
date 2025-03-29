@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import * as s from './style.css';
-import { BeforeIcon, NextIcon, PauseIcon } from '../ui';
 import WaveformVisualizer from '../Visualizer';
 
 interface RecordingItem {
@@ -19,7 +18,6 @@ const ProceedContent = () => {
   const [recordings, setRecordings] = useState<RecordingItem[]>([]);
   const [selectedRecording, setSelectedRecording] =
     useState<RecordingItem | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [recordingDuration, setRecordingDuration] = useState(0);
   const [recordingTitle, setRecordingTitle] = useState('새 녹음');
   const [volumeLevel, setVolumeLevel] = useState(0);
@@ -134,7 +132,6 @@ const ProceedContent = () => {
         setRecordings((prev) => [...prev, newRecording]);
         setSelectedRecording(newRecording);
         setRecordState('Select');
-        setIsPlaying(false);
 
         if (audioRef.current) {
           audioRef.current.pause();
@@ -169,36 +166,6 @@ const ProceedContent = () => {
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
-    }
-    setIsPlaying(false);
-  };
-
-  const handlePlayPause = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
-
-  const handleSkipBackward = () => {
-    if (audioRef.current) {
-      audioRef.current.currentTime = Math.max(
-        0,
-        audioRef.current.currentTime - 10
-      );
-    }
-  };
-
-  const handleSkipForward = () => {
-    if (audioRef.current && audioRef.current.duration) {
-      audioRef.current.currentTime = Math.min(
-        audioRef.current.duration,
-        audioRef.current.currentTime + 10
-      );
     }
   };
 
