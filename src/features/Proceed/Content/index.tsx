@@ -232,7 +232,6 @@ const ProceedContent = () => {
                 key={recording.id}
                 className={s.recordContent}
                 onClick={() => handleSelectRecording(recording)}
-                style={{ cursor: 'pointer' }}
               >
                 <div className={s.recordTitle}>
                   <div className={s.recordTitleText}>{recording.title}</div>
@@ -242,11 +241,7 @@ const ProceedContent = () => {
               </div>
             ))
           ) : (
-            <div
-              style={{ padding: '20px', color: '#666', textAlign: 'center' }}
-            >
-              녹음된 내용이 없습니다.
-            </div>
+            <div className={s.recordContentNone}>녹음된 내용이 없습니다.</div>
           )}
         </div>
         <div className={s.recordButtonLayout}>
@@ -263,14 +258,7 @@ const ProceedContent = () => {
           <div className={s.mainRecordContent({ isRecord: recordingState })}>
             {recordingState ? (
               <>
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '30%',
-                    fontSize: '24px',
-                    color: '#666',
-                  }}
-                >
+                <div className={s.mainRecordEffect}>
                   {Math.floor(recordingDuration / 60)
                     .toString()
                     .padStart(2, '0')}
@@ -315,13 +303,11 @@ const ProceedContent = () => {
                   </div>
                 </div>
                 <div className={s.mainContentListenBar}>
-                  <div className={s.AudioVisualizer}>
+                  <div>
                     {selectedRecording.audioUrl && (
-                      <>
-                        <WaveformVisualizer
-                          audioSrc={selectedRecording.audioUrl}
-                        />
-                      </>
+                      <WaveformVisualizer
+                        audioSrc={selectedRecording.audioUrl}
+                      />
                     )}
                   </div>
                 </div>

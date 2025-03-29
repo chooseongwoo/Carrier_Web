@@ -122,7 +122,7 @@ const WaveformVisualizer: React.FC<WaveformVisualizerProps> = ({
   };
 
   return (
-    <div style={{ textAlign: 'center' }}>
+    <div className={s.AudioContainer}>
       <canvas ref={canvasRef} width={1200} height={100} />
       <div className={s.AudioState}>
         <button onClick={() => (audioRef.current.currentTime = 0)}>

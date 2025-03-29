@@ -45,6 +45,7 @@ export const recordContent = style({
   flexDirection: 'row',
   justifyContent: 'space-between',
   padding: '20px 12px',
+  cursor: 'pointer',
 });
 
 export const recordTitle = style({
@@ -207,4 +208,15 @@ export const SummarizeContentDetail = style({
   gap: '20px',
 });
 
-export const AudioVisualizer = style({});
+export const mainRecordEffect = style({
+  position: 'absolute',
+  top: '30%',
+  fontSize: '24px',
+  color: '#666',
+});
+
+export const recordContentNone = style({
+  padding: '20px',
+  color: '#666',
+  textAlign: 'center',
+});
