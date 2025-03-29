@@ -10,11 +10,6 @@ import {
   usePatchScheduleMutation,
   usePatchTodoMutation,
 } from 'features/Home/services/home.mutation';
-import { useAtom } from 'jotai';
-import {
-  todoRenderingAtom,
-  scheduleRenderingAtom,
-} from 'entities/calendar/contexts/eventRendering';
 
 interface UseEventStateProps {
   event?: CalendarEvent;
@@ -49,9 +44,6 @@ export const useEventState = ({ event }: UseEventStateProps) => {
 
   const prevEventRef = useRef<CalendarEvent | undefined>(undefined);
   const isInitial = !event || event.title === '';
-
-  const [, setTodoRendering] = useAtom(todoRenderingAtom);
-  const [, setScheduleRendering] = useAtom(scheduleRenderingAtom);
 
   const updateState = useCallback((updates: Partial<EventState>) => {
     setState((prev) => {
@@ -100,10 +92,8 @@ export const useEventState = ({ event }: UseEventStateProps) => {
   const createEvent = useCallback(() => {
     if (state.eventType === 'Schedule') {
       postScheduleMutate(scheduleData);
-      setTimeout(() => setScheduleRendering((prev) => prev + 1), 100);
     } else {
       postTodoMutate(todoData);
-      setTimeout(() => setTodoRendering((prev) => prev + 1), 100);
     }
   }, [
     postScheduleMutate,
@@ -120,11 +110,8 @@ export const useEventState = ({ event }: UseEventStateProps) => {
         id: event.eventId,
         ...scheduleData,
       });
-
-      setTimeout(() => setScheduleRendering((prev) => prev + 1), 100);
     } else {
       patchTodoMutate({ id: event.eventId, ...todoData });
-      setTimeout(() => setTodoRendering((prev) => prev + 1), 100);
     }
   }, [
     event,
@@ -139,10 +126,8 @@ export const useEventState = ({ event }: UseEventStateProps) => {
     if (!event?.eventId || isInitial) return;
     if (state.eventType === 'Schedule') {
       deleteScheduleMutate(event.eventId);
-      setTimeout(() => setScheduleRendering((prev) => prev + 1), 100);
     } else {
       deleteTodoMutate(event.eventId);
-      setTimeout(() => setTodoRendering((prev) => prev + 1), 100);
     }
   }, [
     event,
