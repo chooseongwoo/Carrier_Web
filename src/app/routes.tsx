@@ -11,6 +11,7 @@ import Diary from 'pages/Diary';
 import { DotLoader } from 'react-spinners';
 import theme from 'shared/styles/theme.css';
 import Setting from 'pages/Setting';
+import Privacy from 'pages/Privacy/page';
 
 const LoadingScreen = () => (
   <div
@@ -73,11 +74,12 @@ export default function Router() {
         >
           <Route path="/login" element={<Login />} />
           <Route path="/google/callback" element={<OAuthWeb />} />
-          <Route path="/app/google/callback" element={<OAuthApp />} />
         </Route>
         <Route element={<SurveyRoute isSurvey={isSurvey} />}>
+          <Route path="/app/google/callback" element={<OAuthApp />} />
           <Route path="/survey" element={<Survey />} />
         </Route>
+        <Route path="/privacy" element={<Privacy />} />
       </Routes>
     </Suspense>
   );

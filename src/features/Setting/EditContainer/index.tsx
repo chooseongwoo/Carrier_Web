@@ -28,6 +28,7 @@ const InputContainer = ({
         placeholder={placeholder}
         className={s.input}
         readOnly={readOnly}
+        disabled={readOnly}
       />
     </div>
   );

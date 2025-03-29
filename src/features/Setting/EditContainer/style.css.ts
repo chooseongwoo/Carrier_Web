@@ -5,7 +5,7 @@ import theme from 'shared/styles/theme.css';
 export const container = style({
   width: '100%',
   height: '100%',
-  overflowY: 'scroll',
+  overflowY: 'hidden',
   padding: '0 40px',
 });
 

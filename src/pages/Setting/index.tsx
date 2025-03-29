@@ -12,12 +12,14 @@ import {
 import { useAlarmTimeMutation } from 'features/AlaramTime/services/time.mutation';
 import { useNavigate } from 'react-router-dom';
 import { useLogoutMutation } from 'features/auth/services/auth.mutation';
-import { Storage } from 'shared/lib/storage';
-
+import { useQueryClient } from '@tanstack/react-query';
+import { userKeys } from 'features/user/services/user.keys';
 const Setting = () => {
   const [isOpenedModal, setIsOpenedModal] = useState<
     'Logout' | 'Warning' | 'Secession' | false
   >(false);
+
+  const queryClient = useQueryClient();
 
   const { user } = useUser();
   const { mutate: updateUserInfoMutate } = useUpdateUserInfo();
@@ -78,17 +80,29 @@ const Setting = () => {
     );
   }, [user, userInfos, formatTime]);
 
-  const handleSave = () => {
-    if (user.notificationTime !== userInfos.notificationTime) {
-      updateAlarmTimeMutate(formatTime);
+  const handleSave = async () => {
+    const invalidateUserInfoQuery = () => {
+      queryClient.invalidateQueries({ queryKey: [userKeys.userInfo] });
+    };
+
+    if (user.notificationTime !== formatTime) {
+      await updateAlarmTimeMutate(formatTime, {
+        onSuccess: invalidateUserInfoQuery,
+      });
     }
+
     if (user.nickname !== userInfos.name) {
-      updateUserInfoMutate(userInfos.name);
+      await updateUserInfoMutate(userInfos.name, {
+        onSuccess: invalidateUserInfoQuery,
+      });
     }
+
     if (userInfos.profileImage instanceof File) {
       const formData = new FormData();
       formData.append('picture', userInfos.profileImage);
-      updateUserPictureMutate(formData);
+      await updateUserPictureMutate(formData, {
+        onSuccess: invalidateUserInfoQuery,
+      });
     }
   };
 
@@ -120,9 +134,6 @@ const Setting = () => {
     }
     if (isOpenedModal === 'Secession') {
       deleteSecession();
-      Storage.delItem('accessToken');
-      Storage.delItem('accessToken');
-      window.location.href = '/';
     }
     if (isOpenedModal === 'Warning') {
       navigate(-1);

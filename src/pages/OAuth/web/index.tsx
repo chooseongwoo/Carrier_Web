@@ -1,5 +1,5 @@
 import { Suspense, useEffect } from 'react';
-import * as s from '../style.css';
+import * as s from './style.css';
 import { useSearchParams } from 'react-router-dom';
 import { useLoginMutation } from 'features/auth/services/auth.mutation';
 import { DotLoader } from 'react-spinners';

@@ -1,11 +1,21 @@
 import { Suspense, useEffect, useState } from 'react';
-import * as s from '../style.css';
+import * as s from './style.css';
 import { useSearchParams } from 'react-router-dom';
 import { useAppLoginMutation } from 'features/auth/services/auth.mutation';
+import { userQuery } from 'features/user/services/user.query';
+import { Storage } from 'shared/lib/storage';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { TOKEN } from 'shared/constants';
 
 const OAuthApp = () => {
   const [searchParams] = useSearchParams();
   const code = searchParams.get('code') || '';
+  const { data: userInfo } = useQuery({
+    ...userQuery.userInfo(),
+    enabled: !!Storage.getItem(TOKEN.ACCESS),
+  });
+  const { mutate } = useAppLoginMutation();
+  const queryClient = useQueryClient();
 
   const [responses, setRespones] = useState({
     accessToken: '',
@@ -13,16 +23,18 @@ const OAuthApp = () => {
     isSignUp: false,
   });
 
-  const { mutate } = useAppLoginMutation();
-
   useEffect(() => {
     if (code)
       mutate(code, {
-        onSuccess: (response) => {
+        onSuccess: async (response) => {
           setRespones(response);
+          Storage.setItem(TOKEN.ACCESS, response.accessToken);
+          Storage.setItem(TOKEN.REFRESH, response.refreshToken);
+
+          await queryClient.prefetchQuery(userQuery.userInfo());
         },
       });
-  }, [code, mutate]);
+  }, [code, mutate, queryClient]);
 
   const handleOpenApp = () => {
     const { accessToken, refreshToken, isSignUp } = responses;
@@ -37,7 +49,9 @@ const OAuthApp = () => {
   return (
     <Suspense>
       <main className={s.container}>
-        <button onClick={handleOpenApp}>앱으로 이동하기</button>
+        <button onClick={handleOpenApp} className={s.toAppButton}>
+          {userInfo?.email || ''} 으로 계속
+        </button>
       </main>
     </Suspense>
   );
