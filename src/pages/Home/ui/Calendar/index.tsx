@@ -113,19 +113,19 @@ const Calendar = () => {
       if (!dateRange) return;
 
       try {
+        const scheduleQuery = useScheduleListQuery.getScheduleList({
+          startDate: dateRange.startDate,
+          endDate: dateRange.endDate,
+        });
+
+        const todoQuery = useTodoListQuery.getTodoList({
+          startDate: dateRange.startDate,
+          endDate: dateRange.endDate,
+        });
+
         const [schedules, todos] = await Promise.all([
-          queryClient.fetchQuery(
-            useScheduleListQuery.getScheduleList({
-              startDate: dateRange.startDate,
-              endDate: dateRange.endDate,
-            })
-          ),
-          queryClient.fetchQuery(
-            useTodoListQuery.getTodoList({
-              startDate: dateRange.startDate.split('T')[0],
-              endDate: dateRange.endDate.split('T')[0],
-            })
-          ),
+          queryClient.fetchQuery(scheduleQuery),
+          queryClient.fetchQuery(todoQuery),
         ]);
 
         setEvents([...schedules, ...todos]);
@@ -135,8 +135,7 @@ const Calendar = () => {
     };
 
     fetchData();
-  }, [queryClient, dateRange, scheduleRendering, todoRendering]);
-
+  }, [dateRange, scheduleRendering, todoRendering]);
   const filteredEvents = events.filter((event) => {
     if (event.type === 'Schedule' && !scheduleSelected) return false;
     if (event.type === 'Todo' && !todoSelected) return false;
