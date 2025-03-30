@@ -1,6 +1,6 @@
 import * as s from './style.css';
 import Dropdown from '../Dropdown';
-import useEventState from './calendarModal.hook';
+import { useEventState, useInputHandlers } from './calendarModal.hook';
 import { CalendarEvent } from 'entities/calendar/type';
 import { priority } from 'entities/calendar/model';
 import { useCategories } from 'entities/calendar/hooks/useCategory';
@@ -11,30 +11,20 @@ interface CalendarModalProps {
 }
 
 const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
-  const { state, updateState, switchEventType, isInitial, createEvent } =
-    useEventState({
-      event,
-    });
+  const {
+    state,
+    updateState,
+    switchEventType,
+    isInitial,
+    createEvent,
+    updateEvent,
+    deleteEvent,
+  } = useEventState({
+    event,
+  });
 
-  const handleChangeRepeat = (id: number) =>
-    updateState({ selectedRepeatId: id });
-
-  const handleChangeCategory = (id: number) =>
-    updateState({ selectedCategoryId: id });
-
-  const handleChangePriority = (id: number) =>
-    updateState({
-      selectedPriorityId: id,
-    });
-
-  const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) =>
-    updateState({ title: e.target.value });
-
-  const handleChangeMemo = (e: React.ChangeEvent<HTMLInputElement>) =>
-    updateState({ memo: e.target.value });
-
-  const handleChangeLocation = (e: React.ChangeEvent<HTMLInputElement>) =>
-    updateState({ location: e.target.value });
+  const { handleInputChange, handleDropdownChange } =
+    useInputHandlers(updateState);
 
   const handleIsAllday = () =>
     updateState({
@@ -44,7 +34,13 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
   const categories = useCategories();
 
   return (
-    <div className={s.calendarModalOverlay} onClick={onClose}>
+    <div
+      className={s.calendarModalOverlay}
+      onClick={() => {
+        updateEvent();
+        onClose();
+      }}
+    >
       <div className={s.calendarModal} onClick={(e) => e.stopPropagation()}>
         {isInitial ? (
           <div className={s.calendarEventButtonLayout}>
@@ -71,16 +67,18 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
 
         <div className={s.calendarModalHeader}>
           <input
+            name="title"
             className={s.calendarModalTitle}
             placeholder="새 일정"
             value={state.title}
-            onChange={handleChangeTitle}
+            onChange={handleInputChange}
           />
           <input
+            name="memo"
             className={s.calendarModalSubTitle}
             placeholder="메모"
             value={state.memo || ''}
-            onChange={handleChangeMemo}
+            onChange={handleInputChange}
           />
         </div>
         <div className={s.calendarModalContour} />
@@ -120,27 +118,12 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
             <div className={s.calendarModalItemTitle}>반복</div>
             <Dropdown
               name="repeat"
-              id={state.selectedRepeatId}
-              data={
-                state.eventType === 'Schedule'
-                  ? [
-                      { id: 1, value: 'NONE', name: '없음' },
-                      { id: 2, value: 'DAILY', name: '매일' },
-                      { id: 3, value: 'WEEKLY', name: '매주' },
-                      { id: 4, value: 'MONTHLY', name: '매달' },
-                    ]
-                  : [
-                      { id: 1, value: 'NONE', name: '없음' },
-                      { id: 2, value: 'DAILY', name: '매일' },
-                      { id: 3, value: 'WEEKLY', name: '매주' },
-                      { id: 4, value: 'BIWEEKLY', name: '격주' },
-                      { id: 5, value: 'MONTHLY', name: '매달' },
-                      { id: 6, value: 'QUARTERLY', name: '3개월마다' },
-                      { id: 7, value: 'SEMIANNUALLY', name: '6개월마다' },
-                      { id: 8, value: 'YEARLY', name: '매년' },
-                    ]
-              }
-              onChange={handleChangeRepeat}
+              id={state.repeat}
+              data={[
+                { id: 0, value: 'false', name: '없음' },
+                { id: 1, value: 'true', name: '있음' },
+              ]}
+              onChange={handleDropdownChange}
             />
           </div>
 
@@ -149,9 +132,9 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
               <div className={s.calendarModalItemTitle}>카테고리</div>
               <Dropdown
                 name="category"
-                id={state.selectedCategoryId}
+                id={state.category}
                 data={categories}
-                onChange={handleChangeCategory}
+                onChange={handleDropdownChange}
               />
             </div>
           ) : (
@@ -159,9 +142,9 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
               <div className={s.calendarModalItemTitle}>우선순위</div>
               <Dropdown
                 name="priority"
-                id={state.selectedPriorityId}
+                id={state.priority}
                 data={priority}
-                onChange={handleChangePriority}
+                onChange={handleDropdownChange}
               />
             </div>
           )}
@@ -169,10 +152,11 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
         <div className={s.calendarModalContour} />
         <div className={s.calendarModalFooter}>
           <input
+            name="location"
             className={s.calendarModalLocationTitle}
             placeholder="위치 추가"
             value={state.location || ''}
-            onChange={handleChangeLocation}
+            onChange={handleInputChange}
           />
         </div>
         <div className={s.calendarModalContour} />
@@ -187,7 +171,13 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
             <div className={s.calendarModalCreateBtnText}>추가</div>
           </div>
         ) : (
-          <div className={s.calendarModalDeleteBtn}>
+          <div
+            className={s.calendarModalDeleteBtn}
+            onClick={() => {
+              deleteEvent();
+              onClose();
+            }}
+          >
             <div className={s.calendarModalDeleteBtnText}>삭제</div>
           </div>
         )}

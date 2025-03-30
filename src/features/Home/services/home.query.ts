@@ -7,7 +7,12 @@ export const useTodoListQuery = {
   getTodoList: (params: GetTodoListReq) =>
     queryOptions({
       queryKey: [homeKeys.TODO_LIST, params],
-      queryFn: () => getTodoList(params),
+      queryFn: () =>
+        getTodoList({
+          ...params,
+          startDate: params.startDate.split('T')[0],
+          endDate: params.endDate.split('T')[0],
+        }),
     }),
 };
 
@@ -22,7 +27,7 @@ export const useCategoryListQuery = {
 export const useScheduleListQuery = {
   getScheduleList: (params: GetScheduleListReq) =>
     queryOptions({
-      queryKey: [homeKeys.SCHEDULE_LIST],
+      queryKey: [homeKeys.SCHEDULE_LIST, params],
       queryFn: () => getScheduleList(params),
     }),
 };
