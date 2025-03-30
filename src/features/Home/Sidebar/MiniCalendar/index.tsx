@@ -54,7 +54,6 @@ const MiniCalendar = () => {
 
   const handleDateClick = (day: number, type: 'prev' | 'next' | 'day') => {
     const newDate = new Date(currentDate);
-    console.log(day);
     if (type === 'prev') {
       newDate.setMonth(newDate.getMonth() - 1);
       newDate.setDate(day);
@@ -73,7 +72,6 @@ const MiniCalendar = () => {
 
     for (let i = startWeek - 1; i >= 0; i--) {
       const isSunday = (startWeek - i - 1) % 7 === 0;
-      console.log(i);
       days.push(
         <div
           key={`prev-${i}`}

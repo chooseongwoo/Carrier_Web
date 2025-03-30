@@ -2,6 +2,8 @@ import { customAxios } from 'shared/api';
 import {
   GetScheduleListReq,
   GetTodoListReq,
+  PatchScheduleReq,
+  PatchTodoReq,
   PostScheduleReq,
   PostTodoReq,
 } from 'entities/calendar/remote';
@@ -15,7 +17,7 @@ export const getTodoList = async (params: GetTodoListReq) => {
 
   return data.map(({ id, title, memo, isDone, date }) => ({
     type: EVENT_TYPE.Todo,
-    todoId: id,
+    eventId: id,
     title,
     memo,
     isRepeat: false,
@@ -32,8 +34,18 @@ export const postTodo = async (params: PostTodoReq) => {
   return data;
 };
 
-export const patchTodo = async (id: number) => {
-  const { data } = await customAxios.patch(`todos/change/${id}`);
+export const patchTodo = async (params: PatchTodoReq) => {
+  const { data } = await customAxios.patch('/todos', params);
+  return data;
+};
+
+export const patchTodoState = async (id: number) => {
+  const { data } = await customAxios.patch(`/todos/change/${id}`);
+  return data;
+};
+
+export const deleteTodo = async (id: number) => {
+  const { data } = await customAxios.delete(`/todos/${id}`);
   return data;
 };
 
@@ -51,7 +63,7 @@ export const postCategory = async (category: {
 };
 
 export const patchCategory = async (id: number) => {
-  const { data } = await customAxios.patch(`categories/change/${id}`);
+  const { data } = await customAxios.patch(`/categories/change/${id}`);
   return data;
 };
 
@@ -62,6 +74,7 @@ export const getScheduleList = async (params: GetScheduleListReq) => {
 
   return data.map(
     ({
+      id,
       title,
       memo,
       allDay,
@@ -72,6 +85,7 @@ export const getScheduleList = async (params: GetScheduleListReq) => {
       location,
     }) => ({
       type: EVENT_TYPE.Schedule,
+      eventId: id,
       title,
       memo,
       allDay,
@@ -88,6 +102,16 @@ export const getScheduleList = async (params: GetScheduleListReq) => {
 
 export const postSchedule = async (params: PostScheduleReq) => {
   const { data } = await customAxios.post('/schedules', params);
+  return data;
+};
+
+export const patchSchedule = async (params: PatchScheduleReq) => {
+  const { data } = await customAxios.patch('/schedules', params);
+  return data;
+};
+
+export const deleteSchedule = async (id: number) => {
+  const { data } = await customAxios.delete(`/schedules/${id}`);
   return data;
 };
 

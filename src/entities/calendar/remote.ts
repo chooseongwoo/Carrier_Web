@@ -14,7 +14,10 @@ export interface GetTodoListReq {
   endDate: string;
 }
 
-export interface PostScheduleReq {
+export type PostScheduleReq = Omit<PatchScheduleReq, 'id'>;
+
+export interface PatchScheduleReq {
+  id: number;
   title: string;
   allDay: boolean;
   isRepeat: boolean;
@@ -24,7 +27,10 @@ export interface PostScheduleReq {
   location: string | null;
 }
 
-export interface PostTodoReq {
+export type PostTodoReq = Omit<PatchTodoReq, 'id'>;
+
+export interface PatchTodoReq {
+  id: number;
   title: string;
   date: string;
   isRepeat: boolean;

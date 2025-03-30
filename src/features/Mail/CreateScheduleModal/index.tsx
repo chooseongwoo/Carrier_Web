@@ -2,7 +2,7 @@ import { MailModalProps } from 'entities/mail/types/MailModalProps';
 import * as s from './style.css';
 import AlertMark from 'features/Mail/ui/AlertMark';
 import { CalendarEvent } from 'entities/calendar/type';
-import useEventState from 'features/Home/Calendar/CalendarModal/calendarModal.hook';
+import { useEventState } from 'features/Home/Calendar/CalendarModal/calendarModal.hook';
 import EventDropdown from 'features/Home/Calendar/Dropdown';
 import { useCallback, useEffect, useState } from 'react';
 import LoadingStatus from 'features/Mail/CreateScheduleModal/LoadingStatus';
@@ -10,7 +10,7 @@ import { useAtom } from 'jotai';
 import { selectedMailIdAtom } from 'features/Mail/contexts/mail';
 import { useQuery } from '@tanstack/react-query';
 import { mailQuery } from 'features/Mail/services/mail.query';
-import { usePostScheduleMutation } from 'features/Home/services/home.mutation';
+import { useCreateScheduleMutation } from 'features/Home/services/home.mutation';
 import { useCategories } from 'entities/calendar/hooks/useCategory';
 
 const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
@@ -54,14 +54,11 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
     updateState({ [key]: value });
   };
 
-  const handleChangeRepeat = (id: number) =>
-    updateState({ selectedRepeatId: id });
+  const handleChangeRepeat = (id: number) => updateState({ repeat: id });
 
-  const handleChangeCategory = (id: number) =>
-    updateState({ selectedCategoryId: id });
+  const handleChangeCategory = (id: number) => updateState({ category: id });
 
-  const handleChangePriority = (id: number) =>
-    updateState({ selectedPriorityId: id });
+  const handleChangePriority = (id: number) => updateState({ priority: id });
 
   const handleIsAllday = () =>
     updateState({
@@ -73,13 +70,13 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
     memo: state.memo,
     allDay: state.isAllDay,
     isRepeat: false,
-    categoryId: state.selectedCategoryId,
+    categoryId: state.category,
     startDate: state.startDate,
     endDate: state.endDate,
     location: state.location,
   };
 
-  const { mutate: postScheduleMutate } = usePostScheduleMutation();
+  const { mutate: postScheduleMutate } = useCreateScheduleMutation();
 
   const createEvent = useCallback(() => {
     postScheduleMutate(scheduleData);
@@ -148,7 +145,7 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
                 <div className={s.calendarModalItemTitle}>반복</div>
                 <EventDropdown
                   name="repeat"
-                  id={state.selectedRepeatId}
+                  id={state.repeat}
                   data={
                     state.eventType === 'Schedule'
                       ? [
@@ -177,7 +174,7 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
                   <div className={s.calendarModalItemTitle}>카테고리</div>
                   <EventDropdown
                     name="category"
-                    id={state.selectedCategoryId}
+                    id={state.category}
                     data={categories}
                     onChange={handleChangeCategory}
                   />
@@ -187,10 +184,10 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
                   <div className={s.calendarModalItemTitle}>우선순위</div>
                   <EventDropdown
                     name="priority"
-                    id={state.selectedPriorityId}
+                    id={state.priority}
                     data={[
                       { id: 1, value: 'LOW', name: '낮음' },
-                      { id: 2, value: 'MIDDLE', name: '중간' },
+                      { id: 2, value: 'MEDIUM', name: '중간' },
                       { id: 3, value: 'HIGH', name: '높음' },
                     ]}
                     onChange={handleChangePriority}

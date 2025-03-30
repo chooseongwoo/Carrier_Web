@@ -2,25 +2,22 @@ import { useEffect, useState } from 'react';
 import { Arrow } from 'shared/icons';
 import { TodoNormalIcon, TodoCheckedIcon } from 'features/Home/ui';
 import * as s from './style.css';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { ChangeDateToDash, getNextDate, getPrevDate } from 'shared/lib/date';
-import { usePatchTodoMutation } from 'features/Home/services/home.mutation';
+import { usePatchTodoStateMutation } from 'features/Home/services/home.mutation';
 import { useTodoListQuery } from 'features/Home/services/home.query';
 import { useAtom } from 'jotai';
-import { todoRenderingAtom } from 'entities/calendar/contexts/eventRendering';
 import { todoSelectedDateAtom } from 'entities/calendar/contexts/todoDate';
 
 interface TodoItem {
-  todoId: number;
+  eventId: number;
   title: string;
   isDone: boolean;
 }
 
 const Todo = () => {
-  const queryClient = useQueryClient();
   const [date, setDate] = useAtom(todoSelectedDateAtom);
   const [todoItems, setTodoItems] = useState<TodoItem[]>([]);
-  const [todoRendering, setTodoRendering] = useAtom(todoRenderingAtom);
 
   const dashDate = ChangeDateToDash(date);
   const dates = {
@@ -28,30 +25,25 @@ const Todo = () => {
     endDate: dashDate,
   };
 
-  useEffect(() => {
-    try {
-      const fetchTodoList = async () => {
-        const data = await queryClient.fetchQuery(
-          useTodoListQuery.getTodoList(dates)
-        );
-        setTodoItems(data);
-      };
-      fetchTodoList();
-    } catch (error) {
-      console.error('에러 발생:', error);
-    }
-  }, [queryClient, date, todoRendering]);
+  const todoQuery = useTodoListQuery.getTodoList(dates);
 
-  const { mutate } = usePatchTodoMutation();
+  const { data: todos = [] } = useQuery({
+    ...todoQuery,
+    enabled: !!dates,
+  });
+
+  useEffect(() => {
+    setTodoItems(todos);
+  }, [todos]);
+
+  const { mutate } = usePatchTodoStateMutation();
   const handleToggle = async (id: number) => {
-    console.log(id);
     setTodoItems((prevItems) =>
       prevItems.map((item) =>
-        item.todoId === id ? { ...item, isDone: !item.isDone } : item
+        item.eventId === id ? { ...item, isDone: !item.isDone } : item
       )
     );
     mutate(id);
-    setTodoRendering((prev) => prev + 1);
   };
 
   const handlePrevDate = () => {
@@ -75,9 +67,9 @@ const Todo = () => {
       <div className={s.todoListMain}>
         {todoItems.map((item) => (
           <div
-            key={item.todoId}
+            key={item.eventId}
             className={s.todoListItem}
-            onClick={() => handleToggle(item.todoId)}
+            onClick={() => handleToggle(item.eventId)}
           >
             {item.isDone ? <TodoCheckedIcon /> : <TodoNormalIcon />}
             <span className={s.todoListItemText}>{item.title}</span>
