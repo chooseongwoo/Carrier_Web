@@ -17,7 +17,7 @@ const WaveformVisualizer: React.FC<WaveformVisualizerProps> = ({
   );
   const [playState, setPlayState] = useState(false);
 
-  const minHeight = 10;
+  const minHeight = 5;
   const maxHeight = 100;
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const WaveformVisualizer: React.FC<WaveformVisualizerProps> = ({
       const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
       const channelData = audioBuffer.getChannelData(0);
 
-      const sampleCount = 100;
+      const sampleCount = 200;
       const step = Math.floor(channelData.length / sampleCount);
       const newVolumeData: number[] = [];
 
@@ -63,7 +63,7 @@ const WaveformVisualizer: React.FC<WaveformVisualizerProps> = ({
       const width = canvas.width;
       const height = canvas.height;
       const bars = volumeData.length;
-      const barWidth = width / bars;
+      const barWidth = width / bars - 3;
 
       ctx.clearRect(0, 0, width, height);
 
@@ -73,16 +73,19 @@ const WaveformVisualizer: React.FC<WaveformVisualizerProps> = ({
 
         normalizedHeight = Math.max(minHeight, normalizedHeight);
 
-        const x = i * barWidth;
+        const x = i * (barWidth + 3);
         const isCurrentProgress = (i / bars) * 100 < progress;
 
         ctx.fillStyle = isCurrentProgress ? 'blue' : 'gray';
-        ctx.fillRect(
+        ctx.beginPath();
+        ctx.roundRect(
           x,
           height / 2 - normalizedHeight / 2,
-          barWidth - 2,
-          normalizedHeight
+          barWidth,
+          normalizedHeight,
+          barWidth / 2
         );
+        ctx.fill();
       });
 
       requestAnimationFrame(drawWaveform);
