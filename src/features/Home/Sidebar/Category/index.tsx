@@ -39,11 +39,14 @@ const Category = () => {
         {
           id: categoryData.length + 1,
           name: newCategory,
-          color: CategoryColor[categoryData.length],
+          color: CategoryColor[categoryData.length % CategoryColor.length],
           active: true,
         },
       ]);
-      mutate({ name: newCategory, color: CategoryColor[categoryData.length] });
+      mutate({
+        name: newCategory,
+        color: CategoryColor[categoryData.length % CategoryColor.length],
+      });
       setNewCategory('카테고리');
       setIsOpenModal(false);
     }
