@@ -2,8 +2,10 @@ import * as s from './style.css';
 import { useQuery } from '@tanstack/react-query';
 import { useDiaryQuery } from 'features/diary/services/diary.query.ts';
 import { NowDateDash } from 'shared/lib/date';
+import { useState } from 'react';
 
 const Chatbar = () => {
+  const [selectedChats, setSelectedChats] = useState<number[]>([]);
   const {
     data: recommendData,
     refetch,
@@ -15,9 +17,16 @@ const Chatbar = () => {
     enabled: false,
   });
 
+  const handleSelect = (index: number) => {
+    setSelectedChats((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+    );
+  };
+
   const handleRecommendClick = async () => {
     try {
       await refetch();
+      setSelectedChats([]);
     } catch {}
   };
 
@@ -27,9 +36,19 @@ const Chatbar = () => {
       {isFetched && recommendData?.recommend?.length === 0 && (
         <div>오늘은 추천드릴 내용이 없습니다!</div>
       )}
-      {recommendData?.recommend.map((subject: string) => (
-        <div className={s.suggestionList}>
-          <div className={s.suggestionText}>{subject}</div>
+      {recommendData?.recommend.map((subject: string, index: number) => (
+        <div
+          key={index}
+          className={s.suggestionList}
+          onClick={() => handleSelect(index)}
+        >
+          <div
+            className={`${s.suggestionText} ${
+              selectedChats.includes(index) ? s.selectedSuggestionText : ''
+            }`}
+          >
+            {subject}
+          </div>
         </div>
       ))}
       <button className={s.suggestionButton} onClick={handleRecommendClick}>

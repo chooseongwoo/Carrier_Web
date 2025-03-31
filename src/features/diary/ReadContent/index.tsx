@@ -32,7 +32,6 @@ const ReadContent = ({ diaryId }: ReadContentProps) => {
       <div className={s.contentWrapper}>
         <p className={s.emoji}>{diaryData.emoji}</p>
         <p className={s.content}>{diaryData.content}</p>
-        <p className={s.aiUseText}>AI 주제 추천 사용되지 않음</p>
       </div>
     </div>
   );
