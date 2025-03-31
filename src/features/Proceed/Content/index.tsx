@@ -16,6 +16,7 @@ const ProceedContent = () => {
   );
   const [recordingState, setRecordingState] = useState(false);
   const [recordings, setRecordings] = useState<RecordingItem[]>([]);
+  console.log(recordings);
   const [selectedRecording, setSelectedRecording] =
     useState<RecordingItem | null>(null);
   const [recordingDuration, setRecordingDuration] = useState(0);

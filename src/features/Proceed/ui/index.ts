@@ -1,3 +1,4 @@
 export { default as BeforeIcon } from './BeforeIcon';
-export { default as PauseIcon } from './PlayIcon';
+export { default as PlayIcon } from './PlayIcon';
+export { default as PauseIcon } from './PauseIcon';
 export { default as NextIcon } from './NextIcon';

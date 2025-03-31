@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import PlayIcon from '../ui/PlayIcon';
 import * as s from './style.css';
-import { BeforeIcon, NextIcon } from '../ui';
+import { BeforeIcon, NextIcon, PauseIcon, PlayIcon } from '../ui';
 
 interface WaveformVisualizerProps {
   audioSrc: string;
@@ -139,7 +138,9 @@ const WaveformVisualizer: React.FC<WaveformVisualizerProps> = ({
             <PlayIcon />
           </button>
         ) : (
-          <button onClick={handlePause}>멈추기</button>
+          <button onClick={handlePause}>
+            <PauseIcon />
+          </button>
         )}
         <button onClick={handlePlay}>
           <NextIcon />
