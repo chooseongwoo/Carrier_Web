@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import * as s from './style.css';
 import WaveformVisualizer from '../Visualizer';
+import { usePostProceed } from '../service/Proceed.mutation';
 
 interface RecordingItem {
   id: string;
@@ -11,12 +12,12 @@ interface RecordingItem {
 }
 
 const ProceedContent = () => {
+  const postProceedMutation = usePostProceed();
   const [recordState, setRecordState] = useState<'Record' | 'Select' | 'None'>(
     'None'
   );
   const [recordingState, setRecordingState] = useState(false);
   const [recordings, setRecordings] = useState<RecordingItem[]>([]);
-  console.log(recordings);
   const [selectedRecording, setSelectedRecording] =
     useState<RecordingItem | null>(null);
   const [recordingDuration, setRecordingDuration] = useState(0);
@@ -109,13 +110,23 @@ const ProceedContent = () => {
         const audioBlob = new Blob(audioChunksRef.current, {
           type: 'audio/wav',
         });
-        const audioUrl = URL.createObjectURL(audioBlob);
 
         const minutes = Math.floor(recordingDuration / 60);
         const seconds = recordingDuration % 60;
-        const formattedDuration = `${minutes.toString().padStart(2, '0')}.${seconds
+        const formattedTime = `${minutes.toString().padStart(2, '0')}.${seconds
           .toString()
           .padStart(2, '0')}초`;
+
+        postProceedMutation.mutate({
+          audioBlob,
+          time: formattedTime,
+        });
+
+        const audioUrl = URL.createObjectURL(audioBlob);
+
+        const formattedDuration = `${minutes.toString().padStart(2, '0')}.${seconds
+          .toString()
+          .padStart(2, '0')}분`;
 
         const now = new Date();
         const formattedDate = `${now.getFullYear()}.${(now.getMonth() + 1)
