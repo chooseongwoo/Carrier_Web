@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import * as s from './style.css';
 import WaveformVisualizer from '../Visualizer';
-import { usePostProceed } from '../service/Proceed.mutation';
+import { usePostProceed } from '../service/proceed.mutation';
 
 interface RecordingItem {
   id: string;
@@ -108,8 +108,15 @@ const ProceedContent = () => {
         setVolumeLevel(0);
 
         const audioBlob = new Blob(audioChunksRef.current, {
-          type: 'audio/wav',
+          type: 'audio/webm',
         });
+        const audioFile = new File(
+          [audioBlob],
+          `recording-${Date.now()}.webm`,
+          { type: 'audio/webm' }
+        );
+
+        console.log(audioFile);
 
         const minutes = Math.floor(recordingDuration / 60);
         const seconds = recordingDuration % 60;
@@ -118,7 +125,7 @@ const ProceedContent = () => {
           .padStart(2, '0')}초`;
 
         postProceedMutation.mutate({
-          audioBlob,
+          audioFile,
           time: formattedTime,
         });
 

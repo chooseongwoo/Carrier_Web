@@ -1,13 +1,13 @@
 import { customAxios } from 'shared/api';
 
 interface PostProceedParams {
-  audioBlob: Blob;
+  audioFile: File;
   time: string;
 }
 
-export const postProceed = async ({ audioBlob, time }: PostProceedParams) => {
+export const postProceed = async ({ audioFile, time }: PostProceedParams) => {
   const formData = new FormData();
-  formData.append('file', audioBlob);
+  formData.append('file', audioFile);
   formData.append('time', time);
 
   const { data } = await customAxios.post('/meets', formData, {
