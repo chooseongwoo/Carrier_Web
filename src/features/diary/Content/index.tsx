@@ -1,9 +1,9 @@
 import * as s from './style.css';
 import { EmojiIcon } from 'features/diary/ui';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useDiaryAddMutation } from '../services/diary.mutation.ts';
+import { useDiaryAddMutation } from 'features/diary/services/diary.mutation.ts';
 import EmojiPicker from 'emoji-picker-react';
-import { emojiPickerCategories } from '../constants/emojiCategories.ts';
+import { emojiPickerCategories } from 'features/diary/constants/emojiCategories.ts';
 
 interface ContentProps {
   setSelectedDiaryId: Dispatch<SetStateAction<number | null>>;

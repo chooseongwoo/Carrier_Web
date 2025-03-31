@@ -1,6 +1,6 @@
 import * as s from './style.css.ts';
 import { useQuery } from '@tanstack/react-query';
-import { useDiaryQuery } from '../services/diary.query.ts';
+import { useDiaryQuery } from 'features/diary/services/diary.query.ts';
 
 type ReadContentProps = {
   diaryId: number | null;
