@@ -4,13 +4,14 @@ import Layout from './Layout';
 import Login from 'pages/Login';
 import Home from 'pages/Home';
 import Survey from 'pages/Survey';
-import OAuth from 'pages/OAuth';
+import { OAuthApp, OAuthWeb } from 'pages/OAuth';
 import Mail from 'pages/Mail';
 import useUser from 'features/user/hooks/useUser';
 import Diary from 'pages/Diary';
 import { DotLoader } from 'react-spinners';
 import theme from 'shared/styles/theme.css';
 import Setting from 'pages/Setting';
+import Privacy from 'pages/Privacy/page';
 
 const LoadingScreen = () => (
   <div
@@ -42,7 +43,7 @@ const PublicRoute = memo(
 );
 
 const SurveyRoute = memo(({ isSurvey }: { isSurvey: boolean }) => {
-  if (isSurvey) return <Navigate to="/" replace />; // isSurvey가 true면 홈으로 리디렉트
+  if (isSurvey) return <Navigate to="/" replace />;
   return <Outlet />;
 });
 
@@ -72,11 +73,13 @@ export default function Router() {
           }
         >
           <Route path="/login" element={<Login />} />
-          <Route path="/google/callback" element={<OAuth />} />
+          <Route path="/google/callback" element={<OAuthWeb />} />
         </Route>
         <Route element={<SurveyRoute isSurvey={isSurvey} />}>
+          <Route path="/app/google/callback" element={<OAuthApp />} />
           <Route path="/survey" element={<Survey />} />
         </Route>
+        <Route path="/privacy" element={<Privacy />} />
       </Routes>
     </Suspense>
   );

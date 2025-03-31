@@ -24,7 +24,7 @@ export const center = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  padding: '16px 32px 40px 32px',
+  padding: '40px 32px 40px 32px',
   borderRadius: '16px',
   gap: '4px',
 });
@@ -59,9 +59,15 @@ export const nextButton = style({
   marginTop: '36px',
   color: theme.white,
   backgroundColor: theme.blue[400],
-  ':disabled': {
-    backgroundColor: theme.blue[200],
-    cursor: 'not-allowed',
+
+  selectors: {
+    '&:disabled': {
+      backgroundColor: theme.blue[200],
+      cursor: 'not-allowed',
+    },
+    '&:not(:disabled):hover': {
+      backgroundColor: theme.blue[500],
+    },
   },
 });
 

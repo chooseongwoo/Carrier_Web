@@ -2,8 +2,10 @@ import { Suspense, useEffect } from 'react';
 import * as s from './style.css';
 import { useSearchParams } from 'react-router-dom';
 import { useLoginMutation } from 'features/auth/services/auth.mutation';
+import { DotLoader } from 'react-spinners';
+import theme from 'shared/styles/theme.css';
 
-const OAuth = () => {
+const OAuthWeb = () => {
   const [searchParams] = useSearchParams();
   const code = searchParams.get('code') || '';
   const { mutate } = useLoginMutation();
@@ -17,10 +19,10 @@ const OAuth = () => {
   return (
     <Suspense>
       <main className={s.container}>
-        <p className={s.loginText}>로그인 중...</p>
+        <DotLoader color={theme.blue[500]} />
       </main>
     </Suspense>
   );
 };
 
-export default OAuth;
+export default OAuthWeb;

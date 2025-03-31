@@ -10,12 +10,12 @@ type DropdownItemType =
 
 interface DropdownProps {
   id: number;
-  name?: string;
+  name: string;
   data: DropdownItemType[];
-  onChange: (id: number, name: string) => void;
+  onChange: (id: number, value: string, name: string) => void;
 }
 
-const EventDropdown = ({ id, data, onChange }: DropdownProps) => {
+const EventDropdown = ({ id, name, data, onChange }: DropdownProps) => {
   const { isOpen, toggleDropdown, closeDropdown } = useDropdown();
 
   const selectedItem = data.find((item) => item.id === id) ?? data[0];
@@ -25,7 +25,7 @@ const EventDropdown = ({ id, data, onChange }: DropdownProps) => {
   useEffect(() => {
     if (!id || !data.some((item) => item.id === id)) {
       const firstItem = data[0];
-      onChange(firstItem.id, firstItem.value ?? firstItem.name);
+      onChange(firstItem.id, firstItem.value ?? firstItem.name, name);
     }
   }, [id, data, onChange]);
 
@@ -54,7 +54,7 @@ const EventDropdown = ({ id, data, onChange }: DropdownProps) => {
               item={item}
               isSelected={item.id === id}
               onSelect={(selectedId, selectedValueOrName) => {
-                onChange(selectedId, selectedValueOrName);
+                onChange(selectedId, selectedValueOrName, name);
                 closeDropdown();
               }}
             />

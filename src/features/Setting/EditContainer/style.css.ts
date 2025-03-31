@@ -5,7 +5,7 @@ import theme from 'shared/styles/theme.css';
 export const container = style({
   width: '100%',
   height: '100%',
-  overflowY: 'scroll',
+  overflowY: 'hidden',
   padding: '0 40px',
 });
 
@@ -22,6 +22,10 @@ export const categoryText = style({
   padding: '14px 0 12px',
   borderBottom: `1px solid ${theme.gray[300]}`,
   fontWeight: 600,
+});
+
+export const colorRed = style({
+  color: theme.red[500],
 });
 
 export const profileContent = style({

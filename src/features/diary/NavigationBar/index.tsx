@@ -3,7 +3,7 @@ import { ArrowBarIcon } from 'features/diary/ui';
 import { getNextDate, getPrevDate, NowDatePeriod } from 'shared/lib/date';
 import { useMemo } from 'react';
 import { useDiaryData } from 'features/diary/hooks/useDiaryData';
-import theme from 'shared/styles/theme.css.ts';
+import theme from 'shared/styles/theme.css';
 
 interface DiaryEntry {
   id: number;

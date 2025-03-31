@@ -6,13 +6,14 @@ import { useEffect } from 'react';
 import { userContext } from 'entities/user/contexts/user';
 import { useAtom } from 'jotai';
 import { userQuery } from 'features/user/services/user.query';
+import { TOKEN } from 'shared/constants';
 
 const useUser = () => {
   const [user, setUser] = useAtom(userContext);
 
   const { data: userInfo, isLoading } = useQuery({
     ...userQuery.userInfo(),
-    enabled: !!Storage.getItem('accessToken'),
+    enabled: !!Storage.getItem(TOKEN.ACCESS),
   });
 
   useEffect(() => {
