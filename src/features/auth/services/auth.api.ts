@@ -13,6 +13,14 @@ export const postLogin = async (code: string) => {
   return data;
 };
 
+export const postAppLogin = async (code: string) => {
+  const { data } = await customAxios.post('/auth', {
+    token: code,
+    redirectUrl: import.meta.env.VITE_APPLICATION_REDIRECT_APP,
+  });
+  return data;
+};
+
 export const deleteLogout = async () => {
   const { data } = await customAxios.delete('/auth');
   return data;

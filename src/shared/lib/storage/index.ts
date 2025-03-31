@@ -1,28 +1,36 @@
+import { isElectron } from 'shared/lib/isElectron';
+
 type LocalStorageKey = 'accessToken' | 'refreshToken';
 
 export class Storage {
-  private static isWindowAvailable() {
-    return typeof window !== 'undefined';
-  }
-
-  static getItem(key: LocalStorageKey): string | null {
-    if (this.isWindowAvailable()) {
-      return localStorage.getItem(key);
+  static async getItem(key: LocalStorageKey): Promise<string | null> {
+    if (isElectron()) {
+      return (await window.electronAPI.getStore(key)) ?? null;
     }
-    return null;
+    return localStorage.getItem(key);
   }
 
-  static setItem(key: LocalStorageKey, value: string) {
-    if (!this.isWindowAvailable()) return;
-    localStorage.setItem(key, value);
+  static async setItem(key: LocalStorageKey, value: string): Promise<void> {
+    if (isElectron()) {
+      await window.electronAPI.setStore(key, value);
+    } else {
+      localStorage.setItem(key, value);
+    }
   }
 
-  static delItem(key: LocalStorageKey) {
-    if (!this.isWindowAvailable()) return;
-    localStorage.removeItem(key);
+  static async delItem(key: LocalStorageKey): Promise<void> {
+    if (isElectron()) {
+      await window.electronAPI.deleteStore(key);
+    } else {
+      localStorage.removeItem(key);
+    }
   }
 
-  static clear() {
-    if (this.isWindowAvailable()) localStorage.clear();
+  static async clear(): Promise<void> {
+    if (isElectron()) {
+      await window.electronAPI.clearStore();
+    } else {
+      localStorage.clear();
+    }
   }
 }

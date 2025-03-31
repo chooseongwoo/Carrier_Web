@@ -9,7 +9,7 @@ import {
   DayCellContentArg,
 } from '@fullcalendar/core';
 import { EventImpl } from '@fullcalendar/core/internal';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { Arrow } from 'shared/icons';
 import { CalendarPlusIcon, CalendarSearchIcon } from 'features/Home/ui';
 import { CalendarModal, CalendarToggle } from 'features/Home/Calendar';
@@ -17,16 +17,19 @@ import { CalendarEvent } from 'entities/calendar/type';
 import * as s from './style.css';
 import './root.css';
 import theme from 'shared/styles/theme.css';
-import { useScheduleListQuery } from 'features/Home/services/home.query';
+import {
+  useScheduleListQuery,
+  useTodoListQuery,
+} from 'features/Home/services/home.query';
 import { useAtom } from 'jotai';
 import {
   scheduleSelectedAtom,
   todoSelectedAtom,
 } from 'entities/calendar/contexts/eventDisplayState';
-import { scheduleRenderingAtom } from 'entities/calendar/contexts/eventRendering';
 
 const EventContent = memo(({ event }: { event: EventImpl }) => {
   const isSchedule = event.extendedProps.type === 'Schedule';
+  const isDone = event.extendedProps.isDone === true;
   return (
     <div
       className={
@@ -34,7 +37,9 @@ const EventContent = memo(({ event }: { event: EventImpl }) => {
       }
     >
       <span
-        className={isSchedule ? s.calendarScheduleText : s.calendarTodoText}
+        className={
+          isSchedule ? s.calendarScheduleText : s.calendarTodoText({ isDone })
+        }
         style={{ color: isSchedule ? theme.blue[500] : theme.black }}
       >
         {event.title}
@@ -59,10 +64,14 @@ const useCalendarNavigation = (calendarRef: React.RefObject<FullCalendar>) => {
   }, [calendarRef]);
 
   const updateDateRange = (api: CalendarApi) => {
+    const view = api.view;
+    const visibleStart = new Date(
+      view.activeStart.getTime() + 1000 * 60 * 60 * 24
+    );
+    const visibleEnd = view.activeEnd;
     setDateRange({
-      startDate:
-        api.view.currentStart.toISOString().split('T')[0] + 'T00:00:00',
-      endDate: api.view.currentEnd.toISOString().split('T')[0] + 'T00:00:00',
+      startDate: visibleStart.toISOString().split('T')[0] + 'T00:00:00',
+      endDate: visibleEnd.toISOString().split('T')[0] + 'T23:59:59',
     });
   };
 
@@ -89,33 +98,37 @@ const Calendar = () => {
   const calendarRef = useRef<FullCalendar | null>(null);
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const { navigate, dateRange } = useCalendarNavigation(calendarRef);
-  const queryClient = useQueryClient();
 
   const [scheduleSelected] = useAtom(scheduleSelectedAtom);
   const [todoSelected] = useAtom(todoSelectedAtom);
 
-  const [scheduleRendering] = useAtom(scheduleRenderingAtom);
+  const scheduleQuery = useScheduleListQuery.getScheduleList({
+    startDate: dateRange?.startDate || '',
+    endDate: dateRange?.endDate || '',
+  });
 
-  const fetchScheduleList = useCallback(async () => {
-    if (!dateRange) return;
+  const todoQuery = useTodoListQuery.getTodoList({
+    startDate: dateRange?.startDate || '',
+    endDate: dateRange?.endDate || '',
+  });
 
-    try {
-      const data = await queryClient.fetchQuery(
-        useScheduleListQuery.getScheduleList({
-          startDate: dateRange.startDate,
-          endDate: dateRange.endDate,
-        })
-      );
-      setEvents(data);
-    } catch (error) {
-      console.error('일정 데이터 가져 오기 실패:', error);
-      setEvents([]);
-    }
-  }, [queryClient, dateRange]);
+  const { data: schedules = [] } = useQuery({
+    ...scheduleQuery,
+    enabled: !!dateRange,
+    staleTime: 1000 * 60 * 5,
+  });
+
+  const { data: todos = [] } = useQuery({
+    ...todoQuery,
+    enabled: !!dateRange,
+    staleTime: 1000 * 60 * 5,
+  });
 
   useEffect(() => {
-    fetchScheduleList();
-  }, [fetchScheduleList, scheduleSelected, scheduleRendering]);
+    if (schedules.length > 0 || todos.length > 0) {
+      setEvents([...schedules, ...todos]);
+    }
+  }, [schedules, todos]);
 
   const filteredEvents = events.filter((event) => {
     if (event.type === 'Schedule' && !scheduleSelected) return false;
@@ -129,17 +142,16 @@ const Calendar = () => {
   );
   const handleModalOpen = useCallback((event?: CalendarEvent) => {
     const startDate = event?.start ? new Date(event.start) : new Date();
-    const endDate = event?.end ? new Date(event.end) : new Date();
+    const endDate = event?.end ? new Date(event.end) : startDate;
 
     if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
       return;
     }
-
     setSelectedEvent({
       ...event,
       type: event?.type ?? 'Schedule',
-      start: new Date(startDate.setDate(startDate.getDate() + 1)).toISOString(),
-      end: new Date(endDate.setDate(endDate.getDate() + 1)).toISOString(),
+      start: startDate.toISOString(),
+      end: endDate.toISOString(),
     } as CalendarEvent);
 
     setIsModalOpen(true);
@@ -172,18 +184,20 @@ const Calendar = () => {
   const handleEventClick = useCallback(
     (info: EventClickArg) => {
       const { type, ...props } = info.event.extendedProps;
+
       handleModalOpen({
+        eventId: props.eventId,
         title: info.event.title,
         start: info.event.startStr,
         end: info.event.endStr,
         startEditable: true,
-        isRepeat: false,
+        isRepeat: props.isRepeat,
         memo: props.memo,
         location: props.location,
         durationEditable: type === 'Schedule',
         allDay: info.event.allDay,
-        category: type === 'Schedule' ? 1 : undefined,
-        priority: type === 'Todo' ? props.priority || 2 : undefined,
+        category: type === 'Schedule' ? props.category : null,
+        priority: type === 'Todo' ? props.priority : null,
         type,
       });
     },
@@ -249,6 +263,7 @@ const Calendar = () => {
         editable
         selectable
         locale="ko"
+        timeZone="Asia/Seoul"
         datesSet={handleDatesSet}
         dayCellContent={({ dayNumberText }: DayCellContentArg) =>
           dayNumberText.replace('일', '')

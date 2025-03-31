@@ -1,6 +1,6 @@
 appId: com.5Jings.Carrier
 productName: Carrier
-asar: false
+asar: true
 
 directories:
   buildResources: resources/installer
@@ -9,13 +9,17 @@ directories:
 
 files:
   - out/main/**
-  - out/preload/**
+  - out/preload/**/*
   - out/renderer/**
   - package.json
+
+asarUnpack:
+  - out/preload/**/*
 
 mac:
   target: dmg
   icon: electron/assets/icons.icns
+  entitlements: build/entitlements.mac.plist
 
 dmg:
   title: Carrier
@@ -32,3 +36,9 @@ nsis:
   oneClick: false
   allowToChangeInstallationDirectory: false
   createDesktopShortcut: true
+
+protocols:
+  - name: Carrier Protocol
+    schemes:
+      - carrier
+    role: Viewer
