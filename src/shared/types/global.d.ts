@@ -7,10 +7,10 @@ declare global {
     };
     env?: { isElectron: boolean };
     electronAPI: {
-      onDeepLink: (cb: (data: any) => void) => void;
+      onDeepLink: (cb: (data: string) => void) => void;
       notifyReady: () => void;
-      getStore: (key: string) => Promise<any>;
-      setStore: (key: string, value: any) => Promise<void>;
+      getStore: <T>(key: string) => Promise<T>;
+      setStore: <T>(key: string, value: T) => Promise<void>;
       deleteStore: (key: string) => Promise<void>;
       clearStore: () => Promise<void>;
     };

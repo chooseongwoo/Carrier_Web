@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { MailModalProps } from 'entities/mail/types/MailModalProps';
 import * as s from './style.css';
 import AlertMark from 'features/Mail/ui/AlertMark';

@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const toQueryString = (params: any) => {
   return new URLSearchParams(
     Object.entries(params).flatMap(([key, value]) =>
