@@ -74,6 +74,7 @@ export const recordContent = recipe({
 });
 
 export const recordTitle = style({
+  width: '70%',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
@@ -82,6 +83,10 @@ export const recordTitle = style({
 
 export const recordTitleText = style({
   ...font.H4,
+  width: '100%',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
 });
 
 export const recordTitleDate = recipe({
