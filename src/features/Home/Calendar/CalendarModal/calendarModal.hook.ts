@@ -68,7 +68,7 @@ export const useEventState = ({ event }: UseEventStateProps) => {
     isRepeat: Boolean(state.repeat),
     categoryId: state.category,
     startDate: state.startDate,
-    endDate: state.endDate,
+    endDate: Boolean(state.isAllDay) ? state.startDate : state.endDate,
     location: state.location,
   };
 
