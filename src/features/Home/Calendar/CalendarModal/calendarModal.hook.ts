@@ -178,8 +178,17 @@ export const useInputHandlers = (updateState: (updates: any) => void) => {
     updateState({ [name]: id });
   };
 
+  const handleDateTimeChange = (
+    name: 'startDate' | 'endDate',
+    date: Date | null
+  ) => {
+    if (!date) return;
+    updateState({ [name]: date.toISOString() });
+  };
+
   return {
     handleInputChange,
     handleDropdownChange,
+    handleDateTimeChange,
   };
 };
