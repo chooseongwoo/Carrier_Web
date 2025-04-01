@@ -1,6 +1,6 @@
 import * as s from './style.css.ts';
 import { useQuery } from '@tanstack/react-query';
-import { useDiaryQuery } from '../services/diary.query.ts';
+import { useDiaryQuery } from 'features/diary/services/diary.query.ts';
 
 type ReadContentProps = {
   diaryId: number | null;
@@ -32,7 +32,6 @@ const ReadContent = ({ diaryId }: ReadContentProps) => {
       <div className={s.contentWrapper}>
         <p className={s.emoji}>{diaryData.emoji}</p>
         <p className={s.content}>{diaryData.content}</p>
-        <p className={s.aiUseText}>AI 주제 추천 사용되지 않음</p>
       </div>
     </div>
   );

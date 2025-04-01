@@ -1,4 +1,4 @@
-import { getDiary, getDiaryList } from './diary.api.ts';
+import { getDiary, getDiaryList, getSubject } from './diary.api.ts';
 import { queryOptions } from '@tanstack/react-query';
 import { diaryKeys } from './diary.keys.ts';
 
@@ -12,5 +12,10 @@ export const useDiaryQuery = {
     queryOptions({
       queryKey: [diaryKeys.DIARY],
       queryFn: () => getDiary(id),
+    }),
+  getSubject: (date: string) =>
+    queryOptions({
+      queryKey: [diaryKeys.DIARY_SUBJECT],
+      queryFn: () => getSubject(date),
     }),
 };

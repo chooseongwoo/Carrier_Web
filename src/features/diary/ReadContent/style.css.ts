@@ -10,11 +10,10 @@ export const readDiaryContainer = style({
 
 export const TitleContainer = style({
   width: '100%',
-  height: '12vh',
+  padding: '20px 32px',
   borderBottom: `1px solid ${theme.gray[100]}`,
   display: 'flex',
   alignItems: 'center',
-  padding: '0 40px',
 });
 
 export const diaryTitle = style({

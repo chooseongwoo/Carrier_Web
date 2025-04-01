@@ -32,6 +32,11 @@ export const suggestionText = style({
   flex: '1 0 0',
   color: theme.black,
   ...font.p1,
+  cursor: 'pointer',
+
+  ':hover': {
+    color: theme.blue[500],
+  },
 });
 
 export const suggestionButton = style({
@@ -59,4 +64,9 @@ export const suggestionButtonText = style({
   color: theme.blue[500],
   ...font.btn1,
   userSelect: 'none',
+});
+
+export const selectedSuggestionText = style({
+  color: theme.blue[500],
+  textDecoration: 'line-through',
 });
