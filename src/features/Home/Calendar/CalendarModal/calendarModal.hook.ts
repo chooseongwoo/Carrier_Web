@@ -69,7 +69,7 @@ export const useEventState = ({ event }: UseEventStateProps) => {
     isRepeat: Boolean(state.repeat),
     categoryId: state.category,
     startDate: state.startDate,
-    endDate: state.endDate,
+    endDate: Boolean(state.isAllDay) ? state.startDate : state.endDate,
     location: state.location,
   };
 
@@ -181,8 +181,17 @@ export const useInputHandlers = (
     updateState({ [name]: id });
   };
 
+  const handleDateTimeChange = (
+    name: 'startDate' | 'endDate',
+    date: Date | null
+  ) => {
+    if (!date) return;
+    updateState({ [name]: date.toISOString() });
+  };
+
   return {
     handleInputChange,
     handleDropdownChange,
+    handleDateTimeChange,
   };
 };
