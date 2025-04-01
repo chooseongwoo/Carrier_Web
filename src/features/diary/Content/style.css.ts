@@ -17,7 +17,7 @@ export const container = style({
 
 export const titleContainer = style({
   display: 'flex',
-  padding: '28px 40px',
+  padding: '20px 32px',
   alignItems: 'center',
   alignSelf: 'stretch',
 

@@ -71,8 +71,15 @@ export const usePatchCategoryMutation = () => {
 };
 
 export const useCreateCategoryMutation = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: postCategory,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [homeKeys.CATEGORY_LIST],
+      });
+    },
   });
 };
 
