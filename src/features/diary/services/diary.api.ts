@@ -29,3 +29,10 @@ export const deleteDiary = async (diaryId: string) => {
   const { data } = await customAxios.delete(`/diaries/${diaryId}`);
   return data;
 };
+
+export const getSubject = async (date: string) => {
+  const { data } = await customAxios.get(
+    `/diaries/recommend?${toQueryString({ date })}`
+  );
+  return data;
+};
