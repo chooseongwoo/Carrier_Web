@@ -277,78 +277,81 @@ const ProceedContent = () => {
         </div>
       </div>
 
-      <div className={s.mainContent}>
-        {postProceedMutation.status === 'pending' ? (
+      {postProceedMutation.status === 'pending' ? (
+        <div className={s.mainContentLoadingLayout}>
           <div className={s.mainContentLoading}>
-            <DotLoader color={theme.blue[500]} />
-            회의록을 요약하고 있습니다. 잠시만 기다려주세요!
+            <DotLoader
+              color={theme.blue[500]}
+              size={36}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+            <div>AI가 열심히 생성 중이에요...</div>
           </div>
-        ) : (
-          <>
-            {recordState === 'None' ? (
-              <div className={s.mainContentNoneSelect}>선택된 녹음 없음</div>
-            ) : recordState === 'Record' ? (
-              <div
-                className={s.mainRecordContent({ isRecord: recordingState })}
-              >
-                {recordingState ? (
-                  <>
-                    <div className={s.mainRecordEffect}>
-                      {Math.floor(recordingDuration / 60)
-                        .toString()
-                        .padStart(2, '0')}
-                      :{(recordingDuration % 60).toString().padStart(2, '0')}
-                    </div>
-                    <div
-                      className={s.mainRecordButtonIconLayout}
-                      onClick={handelRecordingButtonClick}
-                      style={{ transform: `scale(${buttonScale})` }}
-                    >
-                      <div className={s.mainRecordButtonIcon} />
-                    </div>
-                  </>
-                ) : (
-                  <div
-                    className={s.mainRecordButtonText}
-                    onClick={handelRecordingButtonClick}
-                  >
-                    눌러서 녹음 시작
-                  </div>
-                )}
-              </div>
+        </div>
+      ) : null}
+
+      <div className={s.mainContent}>
+        {recordState === 'None' ? (
+          <div className={s.mainContentNoneSelect}>선택된 녹음 없음</div>
+        ) : recordState === 'Record' ? (
+          <div className={s.mainRecordContent({ isRecord: recordingState })}>
+            {recordingState ? (
+              <>
+                <div className={s.mainRecordEffect}>
+                  {Math.floor(recordingDuration / 60)
+                    .toString()
+                    .padStart(2, '0')}
+                  :{(recordingDuration % 60).toString().padStart(2, '0')}
+                </div>
+                <div
+                  className={s.mainRecordButtonIconLayout}
+                  onClick={handelRecordingButtonClick}
+                  style={{ transform: `scale(${buttonScale})` }}
+                >
+                  <div className={s.mainRecordButtonIcon} />
+                </div>
+              </>
             ) : (
-              <div className={s.mainSummarizeContentLayout}>
-                {selectedRecording && (
-                  <>
-                    <div className={s.SummarizeContent}>
-                      <div className={s.SummarizeMainTitle}>AI 요약됨</div>
-                      <div className={s.SummarizeContentDetail}>
-                        <div>
-                          <div className={s.SummarizeTitle}>녹음 제목</div>
-                          <div className={s.SummarizeSubTitle}>
-                            {selectedRecording.title}
-                          </div>
-                        </div>
-                        <div>
-                          <div className={s.SummarizeTitle}>녹음 내용</div>
-                          <div className={s.SummarizeSubTitle}>
-                            {selectedRecording.textSummary}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className={s.mainContentListenBar}>
-                      <div>
-                        {selectedRecording.audioLink && (
-                          <WaveformVisualizer audioSrc={selectedRecording.id} />
-                        )}
-                      </div>
-                    </div>
-                  </>
-                )}
+              <div
+                className={s.mainRecordButtonText}
+                onClick={handelRecordingButtonClick}
+              >
+                눌러서 녹음 시작
               </div>
             )}
-          </>
+          </div>
+        ) : (
+          <div className={s.mainSummarizeContentLayout}>
+            {selectedRecording && (
+              <>
+                <div className={s.SummarizeContent}>
+                  <div className={s.SummarizeMainTitle}>AI 요약됨</div>
+                  <div className={s.SummarizeContentDetail}>
+                    <div>
+                      <div className={s.SummarizeTitle}>녹음 제목</div>
+                      <div className={s.SummarizeSubTitle}>
+                        {selectedRecording.title}
+                      </div>
+                    </div>
+                    <div>
+                      <div className={s.SummarizeTitle}>녹음 내용</div>
+                      <div className={s.SummarizeSubTitle}>
+                        {selectedRecording.textSummary}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className={s.mainContentListenBar}>
+                  <div>
+                    {selectedRecording.audioLink && (
+                      <WaveformVisualizer audioSrc={selectedRecording.id} />
+                    )}
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
         )}
       </div>
     </div>

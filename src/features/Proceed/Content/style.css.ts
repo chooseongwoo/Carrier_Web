@@ -156,16 +156,30 @@ export const mainContent = style({
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
+  position: 'relative',
+});
+
+export const mainContentLoadingLayout = style({
+  position: 'absolute',
+  width: '100%',
+  height: '100%',
+  background: 'rgba(0, 0, 0, 0.20)',
 });
 
 export const mainContentLoading = style({
-  width: '100%',
-  height: '100%',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  gap: '30px',
+  gap: '40px',
+  padding: '80px 140px',
+  borderRadius: '8px',
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  backgroundColor: theme.white,
+  zIndex: 10000,
 });
 
 export const mainRecordContent = recipe({
