@@ -11,8 +11,10 @@ export const getProceed = async () => {
 };
 
 export const getAudio = async (audioSrc: string) => {
-  const { data } = await customAxios.get(`/meets/audio/${audioSrc}`);
-  return data;
+  const { data } = await customAxios.get(`/meets/audio/${audioSrc}`, {
+    responseType: 'arraybuffer',
+  });
+  return data.data;
 };
 
 export const postProceed = async ({ audioFile, time }: PostProceedParams) => {

@@ -158,6 +158,16 @@ export const mainContent = style({
   justifyContent: 'center',
 });
 
+export const mainContentLoading = style({
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '30px',
+});
+
 export const mainRecordContent = recipe({
   base: {
     width: '100%',

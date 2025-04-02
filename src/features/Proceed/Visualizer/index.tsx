@@ -5,14 +5,19 @@ import { BeforeIcon, NextIcon, PauseIcon, PlayIcon } from '../ui';
 interface WaveformVisualizerProps {
   audioSrc: string;
 }
+
 const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const audioRef = useRef<HTMLAudioElement>(new Audio(audioSrc));
   const [progress, setProgress] = useState(0);
   const [volumeData, setVolumeData] = useState<number[]>(
     new Array(100).fill(-Infinity)
   );
   const [playState, setPlayState] = useState(false);
+  const [audioBuffer, setAudioBuffer] = useState<AudioBuffer | null>(null);
+  const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
+  const [sourceNode, setSourceNode] = useState<AudioBufferSourceNode | null>(
+    null
+  );
 
   const minHeight = 5;
   const maxHeight = 100;
@@ -24,21 +29,21 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
         const response = await fetch(finalUrl, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+            Accept: 'audio/webm', // 강제 오디오 요청
           },
         });
 
         if (!response.ok)
-          throw new Error(`HTTP error! status: ${response.status}`);
-        const arrayBuffer = await response.arrayBuffer();
-        const audioContext = new (
-          window as unknown as {
-            AudioContext: typeof AudioContext;
-            webkitAudioContext?: typeof AudioContext;
-          }
-        ).AudioContext();
-        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-        const channelData = audioBuffer.getChannelData(0);
+          throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
 
+        const arrayBuffer = await response.arrayBuffer();
+        const audioCtx = new AudioContext();
+        const decodedAudio = await audioCtx.decodeAudioData(arrayBuffer);
+
+        setAudioBuffer(decodedAudio);
+        setAudioContext(audioCtx);
+
+        const channelData = decodedAudio.getChannelData(0);
         const sampleCount = 200;
         const step = Math.floor(channelData.length / sampleCount);
         const newVolumeData: number[] = [];
@@ -49,14 +54,13 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
             slice.reduce((sum, sample) => sum + sample * sample, 0) /
               slice.length
           );
-
           const dbValue = rms > 0 ? 20 * Math.log10(rms) : -Infinity;
           newVolumeData.push(dbValue);
         }
 
         setVolumeData(newVolumeData);
       } catch (error) {
-        /* eslint-disable no-console */
+        /* eslint-disable-next-line no-console */
         console.error('오디오 로드 실패:', error);
       }
     };
@@ -81,7 +85,6 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
       volumeData.forEach((dbValue, i) => {
         let normalizedHeight =
           ((dbValue + maxHeight) / maxHeight) * height * 0.8;
-
         normalizedHeight = Math.max(minHeight, normalizedHeight);
 
         const x = i * (barWidth + 3);
@@ -105,37 +108,27 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
     drawWaveform();
   }, [progress, volumeData]);
 
-  useEffect(() => {
-    const audio = audioRef.current;
+  const handlePlay = () => {
+    if (!audioBuffer || !audioContext) return;
 
-    const updateProgress = () => {
-      setProgress((audio.currentTime / audio.duration) * 100);
-      requestAnimationFrame(updateProgress);
-    };
+    const source = audioContext.createBufferSource();
+    source.buffer = audioBuffer;
+    source.connect(audioContext.destination);
+    source.start();
+    setSourceNode(source);
+    setPlayState(true);
 
-    audio.addEventListener('ended', () => {
+    source.onended = () => {
       setPlayState(false);
       setProgress(0);
-    });
-
-    audio.addEventListener('play', () => requestAnimationFrame(updateProgress));
-
-    return () => {
-      audio.removeEventListener('play', () =>
-        requestAnimationFrame(updateProgress)
-      );
-      audio.removeEventListener('ended', () => setPlayState(false));
     };
-  }, []);
-
-  const handlePlay = () => {
-    setPlayState(true);
-    audioRef.current.play();
   };
 
   const handlePause = () => {
-    setPlayState(false);
-    audioRef.current.pause();
+    if (sourceNode) {
+      sourceNode.stop();
+      setPlayState(false);
+    }
   };
 
   return (
@@ -147,7 +140,7 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
         height={100}
       />
       <div className={s.AudioState}>
-        <button onClick={() => (audioRef.current.currentTime = 0)}>
+        <button onClick={() => setProgress(0)}>
           <BeforeIcon />
         </button>
         {!playState ? (

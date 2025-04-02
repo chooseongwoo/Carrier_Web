@@ -5,6 +5,8 @@ import { usePostProceed } from '../service/proceed.mutation';
 import { useQuery } from '@tanstack/react-query';
 import { useGetProceed } from '../service/proceed.query';
 import { formatDate } from 'shared/lib/date';
+import { DotLoader } from 'react-spinners';
+import theme from 'shared/styles/theme.css';
 
 interface RecordingItem {
   id: string;
@@ -26,7 +28,6 @@ const ProceedContent = () => {
   const [selectedRecording, setSelectedRecording] =
     useState<RecordingItem | null>(null);
   const [recordingDuration, setRecordingDuration] = useState(0);
-  const [recordingTitle, setRecordingTitle] = useState('새 녹음');
   const [volumeLevel, setVolumeLevel] = useState(0);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
@@ -143,34 +144,28 @@ const ProceedContent = () => {
           .toString()
           .padStart(2, '0')}초`;
 
-        postProceedMutation.mutate({
-          audioFile,
-          time: formattedTime,
-        });
-
-        const audioUrl = URL.createObjectURL(audioBlob);
-
-        const formattedDuration = `${minutes.toString().padStart(2, '0')}.${seconds
-          .toString()
-          .padStart(2, '0')}분`;
-
-        const now = new Date();
-        const formattedDate = `${now.getFullYear()}.${(now.getMonth() + 1)
-          .toString()
-          .padStart(2, '0')}.${now.getDate().toString().padStart(2, '0')}`;
-
-        const newRecording: RecordingItem = {
-          id: Date.now().toString(),
-          title: recordingTitle,
-          time: formattedDate,
-          text: formattedDuration,
-          audioLink: audioUrl,
-          textSummary: '',
-          createdAt: new Date().toISOString(),
-        };
-
-        setRecordings((prev) => [...prev, newRecording]);
-        setSelectedRecording(newRecording);
+        postProceedMutation.mutate(
+          {
+            audioFile,
+            time: formattedTime,
+          },
+          {
+            onSuccess: (data) => {
+              console.log(data);
+              const newRecording = {
+                id: data.id,
+                title: data.title,
+                text: data.text,
+                textSummary: data.textSummary,
+                time: data.time,
+                audioLink: URL.createObjectURL(audioBlob),
+                createdAt: data.createdAt,
+              };
+              setRecordings((prev) => [...prev, newRecording]);
+              setSelectedRecording(newRecording);
+            },
+          }
+        );
         setRecordState('Select');
 
         if (audioRef.current) {
@@ -198,7 +193,6 @@ const ProceedContent = () => {
   const handelRecordButtonClick = () => {
     setSelectedRecording(null);
     setRecordState('Record');
-    setRecordingTitle('새 녹음');
   };
 
   const handleSelectRecording = (recording: RecordingItem) => {
@@ -284,66 +278,77 @@ const ProceedContent = () => {
       </div>
 
       <div className={s.mainContent}>
-        {recordState === 'None' ? (
-          <div className={s.mainContentNoneSelect}>선택된 녹음 없음</div>
-        ) : recordState === 'Record' ? (
-          <div className={s.mainRecordContent({ isRecord: recordingState })}>
-            {recordingState ? (
-              <>
-                <div className={s.mainRecordEffect}>
-                  {Math.floor(recordingDuration / 60)
-                    .toString()
-                    .padStart(2, '0')}
-                  :{(recordingDuration % 60).toString().padStart(2, '0')}
-                </div>
-                <div
-                  className={s.mainRecordButtonIconLayout}
-                  onClick={handelRecordingButtonClick}
-                  style={{ transform: `scale(${buttonScale})` }}
-                >
-                  <div className={s.mainRecordButtonIcon} />
-                </div>
-              </>
-            ) : (
-              <div
-                className={s.mainRecordButtonText}
-                onClick={handelRecordingButtonClick}
-              >
-                눌러서 녹음 시작
-              </div>
-            )}
+        {postProceedMutation.status === 'pending' ? (
+          <div className={s.mainContentLoading}>
+            <DotLoader color={theme.blue[500]} />
+            회의록을 요약하고 있습니다. 잠시만 기다려주세요!
           </div>
         ) : (
-          <div className={s.mainSummarizeContentLayout}>
-            {selectedRecording && (
-              <>
-                <div className={s.SummarizeContent}>
-                  <div className={s.SummarizeMainTitle}>AI 요약됨</div>
-                  <div className={s.SummarizeContentDetail}>
-                    <div>
-                      <div className={s.SummarizeTitle}>녹음 제목</div>
-                      <div className={s.SummarizeSubTitle}>
-                        {selectedRecording.title}
+          <>
+            {recordState === 'None' ? (
+              <div className={s.mainContentNoneSelect}>선택된 녹음 없음</div>
+            ) : recordState === 'Record' ? (
+              <div
+                className={s.mainRecordContent({ isRecord: recordingState })}
+              >
+                {recordingState ? (
+                  <>
+                    <div className={s.mainRecordEffect}>
+                      {Math.floor(recordingDuration / 60)
+                        .toString()
+                        .padStart(2, '0')}
+                      :{(recordingDuration % 60).toString().padStart(2, '0')}
+                    </div>
+                    <div
+                      className={s.mainRecordButtonIconLayout}
+                      onClick={handelRecordingButtonClick}
+                      style={{ transform: `scale(${buttonScale})` }}
+                    >
+                      <div className={s.mainRecordButtonIcon} />
+                    </div>
+                  </>
+                ) : (
+                  <div
+                    className={s.mainRecordButtonText}
+                    onClick={handelRecordingButtonClick}
+                  >
+                    눌러서 녹음 시작
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className={s.mainSummarizeContentLayout}>
+                {selectedRecording && (
+                  <>
+                    <div className={s.SummarizeContent}>
+                      <div className={s.SummarizeMainTitle}>AI 요약됨</div>
+                      <div className={s.SummarizeContentDetail}>
+                        <div>
+                          <div className={s.SummarizeTitle}>녹음 제목</div>
+                          <div className={s.SummarizeSubTitle}>
+                            {selectedRecording.title}
+                          </div>
+                        </div>
+                        <div>
+                          <div className={s.SummarizeTitle}>녹음 내용</div>
+                          <div className={s.SummarizeSubTitle}>
+                            {selectedRecording.textSummary}
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div>
-                      <div className={s.SummarizeTitle}>녹음 내용</div>
-                      <div className={s.SummarizeSubTitle}>
-                        {selectedRecording.textSummary}
+                    <div className={s.mainContentListenBar}>
+                      <div>
+                        {selectedRecording.audioLink && (
+                          <WaveformVisualizer audioSrc={selectedRecording.id} />
+                        )}
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div className={s.mainContentListenBar}>
-                  <div>
-                    {selectedRecording.audioLink && (
-                      <WaveformVisualizer audioSrc={selectedRecording.id} />
-                    )}
-                  </div>
-                </div>
-              </>
+                  </>
+                )}
+              </div>
             )}
-          </div>
+          </>
         )}
       </div>
     </div>
