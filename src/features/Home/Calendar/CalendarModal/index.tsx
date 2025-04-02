@@ -4,6 +4,7 @@ import { useEventState, useInputHandlers } from './calendarModal.hook';
 import { CalendarEvent } from 'entities/calendar/type';
 import { priority } from 'entities/calendar/model';
 import { useCategories } from 'entities/calendar/hooks/useCategory';
+import DateTimePicker from 'shared/components/DateTimePicker';
 
 interface CalendarModalProps {
   onClose: () => void;
@@ -23,7 +24,7 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
     event,
   });
 
-  const { handleInputChange, handleDropdownChange } =
+  const { handleInputChange, handleDropdownChange, handleDateTimeChange } =
     useInputHandlers(updateState);
 
   const handleIsAllday = () =>
@@ -101,15 +102,18 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
               <div className={s.calendarModalItemBundle}>
                 <div className={s.calendarModalItem}>
                   <div className={s.calendarModalItemTitle}>시작</div>
-                  <div className={s.calendarModalItemAttribute}>
-                    {new Date(event.start).toLocaleString()}
-                  </div>
+                  <DateTimePicker
+                    date={state.startDate}
+                    onChange={(date) => handleDateTimeChange('startDate', date)}
+                  />
                 </div>
                 <div className={s.calendarModalItem}>
                   <div className={s.calendarModalItemTitle}>종료</div>
-                  <div className={s.calendarModalItemAttribute}>
-                    {new Date(event.end).toLocaleString()}
-                  </div>
+                  <DateTimePicker
+                    date={state.endDate || state.startDate}
+                    minDate={state.startDate}
+                    onChange={(date) => handleDateTimeChange('endDate', date)}
+                  />
                 </div>
               </div>
             )}
