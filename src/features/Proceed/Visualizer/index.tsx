@@ -22,6 +22,7 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
   const [sourceNode, setSourceNode] = useState<AudioBufferSourceNode | null>(
     null
   );
+  const [startTime, setStartTime] = useState<number | null>(null);
 
   const {
     data: audioData,
@@ -35,6 +36,7 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
   const minHeight = 5;
   const maxHeight = 100;
 
+  // 오디오 데이터를 처리하고 볼륨 데이터를 계산
   useEffect(() => {
     if (!audioData) return;
 
@@ -64,7 +66,6 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
 
         setVolumeData(newVolumeData);
       } catch (error) {
-        /* eslint-disable-next-line no-console */
         console.error('오디오 처리 실패:', error);
       }
     };
@@ -72,6 +73,7 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
     processAudioData();
   }, [audioData]);
 
+  // 캔버스에 파형을 그리는 함수
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -79,6 +81,8 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
     if (!ctx) return;
 
     const drawWaveform = () => {
+      if (!canvas || !ctx) return;
+
       const width = canvas.width;
       const height = canvas.height;
       const bars = volumeData.length;
@@ -112,26 +116,57 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
     drawWaveform();
   }, [progress, volumeData]);
 
+  // 진행률 업데이트
+  useEffect(() => {
+    let animationFrameId: number;
+
+    if (playState && startTime !== null && audioContext && audioBuffer) {
+      const updateProgress = () => {
+        if (!audioContext || !audioBuffer || startTime === null) return;
+
+        const elapsedTime = audioContext.currentTime - startTime; // 경과 시간 계산
+        setProgress((elapsedTime / audioBuffer.duration) * 100);
+
+        animationFrameId = requestAnimationFrame(updateProgress);
+      };
+
+      animationFrameId = requestAnimationFrame(updateProgress);
+    }
+
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [playState, startTime, audioContext, audioBuffer]);
+
+  // 재생 핸들러
   const handlePlay = () => {
     if (!audioBuffer || !audioContext) return;
 
-    const source = audioContext.createBufferSource();
-    source.buffer = audioBuffer;
-    source.connect(audioContext.destination);
-    source.start();
-    setSourceNode(source);
-    setPlayState(true);
+    if (!playState) {
+      const source = audioContext.createBufferSource();
+      source.buffer = audioBuffer;
+      source.connect(audioContext.destination);
 
-    source.onended = () => {
-      setPlayState(false);
-      setProgress(0);
-    };
+      // 재생 시작 시간 설정
+      setStartTime(
+        audioContext.currentTime - (progress / 100) * audioBuffer.duration
+      );
+
+      source.start(0, (progress / 100) * audioBuffer.duration); // 진행률에 맞춰 재생
+      setSourceNode(source);
+      setPlayState(true);
+
+      source.onended = () => {
+        setPlayState(false);
+        setProgress(0);
+      };
+    }
   };
 
+  // 일시정지 핸들러
   const handlePause = () => {
-    if (sourceNode) {
+    if (sourceNode && playState) {
       sourceNode.stop();
       setPlayState(false);
+      setSourceNode(null); // 노드 초기화
     }
   };
 
@@ -178,7 +213,7 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
             <PauseIcon />
           </button>
         )}
-        <button onClick={handlePlay}>
+        <button onClick={() => setProgress(100)}>
           <NextIcon />
         </button>
       </div>
