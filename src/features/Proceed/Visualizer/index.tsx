@@ -140,7 +140,12 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
 
   return (
     <div className={s.AudioContainer}>
-      <canvas ref={canvasRef} width={1200} height={100} />
+      <canvas
+        ref={canvasRef}
+        className={s.AudioVisualizerCanvas}
+        width={1200}
+        height={100}
+      />
       <div className={s.AudioState}>
         <button onClick={() => (audioRef.current.currentTime = 0)}>
           <BeforeIcon />
