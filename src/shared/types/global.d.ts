@@ -1,5 +1,11 @@
 export {};
 
+interface DeepLinkData {
+  accessToken?: string;
+  refreshToken?: string;
+  route?: string;
+}
+
 declare global {
   interface Window {
     electron: {
@@ -7,7 +13,7 @@ declare global {
     };
     env?: { isElectron: boolean };
     electronAPI: {
-      onDeepLink: (cb: (data: string) => void) => void;
+      onDeepLink: (cb: (data: DeepLinkData) => void) => void;
       notifyReady: () => void;
       getStore: <T>(key: string) => Promise<T>;
       setStore: <T>(key: string, value: T) => Promise<void>;
