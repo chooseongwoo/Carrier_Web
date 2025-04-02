@@ -12,6 +12,7 @@ import MailBody from 'features/Mail/MailBody';
 import { useHandleMailClick } from 'features/Mail/hooks/useHandleMailClick';
 import { useMailSummaryMutation } from 'features/Mail/services/mail.mutation';
 import { DotLoader } from 'react-spinners';
+import { formatEmailTime } from 'features/Mail/utils/formatEmailTime';
 
 const Content = ({ toggleModalOpen }: MailModalProps) => {
   const [mails, setMails] = useAtom(mailsAtom);
@@ -110,7 +111,7 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
                         : ''
                     }`}
                   >
-                    {new Date(data.date).toLocaleDateString()}
+                    {formatEmailTime(data.date)}
                   </div>
                 </div>
                 <div className={s.mailList_title}>{data.subject}</div>
