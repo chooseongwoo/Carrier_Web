@@ -97,7 +97,7 @@ const ProceedContent = () => {
     }
   }, [proceedData]);
 
-  const handelRecordingButtonClick = () => {
+  const handleRecordingButtonClick = () => {
     if (recordingState) {
       stopRecording();
     } else {
@@ -105,7 +105,7 @@ const ProceedContent = () => {
     }
   };
 
-  const handelRecordButtonClick = () => {
+  const handleRecordButtonClick = () => {
     setSelectedRecording(null);
     setRecordState('Record');
   };
@@ -169,7 +169,7 @@ const ProceedContent = () => {
           )}
         </div>
         <div className={s.recordButtonLayout}>
-          <div className={s.recordButton} onClick={handelRecordButtonClick}>
+          <div className={s.recordButton} onClick={handleRecordButtonClick}>
             <div className={s.recordButtonInner} />
           </div>
         </div>
@@ -204,7 +204,7 @@ const ProceedContent = () => {
                 </div>
                 <div
                   className={s.mainRecordButtonIconLayout}
-                  onClick={handelRecordingButtonClick}
+                  onClick={handleRecordingButtonClick}
                   style={{ transform: `scale(${buttonScale})` }}
                 >
                   <div className={s.mainRecordButtonIcon} />
@@ -213,7 +213,7 @@ const ProceedContent = () => {
             ) : (
               <div
                 className={s.mainRecordButtonText}
-                onClick={handelRecordingButtonClick}
+                onClick={handleRecordingButtonClick}
               >
                 눌러서 녹음 시작
               </div>
