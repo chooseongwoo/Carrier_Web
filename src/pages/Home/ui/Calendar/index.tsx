@@ -13,10 +13,9 @@ import { useQuery } from '@tanstack/react-query';
 import { Arrow } from 'shared/icons';
 import { CalendarPlusIcon, CalendarSearchIcon } from 'features/Home/ui';
 import { CalendarModal, CalendarToggle } from 'features/Home/Calendar';
-import { CalendarEvent } from 'entities/calendar/type';
+import { CalendarEvent, CategoryColor } from 'entities/calendar/type';
 import * as s from './style.css';
 import './root.css';
-import theme from 'shared/styles/theme.css';
 import {
   useScheduleListQuery,
   useTodoListQuery,
@@ -26,21 +25,30 @@ import {
   scheduleSelectedAtom,
   todoSelectedAtom,
 } from 'entities/calendar/contexts/eventDisplayState';
+import { categoriesAtom } from 'entities/calendar/contexts/category';
 
 const EventContent = memo(({ event }: { event: EventImpl }) => {
   const isSchedule = event.extendedProps.type === 'Schedule';
   const isDone = event.extendedProps.isDone === true;
+  const [categoryData] = useAtom(categoriesAtom);
+
+  const category = categoryData.find(
+    (cat) => cat.id === event.extendedProps.category
+  );
+  const color = category ? category.color : 'BLUE';
+
   return (
     <div
       className={
-        isSchedule ? s.calendarScheduleContainer : s.calendarTodoContainer
+        isSchedule
+          ? s.calendarScheduleContainer[color as CategoryColor]
+          : s.calendarTodoContainer
       }
     >
       <span
         className={
           isSchedule ? s.calendarScheduleText : s.calendarTodoText({ isDone })
         }
-        style={{ color: isSchedule ? theme.blue[500] : theme.black }}
       >
         {event.title}
       </span>
