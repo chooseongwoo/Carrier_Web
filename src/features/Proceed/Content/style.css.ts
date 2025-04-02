@@ -65,7 +65,7 @@ export const recordContent = recipe({
   variants: {
     isSelected: {
       true: {
-        border: 'none',
+        borderBottom: `1px solid ${theme.blue[500]}`,
         color: theme.white,
       },
       false: {},

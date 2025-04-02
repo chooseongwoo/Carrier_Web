@@ -2,13 +2,18 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import * as s from './style.css';
 import WaveformVisualizer from '../Visualizer';
 import { usePostProceed } from '../service/proceed.mutation';
+import { useQuery } from '@tanstack/react-query';
+import { useGetProceed } from '../service/proceed.query';
+import { formatDate } from 'shared/lib/date';
 
 interface RecordingItem {
   id: string;
   title: string;
-  date: string;
-  duration: string;
-  audioUrl: string;
+  text: string;
+  textSummary: string;
+  time: string;
+  audioLink: string;
+  createdAt: string;
 }
 
 const ProceedContent = () => {
@@ -23,7 +28,6 @@ const ProceedContent = () => {
   const [recordingDuration, setRecordingDuration] = useState(0);
   const [recordingTitle, setRecordingTitle] = useState('새 녹음');
   const [volumeLevel, setVolumeLevel] = useState(0);
-
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const streamRef = useRef<MediaStream | null>(null);
@@ -32,6 +36,23 @@ const ProceedContent = () => {
   const animationFrameRef = useRef<number | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
+
+  const { data: proceedData } = useQuery(useGetProceed.getProceed());
+
+  useEffect(() => {
+    if (proceedData) {
+      const formattedRecordings = proceedData.map((item: RecordingItem) => ({
+        id: item.id.toString(),
+        title: item.title || '제목 없음',
+        text: item.text,
+        textSummary: item.textSummary,
+        time: item.time,
+        audioLink: item.audioLink,
+        createdAt: item.createdAt,
+      }));
+      setRecordings(formattedRecordings);
+    }
+  }, [proceedData]);
 
   const updateVolume = useCallback(() => {
     if (analyserRef.current) {
@@ -116,8 +137,6 @@ const ProceedContent = () => {
           { type: 'audio/webm' }
         );
 
-        console.log(audioFile);
-
         const minutes = Math.floor(recordingDuration / 60);
         const seconds = recordingDuration % 60;
         const formattedTime = `${minutes.toString().padStart(2, '0')}.${seconds
@@ -143,9 +162,11 @@ const ProceedContent = () => {
         const newRecording: RecordingItem = {
           id: Date.now().toString(),
           title: recordingTitle,
-          date: formattedDate,
-          duration: formattedDuration,
-          audioUrl: audioUrl,
+          time: formattedDate,
+          text: formattedDuration,
+          audioLink: audioUrl,
+          textSummary: '',
+          createdAt: new Date().toISOString(),
         };
 
         setRecordings((prev) => [...prev, newRecording]);
@@ -237,7 +258,7 @@ const ProceedContent = () => {
                           selectedRecording?.id === recording.id ? true : false,
                       })}
                     >
-                      {recording.date}
+                      {formatDate(recording.createdAt)}
                     </div>
                   </div>
                   <div
@@ -246,7 +267,7 @@ const ProceedContent = () => {
                         selectedRecording?.id === recording.id ? true : false,
                     })}
                   >
-                    {recording.duration}
+                    {recording.time}
                   </div>
                 </div>
               </div>
@@ -308,17 +329,15 @@ const ProceedContent = () => {
                     <div>
                       <div className={s.SummarizeTitle}>녹음 내용</div>
                       <div className={s.SummarizeSubTitle}>
-                        녹음 요약한거 여기에 들어감
+                        {selectedRecording.textSummary}
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className={s.mainContentListenBar}>
                   <div>
-                    {selectedRecording.audioUrl && (
-                      <WaveformVisualizer
-                        audioSrc={selectedRecording.audioUrl}
-                      />
+                    {selectedRecording.audioLink && (
+                      <WaveformVisualizer audioSrc={selectedRecording.id} />
                     )}
                   </div>
                 </div>

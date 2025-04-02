@@ -5,9 +5,7 @@ import { BeforeIcon, NextIcon, PauseIcon, PlayIcon } from '../ui';
 interface WaveformVisualizerProps {
   audioSrc: string;
 }
-const WaveformVisualizer: React.FC<WaveformVisualizerProps> = ({
-  audioSrc,
-}) => {
+const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const audioRef = useRef<HTMLAudioElement>(new Audio(audioSrc));
   const [progress, setProgress] = useState(0);
@@ -21,32 +19,46 @@ const WaveformVisualizer: React.FC<WaveformVisualizerProps> = ({
 
   useEffect(() => {
     const fetchAudioData = async () => {
-      const response = await fetch(audioSrc);
-      const arrayBuffer = await response.arrayBuffer();
-      const audioContext = new (
-        window as unknown as {
-          AudioContext: typeof AudioContext;
-          webkitAudioContext?: typeof AudioContext;
+      try {
+        const finalUrl = `http://211.112.175.88:9999/meets/audio/${audioSrc}`;
+        const response = await fetch(finalUrl, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        });
+
+        if (!response.ok)
+          throw new Error(`HTTP error! status: ${response.status}`);
+        const arrayBuffer = await response.arrayBuffer();
+        const audioContext = new (
+          window as unknown as {
+            AudioContext: typeof AudioContext;
+            webkitAudioContext?: typeof AudioContext;
+          }
+        ).AudioContext();
+        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+        const channelData = audioBuffer.getChannelData(0);
+
+        const sampleCount = 200;
+        const step = Math.floor(channelData.length / sampleCount);
+        const newVolumeData: number[] = [];
+
+        for (let i = 0; i < sampleCount; i++) {
+          const slice = channelData.slice(i * step, (i + 1) * step);
+          const rms = Math.sqrt(
+            slice.reduce((sum, sample) => sum + sample * sample, 0) /
+              slice.length
+          );
+
+          const dbValue = rms > 0 ? 20 * Math.log10(rms) : -Infinity;
+          newVolumeData.push(dbValue);
         }
-      ).AudioContext();
-      const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-      const channelData = audioBuffer.getChannelData(0);
 
-      const sampleCount = 200;
-      const step = Math.floor(channelData.length / sampleCount);
-      const newVolumeData: number[] = [];
-
-      for (let i = 0; i < sampleCount; i++) {
-        const slice = channelData.slice(i * step, (i + 1) * step);
-        const rms = Math.sqrt(
-          slice.reduce((sum, sample) => sum + sample * sample, 0) / slice.length
-        );
-
-        const dbValue = rms > 0 ? 20 * Math.log10(rms) : -Infinity;
-        newVolumeData.push(dbValue);
+        setVolumeData(newVolumeData);
+      } catch (error) {
+        /* eslint-disable no-console */
+        console.error('오디오 로드 실패:', error);
       }
-
-      setVolumeData(newVolumeData);
     };
 
     fetchAudioData();

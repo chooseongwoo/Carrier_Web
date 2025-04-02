@@ -5,6 +5,11 @@ interface PostProceedParams {
   time: string;
 }
 
+export const getProceed = async () => {
+  const { data } = await customAxios.get('/meets');
+  return data;
+};
+
 export const postProceed = async ({ audioFile, time }: PostProceedParams) => {
   const formData = new FormData();
   formData.append('file', audioFile);
