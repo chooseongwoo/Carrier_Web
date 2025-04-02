@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import * as s from './style.css';
 import WaveformVisualizer from '../Visualizer';
 import { usePostProceed } from '../service/proceed.mutation';
@@ -8,6 +8,7 @@ import { formatDate } from 'shared/lib/date';
 import { DotLoader } from 'react-spinners';
 import theme from 'shared/styles/theme.css';
 import { BigDownArrow } from '../ui';
+import useAudioRecorder from '../hooks/useAudioRecorder';
 
 interface RecordingItem {
   id: string;
@@ -24,22 +25,62 @@ const ProceedContent = () => {
   const [recordState, setRecordState] = useState<'Record' | 'Select' | 'None'>(
     'None'
   );
-  const [recordingState, setRecordingState] = useState(false);
   const [recordings, setRecordings] = useState<RecordingItem[]>([]);
   const [selectedRecording, setSelectedRecording] =
     useState<RecordingItem | null>(null);
-  const [recordingDuration, setRecordingDuration] = useState(0);
-  const [volumeLevel, setVolumeLevel] = useState(0);
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const audioChunksRef = useRef<Blob[]>([]);
-  const streamRef = useRef<MediaStream | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const animationFrameRef = useRef<number | null>(null);
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const analyserRef = useRef<AnalyserNode | null>(null);
 
   const { data: proceedData } = useQuery(useGetProceed.getProceed());
+
+  const {
+    recordingState,
+    recordingDuration,
+    volumeLevel,
+    startRecording,
+    stopRecording,
+  } = useAudioRecorder({
+    onRecordingComplete: (audioBlob, duration) => {
+      const audioFile = new File([audioBlob], `recording-${Date.now()}.webm`, {
+        type: 'audio/webm',
+      });
+
+      const minutes = Math.floor(duration / 60);
+      const seconds = duration % 60;
+      const formattedTime = `${minutes.toString().padStart(2, '0')}.${seconds
+        .toString()
+        .padStart(2, '0')}초`;
+
+      postProceedMutation.mutate(
+        {
+          audioFile,
+          time: formattedTime,
+        },
+        {
+          onSuccess: (data) => {
+            /* eslint-disable-next-line no-console */
+            console.log(data);
+            const newRecording = {
+              id: data.id,
+              title: data.title,
+              text: data.text,
+              textSummary: data.textSummary,
+              time: data.time,
+              audioLink: URL.createObjectURL(audioBlob),
+              createdAt: data.createdAt,
+            };
+            setRecordings((prev) => [...prev, newRecording]);
+            setSelectedRecording(newRecording);
+          },
+        }
+      );
+      setRecordState('Select');
+
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+    },
+  });
 
   useEffect(() => {
     if (proceedData) {
@@ -55,133 +96,6 @@ const ProceedContent = () => {
       setRecordings(formattedRecordings);
     }
   }, [proceedData]);
-
-  const updateVolume = useCallback(() => {
-    if (analyserRef.current) {
-      const bufferLength = analyserRef.current.fftSize;
-      const dataArray = new Uint8Array(bufferLength);
-      analyserRef.current.getByteTimeDomainData(dataArray);
-      let sum = 0;
-      for (let i = 0; i < bufferLength; i++) {
-        const normalized = (dataArray[i] - 128) / 128;
-        sum += normalized * normalized;
-      }
-      const rms = Math.sqrt(sum / bufferLength);
-      setVolumeLevel(rms);
-    }
-    animationFrameRef.current = requestAnimationFrame(updateVolume);
-  }, []);
-
-  const startRecording = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      streamRef.current = stream;
-
-      const audioContext = new AudioContext();
-      audioContextRef.current = audioContext;
-      const analyser = audioContext.createAnalyser();
-      analyser.fftSize = 2048;
-      analyserRef.current = analyser;
-      const source = audioContext.createMediaStreamSource(stream);
-      source.connect(analyser);
-
-      animationFrameRef.current = requestAnimationFrame(updateVolume);
-
-      const mediaRecorder = new MediaRecorder(stream);
-      mediaRecorderRef.current = mediaRecorder;
-
-      audioChunksRef.current = [];
-
-      mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          audioChunksRef.current.push(event.data);
-        }
-      };
-
-      mediaRecorder.start();
-      setRecordingState(true);
-
-      let seconds = 0;
-      timerRef.current = setInterval(() => {
-        seconds++;
-        setRecordingDuration(seconds);
-      }, 1000);
-    } catch (error) {
-      /* eslint-disable no-console */
-      console.error('Error accessing microphone:', error);
-    }
-  };
-
-  const stopRecording = () => {
-    if (mediaRecorderRef.current && streamRef.current) {
-      mediaRecorderRef.current.stop();
-
-      mediaRecorderRef.current.onstop = () => {
-        if (animationFrameRef.current) {
-          cancelAnimationFrame(animationFrameRef.current);
-        }
-        if (timerRef.current) {
-          clearInterval(timerRef.current);
-        }
-        if (audioContextRef.current) {
-          audioContextRef.current.close();
-          audioContextRef.current = null;
-          analyserRef.current = null;
-        }
-        setVolumeLevel(0);
-
-        const audioBlob = new Blob(audioChunksRef.current, {
-          type: 'audio/webm',
-        });
-        const audioFile = new File(
-          [audioBlob],
-          `recording-${Date.now()}.webm`,
-          { type: 'audio/webm' }
-        );
-
-        const minutes = Math.floor(recordingDuration / 60);
-        const seconds = recordingDuration % 60;
-        const formattedTime = `${minutes.toString().padStart(2, '0')}.${seconds
-          .toString()
-          .padStart(2, '0')}초`;
-
-        postProceedMutation.mutate(
-          {
-            audioFile,
-            time: formattedTime,
-          },
-          {
-            onSuccess: (data) => {
-              console.log(data);
-              const newRecording = {
-                id: data.id,
-                title: data.title,
-                text: data.text,
-                textSummary: data.textSummary,
-                time: data.time,
-                audioLink: URL.createObjectURL(audioBlob),
-                createdAt: data.createdAt,
-              };
-              setRecordings((prev) => [...prev, newRecording]);
-              setSelectedRecording(newRecording);
-            },
-          }
-        );
-        setRecordState('Select');
-
-        if (audioRef.current) {
-          audioRef.current.pause();
-          audioRef.current.currentTime = 0;
-        }
-        if (streamRef.current) {
-          streamRef.current.getTracks().forEach((track) => track.stop());
-        }
-      };
-
-      setRecordingState(false);
-      setRecordingDuration(0);
-    }
-  };
 
   const handelRecordingButtonClick = () => {
     if (recordingState) {
@@ -204,23 +118,6 @@ const ProceedContent = () => {
       audioRef.current.currentTime = 0;
     }
   };
-
-  useEffect(() => {
-    return () => {
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach((track) => track.stop());
-      }
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-      if (audioContextRef.current) {
-        audioContextRef.current.close();
-      }
-    };
-  }, []);
 
   const buttonScale = 1 + volumeLevel * 0.5;
 
@@ -349,7 +246,7 @@ const ProceedContent = () => {
                     <BigDownArrow />
                   </div>
 
-                  <div className={s.SummarizeContent}>
+                  <div className={s.SummarizeContentALL}>
                     <div className={s.SummarizeMainTitle}>전체 본문</div>
                     <div className={s.SummarizeContentDetail}>
                       <div>
