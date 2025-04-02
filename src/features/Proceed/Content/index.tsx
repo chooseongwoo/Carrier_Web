@@ -57,8 +57,6 @@ const ProceedContent = () => {
         },
         {
           onSuccess: (data) => {
-            /* eslint-disable-next-line no-console */
-            console.log(data);
             const newRecording = {
               id: data.id,
               title: data.title,
