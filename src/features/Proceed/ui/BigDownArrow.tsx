@@ -7,7 +7,7 @@ const BigDownArrow = () => {
       viewBox="0 0 68 39"
       fill="none"
     >
-      <g clip-path="url(#clip0_2162_18644)">
+      <g clipPath="url(#clip0_2162_18644)">
         <path
           d="M12.75 13.4062L34 25.5938L55.25 13.4062"
           stroke="#787878"
