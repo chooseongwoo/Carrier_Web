@@ -264,6 +264,16 @@ export const SummarizeContent = style({
   height: 'calc(100% - 54px)',
 });
 
+export const SummarizeContentALL = style({
+  width: '100%',
+  padding: '80px',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '40px',
+  overflowY: 'scroll',
+  height: 'calc(100% + 24px)',
+});
+
 export const SummarizeContentDownArrow = style({
   width: '100%',
   display: 'flex',
