@@ -1,7 +1,27 @@
-import { globalStyle, style } from '@vanilla-extract/css';
+import { globalStyle, style, styleVariants } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { font } from 'shared/styles/font.css';
 import theme from 'shared/styles/theme.css';
+
+const CategoryColors = {
+  RED: { color: '#EE3A3A', background: '#FFDDDD' },
+  GREEN: { color: '#15A665', background: '#DBF4E9' },
+  BLUE: { color: '#2E5EFC', background: '#F3F6FF' },
+  PURPLE: { color: '#B14FDE', background: '#F7E7FF' },
+  BROWN: { color: '#B26C1B', background: '#FBEEDF' },
+  ROSE: { color: '#D63881', background: '#FFECF5' },
+};
+
+const scheduleContainerBase = style({
+  display: 'flex',
+  height: '100%',
+  alignItems: 'center',
+  gap: '8px',
+  alignSelf: 'stretch',
+  flexShrink: '0',
+  borderRadius: '5px',
+  padding: '0 8px',
+});
 
 export const calendarContainer = style({
   width: 'calc(100vw - 440px)',
@@ -99,18 +119,17 @@ export const calendarSearchText = style({
   },
 });
 
-export const calendarScheduleContainer = style({
-  display: 'flex',
-  height: '100%',
-  alignItems: 'center',
-  gap: '8px',
-  alignSelf: 'stretch',
-  flexShrink: '0',
-  borderRadius: '5px',
-  backgroundColor: theme.blue[50],
-  borderLeft: `5px solid ${theme.blue[500]}`,
-  padding: '0 8px',
-});
+export const calendarScheduleContainer = styleVariants(
+  CategoryColors,
+  (category) => [
+    scheduleContainerBase,
+    {
+      color: category.color,
+      borderLeft: `5px solid ${category.color}`,
+      background: category.background,
+    },
+  ]
+);
 
 export const calendarScheduleText = style({
   ...font.p2,
@@ -120,6 +139,7 @@ export const calendarTodoContainer = style({
   display: 'flex',
   height: '100%',
   alignItems: 'center',
+  color: theme.black,
 });
 
 export const calendarTodoText = recipe({
