@@ -10,6 +10,11 @@ export const getProceed = async () => {
   return data;
 };
 
+export const getAudio = async (audioSrc: string) => {
+  const { data } = await customAxios.get(`/meets/audio/${audioSrc}`);
+  return data;
+};
+
 export const postProceed = async ({ audioFile, time }: PostProceedParams) => {
   const formData = new FormData();
   formData.append('file', audioFile);
