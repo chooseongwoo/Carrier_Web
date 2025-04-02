@@ -156,12 +156,6 @@ const Setting = () => {
               className={s.headerProfileImg}
             />
           </label>
-          <input
-            type="file"
-            id="profile-upload"
-            style={{ display: 'none' }}
-            accept="image/*"
-          />
           <div className={s.textBox}>
             <p className={s.nameText}>{userInfos.name}</p>
             <p className={s.emailText}>{userInfos.email}</p>
