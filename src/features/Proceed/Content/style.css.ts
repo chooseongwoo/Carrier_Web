@@ -247,6 +247,13 @@ export const mainSummarizeContentLayout = style({
   height: '100%',
 });
 
+export const SummarizeContentLayout = style({
+  width: '100%',
+  overflow: 'scroll',
+  height: 'calc(100% - 220px)',
+  minHeight: 'calc(100% - 220px)',
+});
+
 export const SummarizeContent = style({
   width: '100%',
   padding: '80px',
@@ -254,7 +261,14 @@ export const SummarizeContent = style({
   flexDirection: 'column',
   gap: '40px',
   overflowY: 'scroll',
-  height: 'calc(100% - 220px)',
+  height: 'calc(100% - 54px)',
+});
+
+export const SummarizeContentDownArrow = style({
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
 });
 
 export const mainContentListenBar = style({

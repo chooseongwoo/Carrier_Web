@@ -7,6 +7,7 @@ import { useGetProceed } from '../service/proceed.query';
 import { formatDate } from 'shared/lib/date';
 import { DotLoader } from 'react-spinners';
 import theme from 'shared/styles/theme.css';
+import { BigDownArrow } from '../ui';
 
 interface RecordingItem {
   id: string;
@@ -325,23 +326,48 @@ const ProceedContent = () => {
           <div className={s.mainSummarizeContentLayout}>
             {selectedRecording && (
               <>
-                <div className={s.SummarizeContent}>
-                  <div className={s.SummarizeMainTitle}>AI 요약됨</div>
-                  <div className={s.SummarizeContentDetail}>
-                    <div>
-                      <div className={s.SummarizeTitle}>녹음 제목</div>
-                      <div className={s.SummarizeSubTitle}>
-                        {selectedRecording.title}
+                <div className={s.SummarizeContentLayout}>
+                  <div className={s.SummarizeContent}>
+                    <div className={s.SummarizeMainTitle}>AI 요약됨</div>
+                    <div className={s.SummarizeContentDetail}>
+                      <div>
+                        <div className={s.SummarizeTitle}>녹음 제목</div>
+                        <div className={s.SummarizeSubTitle}>
+                          {selectedRecording.title}
+                        </div>
+                      </div>
+                      <div>
+                        <div className={s.SummarizeTitle}>녹음 내용</div>
+                        <div className={s.SummarizeSubTitle}>
+                          {selectedRecording.textSummary}
+                        </div>
                       </div>
                     </div>
-                    <div>
-                      <div className={s.SummarizeTitle}>녹음 내용</div>
-                      <div className={s.SummarizeSubTitle}>
-                        {selectedRecording.textSummary}
+                  </div>
+
+                  <div className={s.SummarizeContentDownArrow}>
+                    <BigDownArrow />
+                  </div>
+
+                  <div className={s.SummarizeContent}>
+                    <div className={s.SummarizeMainTitle}>전체 본문</div>
+                    <div className={s.SummarizeContentDetail}>
+                      <div>
+                        <div className={s.SummarizeTitle}>녹음 제목</div>
+                        <div className={s.SummarizeSubTitle}>
+                          {selectedRecording.title}
+                        </div>
+                      </div>
+                      <div>
+                        <div className={s.SummarizeTitle}>녹음 내용</div>
+                        <div className={s.SummarizeSubTitle}>
+                          {selectedRecording.text}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+
                 <div className={s.mainContentListenBar}>
                   <div>
                     {selectedRecording.audioLink && (
