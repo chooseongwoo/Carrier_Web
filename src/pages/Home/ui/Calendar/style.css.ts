@@ -266,3 +266,14 @@ globalStyle(
     color: theme.white,
   }
 );
+
+globalStyle('.fc-scrollgrid-section.fc-scrollgrid-section-header > th', {
+  border: 'none',
+});
+
+globalStyle(
+  '.fc-scrollgrid-section.fc-scrollgrid-section-body.fc-scrollgrid-section-liquid > td',
+  {
+    border: 'none',
+  }
+);
