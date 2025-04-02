@@ -174,8 +174,6 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
     }
   };
 
-  console.log(isLoading);
-
   if (isLoading) {
     return (
       <div className={s.AudioLoadingLayout}>
