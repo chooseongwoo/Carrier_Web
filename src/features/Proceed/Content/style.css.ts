@@ -167,6 +167,7 @@ export const mainContentLoadingLayout = style({
 });
 
 export const mainContentLoading = style({
+  ...font.p2,
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
