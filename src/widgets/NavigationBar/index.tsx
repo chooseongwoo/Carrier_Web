@@ -8,6 +8,7 @@ import { useInterval } from 'react-use';
 import useModal from 'shared/hooks/useModal';
 import { useCategoryList } from 'entities/calendar/hooks/useCategory';
 import { useMailMutation } from 'features/Mail/services/mail.mutation';
+import Proceed from './ui/Proceed';
 
 const NavigationBar = () => {
   const navigate = useNavigate();
@@ -41,6 +42,11 @@ const NavigationBar = () => {
       icon: <Diary />,
       link: '/diary',
       label: '일기',
+    },
+    {
+      icon: <Proceed />,
+      link: '/proceed',
+      label: '녹음 요약',
     },
   ];
 

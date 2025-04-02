@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { isEqual } from 'lodash';
 import { CalendarEvent } from 'entities/calendar/type';
@@ -169,7 +170,9 @@ export const useEventState = ({ event }: UseEventStateProps) => {
   };
 };
 
-export const useInputHandlers = (updateState: (updates: any) => void) => {
+export const useInputHandlers = (
+  updateState: (updates: Partial<EventState>) => void
+) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateState({ [e.target.name]: e.target.value });
   };

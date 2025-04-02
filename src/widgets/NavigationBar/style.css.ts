@@ -19,18 +19,19 @@ export const menus = style({
   display: 'flex',
   flexDirection: 'column',
   gap: '40px',
+  maxWidth: '56px',
 });
 
 export const icon = style({
   cursor: 'pointer',
   display: 'flex',
   flexDirection: 'column',
-  padding: '12px',
   justifyContent: 'center',
   alignItems: 'center',
   gap: '8px',
   borderRadius: '8px',
   background: theme.gray[900],
+  padding: '3px 0px 3px 0px',
 
   ':hover': {
     background: theme.gray[800],
@@ -44,6 +45,9 @@ export const active = style({
 export const label = style({
   ...font.caption,
   color: `${theme.white}`,
+  width: 'auto',
+  padding: '0px 12px 0px 12px',
+  whiteSpace: 'nowrap',
 });
 
 export const others = style({
