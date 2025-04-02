@@ -11,10 +11,13 @@ export const getProceed = async () => {
 };
 
 export const getAudio = async (audioSrc: string) => {
-  const { data } = await customAxios.get(`/meets/audio/${audioSrc}`, {
+  const response = await customAxios.get(`/meets/audio/${audioSrc}`, {
     responseType: 'arraybuffer',
+    headers: {
+      Accept: 'audio/webm',
+    },
   });
-  return data.data;
+  return response.data;
 };
 
 export const postProceed = async ({ audioFile, time }: PostProceedParams) => {
