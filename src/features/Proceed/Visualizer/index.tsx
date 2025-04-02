@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import * as s from './style.css';
 import { BeforeIcon, NextIcon, PauseIcon, PlayIcon } from '../ui';
+import { useQuery } from '@tanstack/react-query';
+import { useGetAudio } from '../service/proceed.query';
+import { DotLoader } from 'react-spinners';
+import theme from 'shared/styles/theme.css';
 
 interface WaveformVisualizerProps {
   audioSrc: string;
@@ -19,24 +23,24 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
     null
   );
 
+  const {
+    data: audioData,
+    isLoading,
+    error,
+  } = useQuery({
+    ...useGetAudio.getAudio(audioSrc),
+    enabled: !!audioSrc,
+  });
+
   const minHeight = 5;
   const maxHeight = 100;
 
   useEffect(() => {
-    const fetchAudioData = async () => {
+    if (!audioData) return;
+
+    const processAudioData = async () => {
       try {
-        const finalUrl = `http://211.112.175.88:9999/meets/audio/${audioSrc}`;
-        const response = await fetch(finalUrl, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-            Accept: 'audio/webm', // 강제 오디오 요청
-          },
-        });
-
-        if (!response.ok)
-          throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
-
-        const arrayBuffer = await response.arrayBuffer();
+        const arrayBuffer = audioData;
         const audioCtx = new AudioContext();
         const decodedAudio = await audioCtx.decodeAudioData(arrayBuffer);
 
@@ -61,12 +65,12 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
         setVolumeData(newVolumeData);
       } catch (error) {
         /* eslint-disable-next-line no-console */
-        console.error('오디오 로드 실패:', error);
+        console.error('오디오 처리 실패:', error);
       }
     };
 
-    fetchAudioData();
-  }, [audioSrc]);
+    processAudioData();
+  }, [audioData]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -130,6 +134,28 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
       setPlayState(false);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className={s.AudioLoadingLayout}>
+        <DotLoader
+          color={theme.blue[500]}
+          size={36}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+        <div>AI가 열심히 불러오는 중이에요...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={s.AudioLoadingLayout}>
+        <div>오디오 로드 실패: {(error as Error).message}</div>
+      </div>
+    );
+  }
 
   return (
     <div className={s.AudioContainer}>
