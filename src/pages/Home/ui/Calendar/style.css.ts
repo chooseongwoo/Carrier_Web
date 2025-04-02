@@ -266,3 +266,17 @@ globalStyle(
     color: theme.white,
   }
 );
+
+globalStyle(
+  `${calendarContainer} .fc-scrollgrid-section.fc-scrollgrid-section-header > th`,
+  {
+    border: 'none',
+  }
+);
+
+globalStyle(
+  `${calendarContainer} .fc-scrollgrid-section.fc-scrollgrid-section-body.fc-scrollgrid-section-liquid > td`,
+  {
+    border: 'none',
+  }
+);
