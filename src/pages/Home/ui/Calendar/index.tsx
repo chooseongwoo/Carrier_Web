@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect, useCallback, memo } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import interactionPlugin, {
+  EventResizeDoneArg,
+} from '@fullcalendar/interaction';
 import {
   DatesSetArg,
   EventClickArg,
@@ -222,16 +224,16 @@ const Calendar = () => {
   const { mutate: patchScheduleMutate } = usePatchScheduleMutation();
   const { mutate: patchTodoMutate } = usePatchTodoMutation();
 
-  const handleEventDrop = (info: EventDropArg) => {
+  const handleEventEdit = (info: EventDropArg | EventResizeDoneArg) => {
     const { type, ...props } = info.event.extendedProps as CalendarEvent;
     if (type === 'Schedule') {
       const scheduleData = {
         id: props.eventId!,
         title: info.event.title,
-        allDay: info.event.allDay,
+        allDay: info.event.allDay ?? true,
         isRepeat: props.isRepeat,
         memo: props.memo ?? null,
-        startDate: info.event.startStr ?? props.start,
+        startDate: info.event.startStr,
         endDate: props.isRepeat ? null : info.event.endStr,
         categoryId: props.category!,
         location: props.location ?? null,
@@ -302,14 +304,15 @@ const Calendar = () => {
         </div>
       </div>
       <FullCalendar
-        eventDrop={handleEventDrop}
+        eventResize={handleEventEdit}
+        eventDrop={handleEventEdit}
         ref={calendarRef}
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
         headerToolbar={{ left: '', end: '' }}
         fixedWeekCount={false}
         height="calc(100% - 80px)"
-        editable
+        editable={true}
         selectable
         locale="ko"
         timeZone="Asia/Seoul"
