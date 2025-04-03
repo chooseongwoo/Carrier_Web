@@ -238,7 +238,7 @@ const Calendar = () => {
       const scheduleData = {
         id: props.eventId!,
         title: info.event.title,
-        allDay: isResize ? true : false,
+        allDay: isResize ? false : (props.isAllDay ?? true),
         isRepeat: props.isRepeat,
         memo: props.memo ?? null,
         startDate: `${info.event.startStr}T00:00:00`,
