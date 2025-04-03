@@ -7,6 +7,7 @@ import {
   EventClickArg,
   CalendarApi,
   DayCellContentArg,
+  EventDropArg,
 } from '@fullcalendar/core';
 import { EventImpl } from '@fullcalendar/core/internal';
 import { useQuery } from '@tanstack/react-query';
@@ -26,6 +27,12 @@ import {
   todoSelectedAtom,
 } from 'entities/calendar/contexts/eventDisplayState';
 import { categoriesAtom } from 'entities/calendar/contexts/category';
+import {
+  usePatchScheduleMutation,
+  usePatchTodoMutation,
+} from 'features/Home/services/home.mutation';
+import { toISOStringKST } from 'shared/lib/date';
+import { priority } from 'entities/calendar/model';
 
 const EventContent = memo(({ event }: { event: EventImpl }) => {
   const isSchedule = event.extendedProps.type === 'Schedule';
@@ -158,8 +165,8 @@ const Calendar = () => {
     setSelectedEvent({
       ...event,
       type: event?.type ?? 'Schedule',
-      start: startDate.toISOString(),
-      end: endDate.toISOString(),
+      start: toISOStringKST(startDate),
+      end: toISOStringKST(endDate),
     } as CalendarEvent);
 
     setIsModalOpen(true);
@@ -176,8 +183,8 @@ const Calendar = () => {
         type: 'Schedule',
         title: '',
         memo: '',
-        start: date.toISOString(),
-        end: date.toISOString(),
+        start: toISOStringKST(date),
+        end: toISOStringKST(date),
         startEditable: true,
         durationEditable: true,
         allDay: true,
@@ -211,6 +218,39 @@ const Calendar = () => {
     },
     [handleModalOpen]
   );
+
+  const { mutate: patchScheduleMutate } = usePatchScheduleMutation();
+  const { mutate: patchTodoMutate } = usePatchTodoMutation();
+
+  const handleEventDrop = (info: EventDropArg) => {
+    const { type, ...props } = info.event.extendedProps as CalendarEvent;
+    if (type === 'Schedule') {
+      const scheduleData = {
+        id: props.eventId!,
+        title: info.event.title,
+        allDay: info.event.allDay,
+        isRepeat: props.isRepeat,
+        memo: props.memo ?? null,
+        startDate: info.event.startStr ?? props.start,
+        endDate: props.isRepeat ? null : info.event.endStr,
+        categoryId: props.category!,
+        location: props.location ?? null,
+      };
+      patchScheduleMutate(scheduleData);
+    } else {
+      const todoData = {
+        id: props.eventId!,
+        title: info.event.title,
+        date: info.event.startStr,
+        isRepeat: props.isRepeat,
+        priority:
+          priority.find((item) => item.id === props.priority)?.value || 'HIGH',
+        memo: props.memo ?? null,
+        location: props.location ?? null,
+      };
+      patchTodoMutate(todoData);
+    }
+  };
 
   const handleDatesSet = ({ view }: DatesSetArg) => {
     setCurrentDate({
@@ -262,6 +302,7 @@ const Calendar = () => {
         </div>
       </div>
       <FullCalendar
+        eventDrop={handleEventDrop}
         ref={calendarRef}
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
