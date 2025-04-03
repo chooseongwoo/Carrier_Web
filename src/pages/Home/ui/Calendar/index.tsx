@@ -1,12 +1,15 @@
 import { useState, useRef, useEffect, useCallback, memo } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import interactionPlugin, {
+  EventResizeDoneArg,
+} from '@fullcalendar/interaction';
 import {
   DatesSetArg,
   EventClickArg,
   CalendarApi,
   DayCellContentArg,
+  EventDropArg,
 } from '@fullcalendar/core';
 import { EventImpl } from '@fullcalendar/core/internal';
 import { useQuery } from '@tanstack/react-query';
@@ -26,6 +29,12 @@ import {
   todoSelectedAtom,
 } from 'entities/calendar/contexts/eventDisplayState';
 import { categoriesAtom } from 'entities/calendar/contexts/category';
+import {
+  usePatchScheduleMutation,
+  usePatchTodoMutation,
+} from 'features/Home/services/home.mutation';
+import { toISOStringKST } from 'shared/lib/date';
+import { priority } from 'entities/calendar/model';
 
 const EventContent = memo(({ event }: { event: EventImpl }) => {
   const isSchedule = event.extendedProps.type === 'Schedule';
@@ -158,8 +167,8 @@ const Calendar = () => {
     setSelectedEvent({
       ...event,
       type: event?.type ?? 'Schedule',
-      start: startDate.toISOString(),
-      end: endDate.toISOString(),
+      start: toISOStringKST(startDate),
+      end: toISOStringKST(endDate),
     } as CalendarEvent);
 
     setIsModalOpen(true);
@@ -176,10 +185,11 @@ const Calendar = () => {
         type: 'Schedule',
         title: '',
         memo: '',
-        start: date.toISOString(),
-        end: date.toISOString(),
+        start: toISOStringKST(date),
+        end: toISOStringKST(date),
         startEditable: true,
         durationEditable: true,
+        isAllDay: true,
         allDay: true,
         isRepeat: false,
         category: 1,
@@ -203,7 +213,8 @@ const Calendar = () => {
         memo: props.memo,
         location: props.location,
         durationEditable: type === 'Schedule',
-        allDay: info.event.allDay,
+        isAllDay: props.isAllDay,
+        allDay: true,
         category: type === 'Schedule' ? props.category : null,
         priority: type === 'Todo' ? props.priority : null,
         type,
@@ -212,6 +223,46 @@ const Calendar = () => {
     [handleModalOpen]
   );
 
+  const { mutate: patchScheduleMutate } = usePatchScheduleMutation();
+  const { mutate: patchTodoMutate } = usePatchTodoMutation();
+
+  const handleEventEdit = (
+    info: EventDropArg | EventResizeDoneArg,
+    eventType: 'eventDrop' | 'eventResize'
+  ) => {
+    const { type, ...props } = info.event.extendedProps as CalendarEvent;
+
+    const isResize = eventType === 'eventResize';
+
+    if (type === 'Schedule') {
+      const scheduleData = {
+        id: props.eventId!,
+        title: info.event.title,
+        allDay: isResize ? false : (props.isAllDay ?? true),
+        isRepeat: props.isRepeat,
+        memo: props.memo ?? null,
+        startDate: `${info.event.startStr}T00:00:00`,
+        endDate: info.event.endStr
+          ? `${info.event.endStr}T23:30:00`
+          : `${info.event.startStr}T23:30:00`,
+        categoryId: props.category!,
+        location: props.location ?? null,
+      };
+      patchScheduleMutate(scheduleData);
+    } else {
+      const todoData = {
+        id: props.eventId!,
+        title: info.event.title,
+        date: info.event.startStr,
+        isRepeat: props.isRepeat,
+        priority:
+          priority.find((item) => item.id === props.priority)?.value || 'HIGH',
+        memo: props.memo ?? null,
+        location: props.location ?? null,
+      };
+      patchTodoMutate(todoData);
+    }
+  };
   const handleDatesSet = ({ view }: DatesSetArg) => {
     setCurrentDate({
       year: view.currentStart.getFullYear(),
@@ -262,13 +313,15 @@ const Calendar = () => {
         </div>
       </div>
       <FullCalendar
+        eventResize={(info) => handleEventEdit(info, 'eventResize')}
+        eventDrop={(info) => handleEventEdit(info, 'eventDrop')}
         ref={calendarRef}
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
         headerToolbar={{ left: '', end: '' }}
         fixedWeekCount={false}
         height="calc(100% - 80px)"
-        editable
+        editable={true}
         selectable
         locale="ko"
         timeZone="Asia/Seoul"
