@@ -29,6 +29,7 @@ export interface CalendarEvent {
   start: string;
   end: string;
   location?: string | null;
+  isAllDay?: boolean;
   allDay?: boolean;
   category?: number;
   priority?: number;

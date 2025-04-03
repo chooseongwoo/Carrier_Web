@@ -39,7 +39,7 @@ export const useEventState = ({ event }: UseEventStateProps) => {
     repeat: event?.isRepeat ? +event.isRepeat : 0,
     category: event?.type === 'Schedule' ? event.category || 1 : 1,
     priority: event?.type === 'Todo' ? event.priority || 1 : 1,
-    isAllDay: event?.type === 'Schedule' ? event.allDay || false : false,
+    isAllDay: event?.type === 'Schedule' ? event.isAllDay || false : false,
     location: event?.location || '',
   });
 
@@ -153,7 +153,7 @@ export const useEventState = ({ event }: UseEventStateProps) => {
         location: event.location || '',
         category: event.type === 'Schedule' ? event.category || 1 : 1,
         priority: event.type === 'Todo' ? event.priority || 1 : 1,
-        isAllDay: event.type === 'Schedule' ? event.allDay || false : false,
+        isAllDay: event.type === 'Schedule' ? event.isAllDay || false : false,
       });
       prevEventRef.current = { ...event };
     }
