@@ -189,6 +189,7 @@ const Calendar = () => {
         end: toISOStringKST(date),
         startEditable: true,
         durationEditable: true,
+        isAllDay: true,
         allDay: true,
         isRepeat: false,
         category: 1,
@@ -212,7 +213,8 @@ const Calendar = () => {
         memo: props.memo,
         location: props.location,
         durationEditable: type === 'Schedule',
-        allDay: info.event.allDay,
+        isAllDay: props.isAllDay,
+        allDay: true,
         category: type === 'Schedule' ? props.category : null,
         priority: type === 'Todo' ? props.priority : null,
         type,
@@ -224,17 +226,25 @@ const Calendar = () => {
   const { mutate: patchScheduleMutate } = usePatchScheduleMutation();
   const { mutate: patchTodoMutate } = usePatchTodoMutation();
 
-  const handleEventEdit = (info: EventDropArg | EventResizeDoneArg) => {
+  const handleEventEdit = (
+    info: EventDropArg | EventResizeDoneArg,
+    eventType: 'eventDrop' | 'eventResize'
+  ) => {
     const { type, ...props } = info.event.extendedProps as CalendarEvent;
+
+    const isResize = eventType === 'eventResize';
+
     if (type === 'Schedule') {
       const scheduleData = {
         id: props.eventId!,
         title: info.event.title,
-        allDay: info.event.allDay ?? true,
+        allDay: isResize ? true : false,
         isRepeat: props.isRepeat,
         memo: props.memo ?? null,
-        startDate: info.event.startStr,
-        endDate: props.isRepeat ? null : info.event.endStr,
+        startDate: `${info.event.startStr}T00:00:00`,
+        endDate: info.event.endStr
+          ? `${info.event.endStr}T23:30:00`
+          : `${info.event.startStr}T23:30:00`,
         categoryId: props.category!,
         location: props.location ?? null,
       };
@@ -253,7 +263,6 @@ const Calendar = () => {
       patchTodoMutate(todoData);
     }
   };
-
   const handleDatesSet = ({ view }: DatesSetArg) => {
     setCurrentDate({
       year: view.currentStart.getFullYear(),
@@ -304,8 +313,8 @@ const Calendar = () => {
         </div>
       </div>
       <FullCalendar
-        eventResize={handleEventEdit}
-        eventDrop={handleEventEdit}
+        eventResize={(info) => handleEventEdit(info, 'eventResize')}
+        eventDrop={(info) => handleEventEdit(info, 'eventDrop')}
         ref={calendarRef}
         plugins={[dayGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
