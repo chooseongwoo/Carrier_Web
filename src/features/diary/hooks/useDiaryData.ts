@@ -36,7 +36,7 @@ export const useDiaryData = () => {
 
   useEffect(() => {
     refetch();
-  }, [currentDate]);
+  }, [currentDate, refetch]);
 
   return {
     currentDate,
