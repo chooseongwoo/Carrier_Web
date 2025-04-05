@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { MailModalProps } from 'entities/mail/types/MailModalProps';
 import * as s from './style.css';
 import AlertMark from 'features/Mail/ui/AlertMark';
@@ -26,9 +27,10 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
     end: '',
     memo: '',
     location: '',
+    isAllDay: true,
     isRepeat: false,
     category: 1,
-    allDay: false,
+    allDay: true,
     priority: 1,
     startEditable: true,
     durationEditable: true,

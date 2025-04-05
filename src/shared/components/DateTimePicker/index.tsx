@@ -10,18 +10,25 @@ interface DateTimePickerProps {
   onChange: (date: Date | null) => void;
 }
 
-const CustomInput = forwardRef<HTMLInputElement, any>((props, ref) => {
-  return (
-    <input
-      type="text"
-      readOnly
-      value={props.value}
-      onClick={props.onClick}
-      ref={ref}
-      className={s.datePickerDisplay}
-    />
-  );
-});
+interface CustomInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  value?: string;
+  onClick?: () => void;
+}
+
+const CustomInput = forwardRef<HTMLInputElement, CustomInputProps>(
+  (props, ref) => {
+    return (
+      <input
+        type="text"
+        readOnly
+        value={props.value}
+        onClick={props.onClick}
+        ref={ref}
+        className={s.datePickerDisplay}
+      />
+    );
+  }
+);
 
 const DateTimePicker = ({ date, minDate, onChange }: DateTimePickerProps) => {
   const parsedDate = new Date(date);

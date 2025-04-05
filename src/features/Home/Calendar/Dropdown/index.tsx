@@ -27,7 +27,7 @@ const EventDropdown = ({ id, name, data, onChange }: DropdownProps) => {
       const firstItem = data[0];
       onChange(firstItem.id, firstItem.value ?? firstItem.name, name);
     }
-  }, [id, data, onChange]);
+  }, [id, data, onChange, name]);
 
   return (
     <div>

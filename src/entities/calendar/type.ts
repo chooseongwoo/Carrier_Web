@@ -3,12 +3,20 @@ export const EVENT_TYPE = {
   Todo: 'Todo',
 } as const;
 
+export type CategoryColor =
+  | 'RED'
+  | 'GREEN'
+  | 'BLUE'
+  | 'PURPLE'
+  | 'BROWN'
+  | 'ROSE';
+
 export type EventType = (typeof EVENT_TYPE)[keyof typeof EVENT_TYPE];
 
 export interface Category {
   id: number;
   name: string;
-  color: string;
+  color: CategoryColor;
   active: boolean;
 }
 
@@ -21,6 +29,7 @@ export interface CalendarEvent {
   start: string;
   end: string;
   location?: string | null;
+  isAllDay?: boolean;
   allDay?: boolean;
   category?: number;
   priority?: number;
