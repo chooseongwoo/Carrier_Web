@@ -23,7 +23,10 @@ const Setting = () => {
 
   const { user } = useUser();
   const { mutate: updateUserInfoMutate } = useUpdateUserInfo();
-  const { mutate: updateUserPictureMutate } = useUpdateUserPictrue();
+  const {
+    mutate: updateUserPictureMutate,
+    isPending: updateUserPicturePending,
+  } = useUpdateUserPictrue();
   const { mutate: updateAlarmTimeMutate } = useAlarmTimeMutation();
   const { mutate: deleteSecession } = useUserSecession();
 
@@ -184,6 +187,7 @@ const Setting = () => {
           setUserInfos={setUserInfos}
           time={time}
           setTime={setTime}
+          isPending={updateUserPicturePending}
         />
       </div>
       {isOpenedModal && (
