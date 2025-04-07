@@ -1,4 +1,4 @@
-import { style } from '@vanilla-extract/css';
+import { style, keyframes } from '@vanilla-extract/css';
 import { recipe } from '@vanilla-extract/recipes';
 import { font } from 'shared/styles/font.css';
 import theme from 'shared/styles/theme.css';
@@ -149,14 +149,24 @@ export const recordButtonInner = style({
   backgroundColor: theme.red[500],
 });
 
-export const mainContent = style({
-  width: '100%',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  position: 'relative',
+export const mainContent = recipe({
+  base: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  variants: {
+    isRecord: {
+      true: {
+        backgroundColor: theme.blue[50],
+      },
+      false: {},
+    },
+  },
 });
 
 export const mainContentLoadingLayout = style({
