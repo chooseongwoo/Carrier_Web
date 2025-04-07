@@ -2,21 +2,13 @@ import { useState, useEffect } from 'react';
 import theme from 'shared/styles/theme.css';
 import { usePatchCategoryMutation } from '../services/home.mutation';
 import { CategoryColor } from 'entities/calendar/type';
+import { CATEGORY_COLORS_VALUE } from 'entities/calendar/model';
 
 interface BtnCategoryItemProps {
   id?: number;
   initialBgColor: CategoryColor;
   activeState: boolean;
 }
-
-const CATEGORY_COLORS_VALUE = {
-  RED: '#EE3A3A',
-  GREEN: '#15A665',
-  BLUE: '#2E5EFC',
-  PURPLE: '#B14FDE',
-  BROWN: '#B26C1B',
-  ROSE: '#D63881',
-};
 
 const BtnCategoryItem = ({
   initialBgColor = 'BLUE',
