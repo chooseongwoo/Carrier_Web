@@ -23,6 +23,7 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
     null
   );
   const [startTime, setStartTime] = useState<number | null>(null);
+  const [pauseOffset, setPauseOffset] = useState<number>(0);
   const [cachedAudioData, setCachedAudioData] = useState<ArrayBuffer | null>(
     null
   );
@@ -92,13 +93,10 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    const ctx = canvas?.getContext('2d');
+    if (!canvas || !ctx) return;
 
     const drawWaveform = () => {
-      if (!canvas || !ctx) return;
-
       const width = canvas.width;
       const height = canvas.height;
       const bars = volumeData.length;
@@ -137,11 +135,9 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
 
     if (playState && startTime !== null && audioContext && audioBuffer) {
       const updateProgress = () => {
-        if (!audioContext || !audioBuffer || startTime === null) return;
-
         const elapsedTime = audioContext.currentTime - startTime;
-        setProgress((elapsedTime / audioBuffer.duration) * 100);
-
+        const currentProgress = (elapsedTime / audioBuffer.duration) * 100;
+        setProgress(currentProgress);
         animationFrameId = requestAnimationFrame(updateProgress);
       };
 
@@ -154,28 +150,50 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
   const handlePlay = () => {
     if (!audioBuffer || !audioContext) return;
 
-    if (!playState) {
-      const source = audioContext.createBufferSource();
-      source.buffer = audioBuffer;
-      source.connect(audioContext.destination);
+    const source = audioContext.createBufferSource();
+    source.buffer = audioBuffer;
+    source.connect(audioContext.destination);
 
-      setStartTime(
-        audioContext.currentTime - (progress / 100) * audioBuffer.duration
-      );
+    const offset =
+      pauseOffset > 0 ? pauseOffset : (progress / 100) * audioBuffer.duration;
+    setStartTime(audioContext.currentTime - offset);
+    source.start(0, offset);
 
-      source.start(0, (progress / 100) * audioBuffer.duration);
-      setSourceNode(source);
-      setPlayState(true);
+    setSourceNode(source);
+    setPlayState(true);
 
-      source.onended = () => {
-        setPlayState(false);
-        setProgress(0);
-      };
-    }
+    source.onended = () => {
+      setPlayState(false);
+      setProgress(0);
+      setPauseOffset(0);
+    };
   };
 
   const handlePause = () => {
-    if (sourceNode && playState) {
+    if (sourceNode && playState && audioContext && startTime !== null) {
+      const elapsed = audioContext.currentTime - startTime;
+      setPauseOffset(elapsed);
+      sourceNode.stop();
+      setSourceNode(null);
+      setPlayState(false);
+    }
+  };
+
+  const handleSkipToStart = () => {
+    setProgress(0);
+    setPauseOffset(0);
+    if (playState && sourceNode) {
+      sourceNode.stop();
+      setPlayState(false);
+      setSourceNode(null);
+    }
+  };
+
+  const handleSkipToEnd = () => {
+    if (!audioBuffer) return;
+    setProgress(100);
+    setPauseOffset(audioBuffer.duration);
+    if (playState && sourceNode) {
       sourceNode.stop();
       setPlayState(false);
       setSourceNode(null);
@@ -213,7 +231,7 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
         height={100}
       />
       <div className={s.AudioState}>
-        <button onClick={() => setProgress(0)}>
+        <button onClick={handleSkipToStart}>
           <BeforeIcon />
         </button>
         {!playState ? (
@@ -225,7 +243,7 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
             <PauseIcon />
           </button>
         )}
-        <button onClick={() => setProgress(100)}>
+        <button onClick={handleSkipToEnd}>
           <NextIcon />
         </button>
       </div>
