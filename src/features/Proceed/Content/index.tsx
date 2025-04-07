@@ -9,7 +9,6 @@ import { DotLoader } from 'react-spinners';
 import theme from 'shared/styles/theme.css';
 import { BigDownArrow } from '../ui';
 import useAudioRecorder from '../hooks/useAudioRecorder';
-import { is } from 'date-fns/locale';
 
 interface RecordingItem {
   id: string;
