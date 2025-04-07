@@ -10,7 +10,7 @@ export const container = style({
 });
 
 export const header = style({
-  width: 'calc(100vw - 360px)',
+  width: 'calc(100vw - 80px)',
   height: '72px',
   display: 'flex',
   flexDirection: 'row',
@@ -62,7 +62,7 @@ export const mailOption_iconButton = style({
 });
 
 export const content = style({
-  width: 'calc(100vw - 360px)',
+  width: 'calc(100vw - 80px)',
   height: 'calc(100vh - 72px)',
   display: 'flex',
   flexDirection: 'row',
