@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
 import theme from 'shared/styles/theme.css';
 import { usePatchCategoryMutation } from '../services/home.mutation';
+import { CategoryColor } from 'entities/calendar/type';
 
 interface BtnCategoryItemProps {
   id?: number;
-  initialBgColor?: keyof typeof CategoryColors;
+  initialBgColor: CategoryColor;
   activeState: boolean;
 }
 
-const CategoryColors = {
+const CATEGORY_COLORS_VALUE = {
   RED: '#EE3A3A',
   GREEN: '#15A665',
   BLUE: '#2E5EFC',
@@ -50,7 +51,7 @@ const BtnCategoryItem = ({
         width="23"
         height="23"
         rx="3.5"
-        fill={CategoryColors[initialBgColor]}
+        fill={CATEGORY_COLORS_VALUE[initialBgColor]}
       />
       <rect
         x="0.5"
