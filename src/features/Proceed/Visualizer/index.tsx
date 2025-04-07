@@ -40,6 +40,14 @@ const WaveformVisualizer = ({ audioSrc }: WaveformVisualizerProps) => {
   const maxHeight = 100;
 
   useEffect(() => {
+    return () => {
+      if (sourceNode) {
+        sourceNode.stop();
+      }
+    };
+  }, [audioSrc, sourceNode]);
+
+  useEffect(() => {
     if (!audioData) return;
 
     const processAudioData = async () => {
