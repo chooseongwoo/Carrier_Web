@@ -4,7 +4,7 @@ import { CategoryPlusIcon, CategoryItemIcon } from 'features/Home/ui';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCreateCategoryMutation } from 'features/Home/services/home.mutation';
 import { useCategoryListQuery } from 'features/Home/services/home.query';
-import { Category } from 'entities/calendar/type';
+import type { Category } from 'entities/calendar/type';
 
 /* eslint-disable no-console */
 
@@ -17,8 +17,8 @@ const CATEGORY_COLORS = [
   'ROSE',
 ] as const;
 
-const Category = () => {
-  const { mutate } = useCreateCategoryMutation();
+const Categories = () => {
+  const { mutate: createCategoryMutate } = useCreateCategoryMutation();
   const queryClient = useQueryClient();
   const [categoryData, setCategoryData] = useState<Category[]>([]);
   const [newCategoryName, setNewCategoryName] = useState<string>('카테고리');
@@ -36,23 +36,23 @@ const Category = () => {
     } catch (error) {
       console.error('에러 발생:', error);
     }
-  }, [queryClient, mutate]);
+  }, [queryClient]);
 
   const activeEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      setCategoryData([
-        ...categoryData,
-        {
-          id: categoryData.length + 1,
-          name: newCategoryName,
-          color: CATEGORY_COLORS[categoryData.length % CATEGORY_COLORS.length],
-          active: true,
-        },
-      ]);
-      mutate({
+      const newCategoryColor =
+        CATEGORY_COLORS[categoryData.length % CATEGORY_COLORS.length];
+
+      const newCategory: Category = {
+        id: categoryData.length + 1,
         name: newCategoryName,
-        color: CATEGORY_COLORS[categoryData.length % CATEGORY_COLORS.length],
-      });
+        color: newCategoryColor,
+        active: true,
+      };
+
+      setCategoryData([...categoryData, newCategory]);
+      createCategoryMutate({ name: newCategoryName, color: newCategoryColor });
+
       setNewCategoryName('카테고리');
       setModalOpen(false);
     }
@@ -103,4 +103,4 @@ const Category = () => {
   );
 };
 
-export default Category;
+export default Categories;
