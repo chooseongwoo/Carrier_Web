@@ -45,13 +45,13 @@ const Category = () => {
         {
           id: categoryData.length + 1,
           name: newCategoryName,
-          color: CategoryColor[categoryData.length % CategoryColor.length],
+          color: CATEGORY_COLORS[categoryData.length % CATEGORY_COLORS.length],
           active: true,
         },
       ]);
       mutate({
         name: newCategoryName,
-        color: CategoryColor[categoryData.length % CategoryColor.length],
+        color: CATEGORY_COLORS[categoryData.length % CATEGORY_COLORS.length],
       });
       setNewCategoryName('카테고리');
       setModalOpen(false);
@@ -83,7 +83,7 @@ const Category = () => {
         {isModalOpen && (
           <div className={`${s.categoryNewItem} ${s.categoryItem}`}>
             <CategoryItemIcon
-              initialBgColor={CategoryColor[categoryData.length]}
+              initialBgColor={CATEGORY_COLORS[categoryData.length]}
               activeState={true}
             />
             <div className={s.categoryItemTitle}>
