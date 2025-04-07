@@ -4,6 +4,7 @@ import { CategoryPlusIcon, CategoryItemIcon } from 'features/Home/ui';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCreateCategoryMutation } from 'features/Home/services/home.mutation';
 import { useCategoryListQuery } from 'features/Home/services/home.query';
+import { Category } from 'entities/calendar/type';
 
 /* eslint-disable no-console */
 
@@ -19,9 +20,7 @@ const CATEGORY_COLORS = [
 const Category = () => {
   const { mutate } = useCreateCategoryMutation();
   const queryClient = useQueryClient();
-  const [categoryData, setCategoryData] = useState<
-    { id: number; name: string; color: string; active: boolean }[]
-  >([]);
+  const [categoryData, setCategoryData] = useState<Category[]>([]);
   const [newCategoryName, setNewCategoryName] = useState<string>('카테고리');
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -71,23 +70,16 @@ const Category = () => {
         </div>
       </div>
       <div className={s.categoryItemContainer}>
-        {categoryData?.map(
-          (category: {
-            id: number;
-            name: string;
-            color: string;
-            active: boolean;
-          }) => (
-            <div className={s.categoryItem} key={category.id}>
-              <CategoryItemIcon
-                initialBgColor={category.color}
-                activeState={category.active}
-                id={category.id}
-              />
-              <div className={s.categoryItemTitle}>{category.name}</div>
-            </div>
-          )
-        )}
+        {categoryData?.map((category) => (
+          <div className={s.categoryItem} key={category.id}>
+            <CategoryItemIcon
+              initialBgColor={category.color}
+              activeState={category.active}
+              id={category.id}
+            />
+            <div className={s.categoryItemTitle}>{category.name}</div>
+          </div>
+        ))}
         {isModalOpen && (
           <div className={`${s.categoryNewItem} ${s.categoryItem}`}>
             <CategoryItemIcon
