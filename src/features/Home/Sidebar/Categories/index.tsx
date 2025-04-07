@@ -83,7 +83,9 @@ const Categories = () => {
         {isModalOpen && (
           <div className={`${s.categoryNewItem} ${s.categoryItem}`}>
             <CategoryItemIcon
-              initialBgColor={CATEGORY_COLORS[categoryData.length]}
+              initialBgColor={
+                CATEGORY_COLORS[categoryData.length % CATEGORY_COLORS.length]
+              }
               activeState={true}
             />
             <div className={s.categoryItemTitle}>
