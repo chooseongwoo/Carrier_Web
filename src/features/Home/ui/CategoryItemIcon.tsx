@@ -4,12 +4,21 @@ import { usePatchCategoryMutation } from '../services/home.mutation';
 
 interface BtnCategoryItemProps {
   id?: number;
-  initialBgColor?: string;
+  initialBgColor?: keyof typeof CategoryColors;
   activeState: boolean;
 }
 
+const CategoryColors = {
+  RED: '#EE3A3A',
+  GREEN: '#15A665',
+  BLUE: '#2E5EFC',
+  PURPLE: '#B14FDE',
+  BROWN: '#B26C1B',
+  ROSE: '#D63881',
+};
+
 const BtnCategoryItem = ({
-  initialBgColor = '#587EFD',
+  initialBgColor = 'BLUE',
   activeState = true,
   id,
 }: BtnCategoryItemProps) => {
@@ -41,7 +50,7 @@ const BtnCategoryItem = ({
         width="23"
         height="23"
         rx="3.5"
-        fill={initialBgColor}
+        fill={CategoryColors[initialBgColor]}
       />
       <rect
         x="0.5"
