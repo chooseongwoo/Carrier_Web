@@ -187,7 +187,7 @@ const ProceedContent = () => {
         </div>
       ) : null}
 
-      <div className={s.mainContent}>
+      <div className={s.mainContent({ isRecord: recordingState })}>
         {recordState === 'None' ? (
           <div className={s.mainContentNoneSelect}>선택된 녹음 없음</div>
         ) : recordState === 'Record' ? (

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Storage } from 'shared/lib/storage';
-import { refreshToken } from './header';
+import { getRefreshToken } from './header';
 import { TOKEN } from 'shared/constants';
 
 export const customAxios = axios.create({
@@ -10,7 +10,10 @@ export const customAxios = axios.create({
 
 const refresh = async () => {
   await Storage.delItem(TOKEN.ACCESS);
-  const { data } = await customAxios.post('/auth/reissue', refreshToken());
+  const refreshToken = await getRefreshToken();
+  const { data } = await customAxios.post('/auth/reissue', {
+    token: refreshToken,
+  });
   const newAccessToken = data.accessToken;
   await Storage.setItem(TOKEN.ACCESS, newAccessToken);
   return newAccessToken;
@@ -22,14 +25,6 @@ customAxios.interceptors.response.use(
     const request = error.config;
 
     if (error.response?.status !== 401) {
-      return Promise.reject(error);
-    }
-
-    if (error.response?.status !== 400) {
-      return Promise.reject(error);
-    }
-
-    if (request._retry) {
       return Promise.reject(error);
     }
 

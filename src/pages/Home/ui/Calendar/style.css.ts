@@ -214,6 +214,7 @@ globalStyle(`${calendarContainer} .fc-day`, {
 globalStyle(`${calendarContainer} .fc .fc-daygrid-day-frame`, {
   minHeight: '100%',
   position: 'relative',
+  maxHeight: '80px',
 });
 
 globalStyle(`${calendarContainer} .fc .fc-col-header-cell-cushion`, {
@@ -254,7 +255,7 @@ globalStyle(`${calendarContainer} .fc-direction-ltr .fc-daygrid-more-link`, {
 });
 
 globalStyle(`${calendarContainer} .fc-daygrid-day-events`, {
-  marginTop: '6px',
+  marginTop: '14px',
   minHeight: '100px',
 });
 
@@ -300,3 +301,18 @@ globalStyle(
     border: 'none',
   }
 );
+
+globalStyle(
+  `${calendarContainer} .fc-event-main, ${calendarContainer} .fc-daygrid-more-link`,
+  {
+    height: '25px',
+  }
+);
+
+globalStyle(`${calendarContainer} .fc-daygrid-day-number`, {
+  width: '28px',
+  height: '28px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+});

@@ -1,5 +1,4 @@
 import { useMenuState } from 'features/Mail/hooks';
-import { WriteIcon, Trash } from 'features/Mail/ui';
 import * as s from './style.css';
 import { useState } from 'react';
 import { MailModalProps } from 'entities/mail/types/MailModalProps';
@@ -74,7 +73,7 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
               )}
             </div>
           )}
-          <div
+          {/* <div
             className={s.mailOption_iconButton}
             onClick={() => {
               toggleModalOpen?.('send');
@@ -84,7 +83,7 @@ const Content = ({ toggleModalOpen }: MailModalProps) => {
           </div>
           <div className={s.mailOption_iconButton}>
             <Trash color={theme.gray[600]} size={32} />
-          </div>
+          </div> */}
         </div>
       </header>
 

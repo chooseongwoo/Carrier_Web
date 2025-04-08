@@ -335,7 +335,7 @@ const Calendar = () => {
         eventContent={({ event }) => <EventContent event={event} />}
         eventClick={handleEventClick}
         dateClick={handleDateClick}
-        dayMaxEvents={3}
+        dayMaxEvents={2}
         moreLinkText={(num) => `+${num}`}
         events={filteredEvents}
       />

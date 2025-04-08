@@ -31,7 +31,11 @@ const ReadContent = ({ diaryId }: ReadContentProps) => {
       </div>
       <div className={s.contentWrapper}>
         <p className={s.emoji}>{diaryData.emoji}</p>
-        <p className={s.content}>{diaryData.content}</p>
+        {diaryData.content.split('\n').map((item: string, index: number) => (
+          <p key={index} className={s.content}>
+            {item}
+          </p>
+        ))}
       </div>
     </div>
   );
