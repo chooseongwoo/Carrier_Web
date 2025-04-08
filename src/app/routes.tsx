@@ -78,10 +78,10 @@ export default function Router() {
           <Route path="/google/callback" element={<OAuthWeb />} />
         </Route>
         <Route element={<SurveyRoute isSurvey={isSurvey} />}>
-          <Route path="/app/google/callback" element={<OAuthApp />} />
           <Route path="/survey" element={<Survey />} />
         </Route>
         <Route path="/privacy" element={<Privacy />} />
+        <Route path="/app/google/callback" element={<OAuthApp />} />
       </Routes>
     </Suspense>
   );
