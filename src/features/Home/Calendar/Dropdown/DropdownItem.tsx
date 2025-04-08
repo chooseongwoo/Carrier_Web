@@ -1,9 +1,11 @@
 import * as s from './style.css';
 import { useState } from 'react';
 import { DropdownCheckIcon } from 'features/Home/ui';
+import type { CategoryColor } from 'entities/calendar/type';
+import { CATEGORY_COLORS_VALUE } from 'entities/calendar/model';
 
 interface DropdownItemProps {
-  item: { id: number; name: string; color?: string };
+  item: { id: number; name: string; color?: CategoryColor };
   isSelected: boolean;
   onSelect: (id: number, name: string) => void;
 }
@@ -25,7 +27,7 @@ const DropdownItem = ({ item, isSelected, onSelect }: DropdownItemProps) => {
       {item.color && (
         <div
           className={s.dropdownColorBox}
-          style={{ backgroundColor: item.color }}
+          style={{ backgroundColor: CATEGORY_COLORS_VALUE[item.color] }}
         />
       )}
       <div>{item.name}</div>
