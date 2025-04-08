@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { isEqual } from 'lodash';
 import { CalendarEvent } from 'entities/calendar/type';
-import { priority } from 'entities/calendar/model';
+import { PRIORITY } from 'entities/calendar/model';
 import {
   useCreateScheduleMutation,
   useCreateTodoMutation,
@@ -78,7 +78,7 @@ export const useEventState = ({ event }: UseEventStateProps) => {
     date: state.endDate?.split('T')[0] || state.startDate.split('T')[0],
     isRepeat: Boolean(state.repeat),
     priority:
-      priority.find((item) => item.id === state.priority)?.value || 'HIGH',
+      PRIORITY.find((item) => item.id === state.priority)?.value || 'HIGH',
     memo: state.memo,
     location: state.location,
   };

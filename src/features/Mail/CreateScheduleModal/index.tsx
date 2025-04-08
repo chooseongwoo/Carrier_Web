@@ -13,6 +13,7 @@ import { useQuery } from '@tanstack/react-query';
 import { mailQuery } from 'features/Mail/services/mail.query';
 import { useCreateScheduleMutation } from 'features/Home/services/home.mutation';
 import { useCategories } from 'entities/calendar/hooks/useCategory';
+import { PRIORITY } from 'entities/calendar/model';
 
 const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
   const [gmailId] = useAtom(selectedMailIdAtom);
@@ -187,11 +188,7 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
                   <EventDropdown
                     name="priority"
                     id={state.priority}
-                    data={[
-                      { id: 1, value: 'LOW', name: '낮음' },
-                      { id: 2, value: 'MEDIUM', name: '중간' },
-                      { id: 3, value: 'HIGH', name: '높음' },
-                    ]}
+                    data={PRIORITY}
                     onChange={handleChangePriority}
                   />
                 </div>

@@ -34,7 +34,7 @@ import {
   usePatchTodoMutation,
 } from 'features/Home/services/home.mutation';
 import { toISOStringKST } from 'shared/lib/date';
-import { priority } from 'entities/calendar/model';
+import { PRIORITY } from 'entities/calendar/model';
 
 const EventContent = memo(({ event }: { event: EventImpl }) => {
   const isSchedule = event.extendedProps.type === 'Schedule';
@@ -256,7 +256,7 @@ const Calendar = () => {
         date: info.event.startStr,
         isRepeat: props.isRepeat,
         priority:
-          priority.find((item) => item.id === props.priority)?.value || 'HIGH',
+          PRIORITY.find((item) => item.id === props.priority)?.value || 'HIGH',
         memo: props.memo ?? null,
         location: props.location ?? null,
       };
