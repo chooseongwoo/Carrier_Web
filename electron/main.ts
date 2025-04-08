@@ -1,6 +1,7 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
-import { electronApp, optimizer, is } from '@electron-toolkit/utils';
+import { electronApp, optimizer } from '@electron-toolkit/utils';
+import 'dotenv/config';
 
 import Store from 'electron-store';
 
@@ -14,10 +15,12 @@ ipcMain.handle('store:clear', () => store.clear());
 let mainWindow: BrowserWindow | null = null;
 let pendingDeeplinkData: any = null;
 
+const isDev = process.env.NODE_ENV === 'development' || !app.isPackaged;
+
 const getRendererBaseURL = () =>
-  is.dev && process.env.ELECTRON_RENDERER_URL
+  isDev && process.env.ELECTRON_RENDERER_URL
     ? process.env.ELECTRON_RENDERER_URL
-    : `file://${path.join(app.getAppPath(), 'out/renderer/index.html')}`;
+    : 'https://www.jing5s.kro.kr';
 
 const handleDeepLink = (url: string) => {
   try {
