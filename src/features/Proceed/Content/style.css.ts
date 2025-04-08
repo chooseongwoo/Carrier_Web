@@ -149,14 +149,24 @@ export const recordButtonInner = style({
   backgroundColor: theme.red[500],
 });
 
-export const mainContent = style({
-  width: '100%',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  position: 'relative',
+export const mainContent = recipe({
+  base: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  variants: {
+    isRecord: {
+      true: {
+        backgroundColor: theme.blue[50],
+      },
+      false: {},
+    },
+  },
 });
 
 export const mainContentLoadingLayout = style({
