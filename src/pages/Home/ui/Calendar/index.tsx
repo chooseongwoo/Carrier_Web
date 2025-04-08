@@ -144,6 +144,8 @@ const Calendar = () => {
   useEffect(() => {
     if (schedules.length > 0 || todos.length > 0) {
       setEvents([...schedules, ...todos]);
+    } else {
+      setEvents([]);
     }
   }, [schedules, todos]);
 
