@@ -65,8 +65,15 @@ export const useDeleteTodoMutation = () => {
 };
 
 export const usePatchCategoryMutation = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: patchCategory,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [homeKeys.SCHEDULE_LIST],
+      });
+    },
   });
 };
 
