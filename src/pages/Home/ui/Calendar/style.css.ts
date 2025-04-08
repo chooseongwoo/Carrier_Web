@@ -300,3 +300,10 @@ globalStyle(
     border: 'none',
   }
 );
+
+globalStyle(
+  `${calendarContainer} .fc-event-main, ${calendarContainer} .fc-daygrid-more-link`,
+  {
+    height: '30px',
+  }
+);
