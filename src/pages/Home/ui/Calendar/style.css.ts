@@ -214,6 +214,7 @@ globalStyle(`${calendarContainer} .fc-day`, {
 globalStyle(`${calendarContainer} .fc .fc-daygrid-day-frame`, {
   minHeight: '100%',
   position: 'relative',
+  maxHeight: '80px',
 });
 
 globalStyle(`${calendarContainer} .fc .fc-col-header-cell-cushion`, {
@@ -304,6 +305,6 @@ globalStyle(
 globalStyle(
   `${calendarContainer} .fc-event-main, ${calendarContainer} .fc-daygrid-more-link`,
   {
-    height: '30px',
+    height: '25px',
   }
 );
