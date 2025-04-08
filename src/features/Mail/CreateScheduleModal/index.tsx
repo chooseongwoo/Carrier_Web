@@ -18,6 +18,7 @@ import { useCreateScheduleMutation } from 'features/Home/services/home.mutation'
 import { useCategories } from 'entities/calendar/hooks/useCategory';
 import { PRIORITY } from 'entities/calendar/model';
 import DateTimePicker from 'shared/components/DateTimePicker';
+import { toISOStringKST } from 'shared/lib/date';
 
 const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
   const [gmailId] = useAtom(selectedMailIdAtom);
@@ -25,11 +26,13 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
     ...mailQuery.mailToSchedule(gmailId ?? ''),
     enabled: !!gmailId,
   });
+  const today = toISOStringKST(new Date());
+
   const [event, setEvent] = useState<CalendarEvent>({
     type: 'Schedule',
     title: '',
-    start: '',
-    end: '',
+    start: today,
+    end: today,
     memo: '',
     location: '',
     isAllDay: true,
@@ -43,12 +46,15 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
 
   useEffect(() => {
     if (mailToScheduleData) {
+      const startDate = mailToScheduleData?.startDate ?? today;
+      const endDate = mailToScheduleData?.endDate ?? today;
+
       setEvent((prev) => ({
         ...prev,
         title: mailToScheduleData?.title ?? prev.title,
-        allDay: mailToScheduleData?.allDay ?? prev.allDay,
-        start: mailToScheduleData?.startDate ?? prev.start,
-        end: mailToScheduleData?.endDate ?? prev.end,
+        allDay: false,
+        start: startDate,
+        end: endDate,
       }));
     }
   }, [mailToScheduleData]);
