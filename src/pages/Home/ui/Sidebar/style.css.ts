@@ -9,4 +9,5 @@ export const container = style({
   alignItems: 'flex-start',
   gap: '24px',
   overflowY: 'auto',
+  overflowX: 'hidden',
 });
