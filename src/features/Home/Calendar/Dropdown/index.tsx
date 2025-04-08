@@ -3,9 +3,11 @@ import * as s from './style.css';
 import useDropdown from './dropdown.hook.ts';
 import DropdownItem from './DropdownItem.tsx';
 import { TopdownArrowIcon } from 'features/Home/ui';
+import { CATEGORY_COLORS_VALUE } from 'entities/calendar/model.ts';
+import type { CategoryColor } from 'entities/calendar/type.ts';
 
 type DropdownItemType =
-  | { id: number; name: string; color: string; value?: never }
+  | { id: number; name: string; color: CategoryColor; value?: never }
   | { id: number; name: string; value: string; color?: never };
 
 interface DropdownProps {
@@ -35,10 +37,12 @@ const EventDropdown = ({ id, name, data, onChange }: DropdownProps) => {
         className={s.dropdownBtn({ hasColor: hasColor })}
         onClick={toggleDropdown}
       >
-        {hasColor ? (
+        {hasColor && selectedItem.color ? (
           <div
             className={s.dropdownColorBox}
-            style={{ backgroundColor: selectedItem.color }}
+            style={{
+              backgroundColor: CATEGORY_COLORS_VALUE[selectedItem.color],
+            }}
           />
         ) : (
           <div className={s.dropdownBtnText}>{selectedLabel}</div>

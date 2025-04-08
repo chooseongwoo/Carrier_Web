@@ -1,4 +1,4 @@
-import { Schedule } from './type';
+import { CategoryColor, Schedule } from './type';
 
 export interface GetScheduleListReq {
   startDate: string;
@@ -12,6 +12,13 @@ export interface GetScheduleListRes {
 export interface GetTodoListReq {
   startDate: string;
   endDate: string;
+}
+
+export interface GetCategoriesRes {
+  id: number;
+  name: string;
+  color: CategoryColor;
+  active: boolean;
 }
 
 export type PostScheduleReq = Omit<PatchScheduleReq, 'id'>;

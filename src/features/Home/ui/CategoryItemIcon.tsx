@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
 import theme from 'shared/styles/theme.css';
 import { usePatchCategoryMutation } from '../services/home.mutation';
+import { CategoryColor } from 'entities/calendar/type';
+import { CATEGORY_COLORS_VALUE } from 'entities/calendar/model';
 
 interface BtnCategoryItemProps {
   id?: number;
-  initialBgColor?: string;
+  initialBgColor: CategoryColor;
   activeState: boolean;
 }
 
 const BtnCategoryItem = ({
-  initialBgColor = '#587EFD',
+  initialBgColor = 'BLUE',
   activeState = true,
   id,
 }: BtnCategoryItemProps) => {
@@ -41,7 +43,7 @@ const BtnCategoryItem = ({
         width="23"
         height="23"
         rx="3.5"
-        fill={initialBgColor}
+        fill={CATEGORY_COLORS_VALUE[initialBgColor]}
       />
       <rect
         x="0.5"

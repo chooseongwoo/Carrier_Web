@@ -3,8 +3,11 @@ import { MailModalProps } from 'entities/mail/types/MailModalProps';
 import * as s from './style.css';
 import AlertMark from 'features/Mail/ui/AlertMark';
 import { CalendarEvent } from 'entities/calendar/type';
-import { useEventState } from 'features/Home/Calendar/CalendarModal/calendarModal.hook';
-import EventDropdown from 'features/Home/Calendar/Dropdown';
+import {
+  useEventState,
+  useInputHandlers,
+} from 'features/Home/Calendar/CalendarModal/calendarModal.hook';
+import Dropdown from 'features/Home/Calendar/Dropdown';
 import { useCallback, useEffect, useState } from 'react';
 import LoadingStatus from 'features/Mail/CreateScheduleModal/LoadingStatus';
 import { useAtom } from 'jotai';
@@ -13,6 +16,9 @@ import { useQuery } from '@tanstack/react-query';
 import { mailQuery } from 'features/Mail/services/mail.query';
 import { useCreateScheduleMutation } from 'features/Home/services/home.mutation';
 import { useCategories } from 'entities/calendar/hooks/useCategory';
+import { PRIORITY } from 'entities/calendar/model';
+import DateTimePicker from 'shared/components/DateTimePicker';
+import { toISOStringKST } from 'shared/lib/date';
 
 const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
   const [gmailId] = useAtom(selectedMailIdAtom);
@@ -20,14 +26,16 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
     ...mailQuery.mailToSchedule(gmailId ?? ''),
     enabled: !!gmailId,
   });
+  const today = toISOStringKST(new Date());
+
   const [event, setEvent] = useState<CalendarEvent>({
     type: 'Schedule',
     title: '',
-    start: '',
-    end: '',
+    start: today,
+    end: today,
     memo: '',
     location: '',
-    isAllDay: true,
+    isAllDay: false,
     isRepeat: false,
     category: 1,
     allDay: true,
@@ -38,29 +46,24 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
 
   useEffect(() => {
     if (mailToScheduleData) {
+      const startDate = mailToScheduleData?.startDate ?? today;
+      const endDate = mailToScheduleData?.endDate ?? today;
+
       setEvent((prev) => ({
         ...prev,
         title: mailToScheduleData?.title ?? prev.title,
-        allDay: mailToScheduleData?.allDay ?? prev.allDay,
-        start: mailToScheduleData?.startDate ?? prev.start,
-        end: mailToScheduleData?.endDate ?? prev.end,
+        isAllDay: false,
+        start: startDate,
+        end: endDate,
       }));
     }
   }, [mailToScheduleData]);
 
   const { state, updateState } = useEventState({ event });
+  const { handleInputChange, handleDropdownChange, handleDateTimeChange } =
+    useInputHandlers(updateState);
 
   const categories = useCategories();
-
-  const handleChangeInputs = (key: 'title' | 'content', value: string) => {
-    updateState({ [key]: value });
-  };
-
-  const handleChangeRepeat = (id: number) => updateState({ repeat: id });
-
-  const handleChangeCategory = (id: number) => updateState({ category: id });
-
-  const handleChangePriority = (id: number) => updateState({ priority: id });
 
   const handleIsAllday = () =>
     updateState({
@@ -71,10 +74,10 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
     title: state.title,
     memo: state.memo,
     allDay: state.isAllDay,
-    isRepeat: false,
+    isRepeat: Boolean(state.repeat),
     categoryId: state.category,
     startDate: state.startDate,
-    endDate: state.endDate,
+    endDate: Boolean(state.isAllDay) ? state.startDate : state.endDate,
     location: state.location,
   };
 
@@ -98,16 +101,18 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
           <div className={s.calendarModal}>
             <div className={s.calendarModalHeader}>
               <input
+                name="title"
                 className={s.calendarModalTitle}
                 placeholder="새 일정"
                 value={state.title}
-                onChange={(e) => handleChangeInputs('title', e.target.value)}
+                onChange={handleInputChange}
               />
               <input
+                name="memo"
                 className={s.calendarModalSubTitle}
                 placeholder="메모"
                 value={state.memo || ''}
-                onChange={(e) => handleChangeInputs('content', e.target.value)}
+                onChange={handleInputChange}
               />
             </div>
             <div className={s.horizontalLine} />
@@ -127,81 +132,73 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
                 event?.end &&
                 !state.isAllDay &&
                 state.eventType === 'Schedule' && (
-                  <>
+                  <div className={s.calendarModalItemBundle}>
                     <div className={s.calendarModalItem}>
                       <div className={s.calendarModalItemTitle}>시작</div>
-                      <div className={s.calendarModalItemAttribute}>
-                        {new Date(event.start).toLocaleString()}
-                      </div>
+                      <DateTimePicker
+                        date={state.startDate}
+                        onChange={(date) =>
+                          handleDateTimeChange('startDate', date)
+                        }
+                      />
                     </div>
                     <div className={s.calendarModalItem}>
                       <div className={s.calendarModalItemTitle}>종료</div>
-                      <div className={s.calendarModalItemAttribute}>
-                        {new Date(event.end).toLocaleString()}
-                      </div>
+                      <DateTimePicker
+                        date={state.endDate || state.startDate}
+                        minDate={state.startDate}
+                        onChange={(date) =>
+                          handleDateTimeChange('endDate', date)
+                        }
+                      />
                     </div>
-                  </>
+                  </div>
                 )}
 
               <div className={s.calendarModalItem}>
                 <div className={s.calendarModalItemTitle}>반복</div>
-                <EventDropdown
+                <Dropdown
                   name="repeat"
                   id={state.repeat}
-                  data={
-                    state.eventType === 'Schedule'
-                      ? [
-                          { id: 1, value: 'NONE', name: '없음' },
-                          { id: 2, value: 'DAILY', name: '매일' },
-                          { id: 3, value: 'WEEKLY', name: '매주' },
-                          { id: 4, value: 'MONTHLY', name: '매달' },
-                        ]
-                      : [
-                          { id: 1, value: 'NONE', name: '없음' },
-                          { id: 2, value: 'DAILY', name: '매일' },
-                          { id: 3, value: 'WEEKLY', name: '매주' },
-                          { id: 4, value: 'BIWEEKLY', name: '격주' },
-                          { id: 5, value: 'MONTHLY', name: '매달' },
-                          { id: 6, value: 'QUARTERLY', name: '3개월마다' },
-                          { id: 7, value: 'SEMIANNUALLY', name: '6개월마다' },
-                          { id: 8, value: 'YEARLY', name: '매년' },
-                        ]
-                  }
-                  onChange={handleChangeRepeat}
+                  data={[
+                    { id: 0, value: 'false', name: '없음' },
+                    { id: 1, value: 'true', name: '있음' },
+                  ]}
+                  onChange={handleDropdownChange}
                 />
               </div>
 
               {state.eventType === 'Schedule' ? (
                 <div className={s.calendarModalItem}>
                   <div className={s.calendarModalItemTitle}>카테고리</div>
-                  <EventDropdown
+                  <Dropdown
                     name="category"
                     id={state.category}
                     data={categories}
-                    onChange={handleChangeCategory}
+                    onChange={handleDropdownChange}
                   />
                 </div>
               ) : (
                 <div className={s.calendarModalItem}>
                   <div className={s.calendarModalItemTitle}>우선순위</div>
-                  <EventDropdown
+                  <Dropdown
                     name="priority"
                     id={state.priority}
-                    data={[
-                      { id: 1, value: 'LOW', name: '낮음' },
-                      { id: 2, value: 'MEDIUM', name: '중간' },
-                      { id: 3, value: 'HIGH', name: '높음' },
-                    ]}
-                    onChange={handleChangePriority}
+                    data={PRIORITY}
+                    onChange={handleDropdownChange}
                   />
                 </div>
               )}
             </div>
             <div className={s.horizontalLine} />
             <div className={s.calendarModalFooter}>
-              <div className={s.calendarModalLocationPlaceholder}>
-                위치 추가
-              </div>
+              <input
+                name="location"
+                className={s.calendarModalLocationTitle}
+                placeholder="위치 추가"
+                value={state.location || ''}
+                onChange={handleInputChange}
+              />
             </div>
             <div className={s.horizontalLine} />
             <div className={s.buttons}>

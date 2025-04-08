@@ -4,19 +4,25 @@ import { CategoryPlusIcon, CategoryItemIcon } from 'features/Home/ui';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCreateCategoryMutation } from 'features/Home/services/home.mutation';
 import { useCategoryListQuery } from 'features/Home/services/home.query';
+import type { Category } from 'entities/calendar/type';
 
 /* eslint-disable no-console */
 
-const CategoryColor = ['RED', 'GREEN', 'BLUE', 'PURPLE', 'BROWN', 'ROSE'];
+const CATEGORY_COLORS = [
+  'RED',
+  'GREEN',
+  'BLUE',
+  'PURPLE',
+  'BROWN',
+  'ROSE',
+] as const;
 
-const Category = () => {
-  const { mutate } = useCreateCategoryMutation();
+const Categories = () => {
+  const { mutate: createCategoryMutate } = useCreateCategoryMutation();
   const queryClient = useQueryClient();
-  const [categoryData, setCategoryData] = useState<
-    { id: number; name: string; color: string; active: boolean }[]
-  >([]);
-  const [newCategory, setNewCategory] = useState<string>('카테고리');
-  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [categoryData, setCategoryData] = useState<Category[]>([]);
+  const [newCategoryName, setNewCategoryName] = useState<string>('카테고리');
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     try {
@@ -30,25 +36,25 @@ const Category = () => {
     } catch (error) {
       console.error('에러 발생:', error);
     }
-  }, [queryClient, mutate]);
+  }, [queryClient]);
 
   const activeEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      setCategoryData([
-        ...categoryData,
-        {
-          id: categoryData.length + 1,
-          name: newCategory,
-          color: CategoryColor[categoryData.length % CategoryColor.length],
-          active: true,
-        },
-      ]);
-      mutate({
-        name: newCategory,
-        color: CategoryColor[categoryData.length % CategoryColor.length],
-      });
-      setNewCategory('카테고리');
-      setIsOpenModal(false);
+      const newCategoryColor =
+        CATEGORY_COLORS[categoryData.length % CATEGORY_COLORS.length];
+
+      const newCategory: Category = {
+        id: categoryData.length + 1,
+        name: newCategoryName,
+        color: newCategoryColor,
+        active: true,
+      };
+
+      setCategoryData([...categoryData, newCategory]);
+      createCategoryMutate({ name: newCategoryName, color: newCategoryColor });
+
+      setNewCategoryName('카테고리');
+      setModalOpen(false);
     }
   };
 
@@ -58,40 +64,35 @@ const Category = () => {
         <div className={s.categoryTitle}>카테고리</div>
         <div
           className={s.categoryPlusBtn}
-          onClick={() => setIsOpenModal(!isOpenModal)}
+          onClick={() => setModalOpen(!isModalOpen)}
         >
           <CategoryPlusIcon />
         </div>
       </div>
       <div className={s.categoryItemContainer}>
-        {categoryData?.map(
-          (category: {
-            id: number;
-            name: string;
-            color: string;
-            active: boolean;
-          }) => (
-            <div className={s.categoryItem} key={category.id}>
-              <CategoryItemIcon
-                initialBgColor={category.color}
-                activeState={category.active}
-                id={category.id}
-              />
-              <div className={s.categoryItemTitle}>{category.name}</div>
-            </div>
-          )
-        )}
-        {isOpenModal && (
+        {categoryData?.map((category) => (
+          <div className={s.categoryItem} key={category.id}>
+            <CategoryItemIcon
+              initialBgColor={category.color}
+              activeState={category.active}
+              id={category.id}
+            />
+            <div className={s.categoryItemTitle}>{category.name}</div>
+          </div>
+        ))}
+        {isModalOpen && (
           <div className={`${s.categoryNewItem} ${s.categoryItem}`}>
             <CategoryItemIcon
-              initialBgColor={CategoryColor[categoryData.length]}
+              initialBgColor={
+                CATEGORY_COLORS[categoryData.length % CATEGORY_COLORS.length]
+              }
               activeState={true}
             />
             <div className={s.categoryItemTitle}>
               <input
                 className={`${s.categoryItemTitle} ${s.categoryNewItemInput}`}
-                value={newCategory}
-                onChange={(e) => setNewCategory(e.currentTarget.value)}
+                value={newCategoryName}
+                onChange={(e) => setNewCategoryName(e.currentTarget.value)}
                 onKeyDown={(e) => activeEnter(e)}
                 autoFocus
                 onFocus={(e) => e.target.select()}
@@ -104,4 +105,4 @@ const Category = () => {
   );
 };
 
-export default Category;
+export default Categories;

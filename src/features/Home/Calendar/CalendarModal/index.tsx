@@ -2,7 +2,7 @@ import * as s from './style.css';
 import Dropdown from '../Dropdown';
 import { useEventState, useInputHandlers } from './calendarModal.hook';
 import { CalendarEvent } from 'entities/calendar/type';
-import { priority } from 'entities/calendar/model';
+import { PRIORITY } from 'entities/calendar/model';
 import { useCategories } from 'entities/calendar/hooks/useCategory';
 import DateTimePicker from 'shared/components/DateTimePicker';
 
@@ -147,7 +147,7 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
               <Dropdown
                 name="priority"
                 id={state.priority}
-                data={priority}
+                data={PRIORITY}
                 onChange={handleDropdownChange}
               />
             </div>

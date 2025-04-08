@@ -1,5 +1,6 @@
 import { customAxios } from 'shared/api';
 import {
+  GetCategoriesRes,
   GetScheduleListReq,
   GetTodoListReq,
   PatchScheduleReq,
@@ -50,7 +51,7 @@ export const deleteTodo = async (id: number) => {
 };
 
 export const getCategory = async () => {
-  const { data } = await customAxios.get('/categories');
+  const { data } = await customAxios.get<GetCategoriesRes[]>('/categories');
   return data;
 };
 

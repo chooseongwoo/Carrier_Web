@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import * as s from './style.css';
-import { Alarm, Calendar, Diary, Mail } from 'widgets/NavigationBar/ui';
+import { Calendar, Diary, Mail } from 'widgets/NavigationBar/ui';
 import useUser from 'features/user/hooks/useUser';
 import TipsModal from 'features/Home/TipsModal';
 import { useEffect, useState } from 'react';
@@ -94,7 +94,7 @@ const NavigationBar = () => {
               navigate('/setting');
             }}
           />
-          <Alarm />
+          {/* <Alarm /> */}
         </div>
       </nav>
       {isOpen('tips') && <TipsModal toggleModalClose={closeModal} />}

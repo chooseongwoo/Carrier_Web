@@ -135,6 +135,13 @@ export const calendarModalBody = style({
   alignSelf: 'stretch',
 });
 
+export const calendarModalItemBundle = style({
+  display: 'flex',
+  width: '100%',
+  flexDirection: 'column',
+  gap: '4px',
+});
+
 export const calendarModalItem = style({
   display: 'flex',
   justifyContent: 'space-between',
@@ -191,13 +198,18 @@ export const calendarModalFooter = style({
   alignSelf: 'stretch',
 });
 
-export const calendarModalLocationPlaceholder = style({
+export const calendarModalLocationTitle = style({
   alignSelf: 'stretch',
   fontFamily: 'Pretendard',
   ...font.H5,
   fontWeight: '500',
-  color: theme.gray[400],
-  cursor: 'pointer',
+  color: theme.gray[800],
+
+  selectors: {
+    '&:placeholder': {
+      color: theme.gray[400],
+    },
+  },
 });
 
 export const buttons = style({

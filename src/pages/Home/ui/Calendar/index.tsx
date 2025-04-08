@@ -14,7 +14,7 @@ import {
 import { EventImpl } from '@fullcalendar/core/internal';
 import { useQuery } from '@tanstack/react-query';
 import { Arrow } from 'shared/icons';
-import { CalendarPlusIcon, CalendarSearchIcon } from 'features/Home/ui';
+import { CalendarPlusIcon } from 'features/Home/ui';
 import { CalendarModal, CalendarToggle } from 'features/Home/Calendar';
 import { CalendarEvent, CategoryColor } from 'entities/calendar/type';
 import * as s from './style.css';
@@ -34,7 +34,7 @@ import {
   usePatchTodoMutation,
 } from 'features/Home/services/home.mutation';
 import { toISOStringKST } from 'shared/lib/date';
-import { priority } from 'entities/calendar/model';
+import { PRIORITY } from 'entities/calendar/model';
 
 const EventContent = memo(({ event }: { event: EventImpl }) => {
   const isSchedule = event.extendedProps.type === 'Schedule';
@@ -144,6 +144,8 @@ const Calendar = () => {
   useEffect(() => {
     if (schedules.length > 0 || todos.length > 0) {
       setEvents([...schedules, ...todos]);
+    } else {
+      setEvents([]);
     }
   }, [schedules, todos]);
 
@@ -256,7 +258,7 @@ const Calendar = () => {
         date: info.event.startStr,
         isRepeat: props.isRepeat,
         priority:
-          priority.find((item) => item.id === props.priority)?.value || 'HIGH',
+          PRIORITY.find((item) => item.id === props.priority)?.value || 'HIGH',
         memo: props.memo ?? null,
         location: props.location ?? null,
       };
@@ -307,10 +309,10 @@ const Calendar = () => {
             </div>
           </div>
         </div>
-        <div className={s.calendarSearchBar}>
+        {/* <div className={s.calendarSearchBar}>
           <CalendarSearchIcon />
           <input className={s.calendarSearchText} placeholder="검색" />
-        </div>
+        </div> */}
       </div>
       <FullCalendar
         eventResize={(info) => handleEventEdit(info, 'eventResize')}
