@@ -45,7 +45,10 @@ const Diary = () => {
       />
       <div className={s.main}>
         {isPastDate && isNoDiary ? null : selectedDiaryId ? (
-          <ReadContent diaryId={selectedDiaryId} />
+          <ReadContent
+            diaryId={selectedDiaryId}
+            setDiaryId={setSelectedDiaryId}
+          />
         ) : (
           <>
             <Content setSelectedDiaryId={setSelectedDiaryId} />

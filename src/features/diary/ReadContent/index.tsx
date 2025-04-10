@@ -1,23 +1,24 @@
 import * as s from './style.css.ts';
 import { useQuery } from '@tanstack/react-query';
+import { useDiaryDeleteMutation } from 'features/diary/services/diary.mutation.ts';
 import { useDiaryQuery } from 'features/diary/services/diary.query.ts';
 
 type ReadContentProps = {
   diaryId: number | null;
+  setDiaryId: (id: number | null) => void;
 };
 
-const ReadContent = ({ diaryId }: ReadContentProps) => {
+const ReadContent = ({ diaryId, setDiaryId }: ReadContentProps) => {
   const {
     data: diaryData,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['diary', diaryId ? diaryId.toString() : 'null'],
-    queryFn: diaryId
-      ? useDiaryQuery.getDiary(diaryId).queryFn
-      : () => Promise.resolve(null),
+    ...useDiaryQuery.getDiary(diaryId ?? 0),
     enabled: !!diaryId,
   });
+
+  const { mutate: deleteDiary } = useDiaryDeleteMutation();
 
   if (diaryId === null) return null;
   if (isLoading) return <p></p>;
@@ -39,7 +40,19 @@ const ReadContent = ({ diaryId }: ReadContentProps) => {
       </div>
       <div className={s.buttons}>
         <button className={s.button({ type: 'modify' })}>수정하기</button>
-        <button className={s.button({ type: 'delete' })}>삭제하기</button>
+        <button
+          className={s.button({ type: 'delete' })}
+          onClick={() =>
+            deleteDiary(diaryId, {
+              onSuccess: () => {
+                setDiaryId(null);
+                alert('일기가 삭제되었습니다.');
+              },
+            })
+          }
+        >
+          삭제하기
+        </button>
       </div>
     </div>
   );
