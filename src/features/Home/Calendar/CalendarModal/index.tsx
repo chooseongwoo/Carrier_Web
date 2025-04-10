@@ -39,8 +39,16 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
       if (e.key === 'Escape') {
         onClose();
       }
+      if (e.key === 'Enter') {
+        if (isInitial) {
+          createEvent();
+        } else {
+          updateEvent();
+        }
+        onClose();
+      }
     },
-    [onClose]
+    [onClose, isInitial, createEvent, updateEvent]
   );
 
   useEffect(() => {
