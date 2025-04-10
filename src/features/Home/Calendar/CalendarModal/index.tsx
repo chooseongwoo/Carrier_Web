@@ -5,6 +5,7 @@ import { CalendarEvent } from 'entities/calendar/type';
 import { PRIORITY } from 'entities/calendar/model';
 import { useCategories } from 'entities/calendar/hooks/useCategory';
 import DateTimePicker from 'shared/components/DateTimePicker';
+import { useCallback, useEffect } from 'react';
 
 interface CalendarModalProps {
   onClose: () => void;
@@ -31,8 +32,24 @@ const CalendarModal = ({ onClose, event }: CalendarModalProps) => {
     updateState({
       isAllDay: !state.isAllDay,
     });
-
   const categories = useCategories();
+
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    },
+    [onClose]
+  );
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleKeyDown]);
 
   return (
     <div
