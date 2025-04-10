@@ -225,13 +225,13 @@ const ProceedContent = () => {
                   <div className={s.SummarizeContent}>
                     <div className={s.SummarizeMainTitle}>AI 요약됨</div>
                     <div className={s.SummarizeContentDetail}>
-                      <div>
+                      <div className={s.SummarizeContentDetails}>
                         <div className={s.SummarizeTitle}>녹음 제목</div>
                         <div className={s.SummarizeSubTitle}>
                           {selectedRecording.title}
                         </div>
                       </div>
-                      <div>
+                      <div className={s.SummarizeContentDetails}>
                         <div className={s.SummarizeTitle}>녹음 내용</div>
                         <div className={s.SummarizeSubTitle}>
                           {selectedRecording.textSummary}
@@ -247,13 +247,13 @@ const ProceedContent = () => {
                   <div className={s.SummarizeContentALL}>
                     <div className={s.SummarizeMainTitle}>전체 본문</div>
                     <div className={s.SummarizeContentDetail}>
-                      <div>
+                      <div className={s.SummarizeContentDetails}>
                         <div className={s.SummarizeTitle}>녹음 제목</div>
                         <div className={s.SummarizeSubTitle}>
                           {selectedRecording.title}
                         </div>
                       </div>
-                      <div>
+                      <div className={s.SummarizeContentDetails}>
                         <div className={s.SummarizeTitle}>녹음 내용</div>
                         <div className={s.SummarizeSubTitle}>
                           {selectedRecording.text}
