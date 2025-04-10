@@ -312,6 +312,12 @@ export const SummarizeSubTitle = style({
   fontWeight: 400,
 });
 
+export const SummarizeContentDetails = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '4px',
+});
+
 export const SummarizeContentDetail = style({
   display: 'flex',
   flexDirection: 'column',
