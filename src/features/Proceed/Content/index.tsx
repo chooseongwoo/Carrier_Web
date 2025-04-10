@@ -66,7 +66,7 @@ const ProceedContent = () => {
               audioLink: URL.createObjectURL(audioBlob),
               createdAt: data.createdAt,
             };
-            setRecordings((prev) => [...prev, newRecording]);
+            setRecordings((prev) => [newRecording, ...prev]);
             setSelectedRecording(newRecording);
           },
         }
