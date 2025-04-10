@@ -1,6 +1,7 @@
 import { style } from '@vanilla-extract/css';
 import theme from '../../../shared/styles/theme.css.ts';
 import { font } from '../../../shared/styles/font.css.ts';
+import { recipe } from '@vanilla-extract/recipes';
 
 export const readDiaryContainer = style({
   display: 'flex',
@@ -47,4 +48,34 @@ export const aiUseText = style({
   position: 'absolute',
   top: '12px',
   right: '28px',
+});
+
+export const buttons = style({
+  position: 'absolute',
+  display: 'flex',
+  gap: '12px',
+  right: '52px',
+  bottom: '40px',
+});
+
+export const button = recipe({
+  base: {
+    padding: '12px 24px',
+    borderRadius: '8px',
+    border: 'none',
+    cursor: 'pointer',
+    ...font.H4,
+  },
+  variants: {
+    type: {
+      modify: {
+        background: '#DFE6FF',
+        color: theme.blue[500],
+      },
+      delete: {
+        background: theme.gray[50],
+        color: theme.gray[900],
+      },
+    },
+  },
 });

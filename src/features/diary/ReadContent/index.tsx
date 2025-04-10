@@ -37,6 +37,10 @@ const ReadContent = ({ diaryId }: ReadContentProps) => {
           </p>
         ))}
       </div>
+      <div className={s.buttons}>
+        <button className={s.button({ type: 'modify' })}>수정하기</button>
+        <button className={s.button({ type: 'delete' })}>삭제하기</button>
+      </div>
     </div>
   );
 };
