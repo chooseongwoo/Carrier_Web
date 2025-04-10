@@ -6,9 +6,10 @@ import { useDiaryQuery } from 'features/diary/services/diary.query.ts';
 type ReadContentProps = {
   diaryId: number | null;
   setDiaryId: (id: number | null) => void;
+  setMode: (mode: 'create' | 'edit') => void;
 };
 
-const ReadContent = ({ diaryId, setDiaryId }: ReadContentProps) => {
+const ReadContent = ({ diaryId, setDiaryId, setMode }: ReadContentProps) => {
   const {
     data: diaryData,
     isLoading,
@@ -39,7 +40,12 @@ const ReadContent = ({ diaryId, setDiaryId }: ReadContentProps) => {
         ))}
       </div>
       <div className={s.buttons}>
-        <button className={s.button({ type: 'modify' })}>수정하기</button>
+        <button
+          className={s.button({ type: 'modify' })}
+          onClick={() => setMode('edit')}
+        >
+          수정하기
+        </button>
         <button
           className={s.button({ type: 'delete' })}
           onClick={() =>

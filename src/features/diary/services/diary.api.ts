@@ -36,3 +36,12 @@ export const getSubject = async (date: string) => {
   );
   return data;
 };
+
+export const editDiary = async (diaryData: {
+  title: string;
+  content: string;
+  emoji: string;
+}) => {
+  const { data } = await customAxios.patch('/diaries', diaryData);
+  return data;
+};

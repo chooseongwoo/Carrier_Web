@@ -21,6 +21,7 @@ const Diary = () => {
   const [selectedDiaryId, setSelectedDiaryId] = useState<number | null>(null);
   const isPastDate = selectedDate < NowDatePeriod;
   const isNoDiary = selectedDiaryId === null;
+  const [mode, setMode] = useState<'create' | 'edit' | 'read'>('read');
 
   useEffect(() => {
     if (!diaryListData || !selectedDate) return;
@@ -37,6 +38,14 @@ const Diary = () => {
     setCurrentDate(selectedDate);
   }, [selectedDate, setCurrentDate]);
 
+  useEffect(() => {
+    if (isNoDiary) {
+      setMode('create');
+    } else {
+      setMode('read');
+    }
+  }, [isNoDiary]);
+
   return (
     <div className={s.container}>
       <NavigationBar
@@ -44,15 +53,27 @@ const Diary = () => {
         setSelectedDate={setSelectedDate}
       />
       <div className={s.main}>
-        {isPastDate && isNoDiary ? null : selectedDiaryId ? (
-          <ReadContent
-            diaryId={selectedDiaryId}
-            setDiaryId={setSelectedDiaryId}
-          />
-        ) : (
+        {isPastDate && isNoDiary ? null : (
           <>
-            <Content setSelectedDiaryId={setSelectedDiaryId} />
-            <Chatbar />
+            {mode === 'read' && selectedDiaryId !== null && (
+              <ReadContent
+                diaryId={selectedDiaryId}
+                setDiaryId={setSelectedDiaryId}
+                setMode={setMode}
+              />
+            )}
+
+            {(mode === 'create' || mode === 'edit') && (
+              <>
+                <Content
+                  mode={mode}
+                  diaryId={selectedDiaryId ?? undefined}
+                  setSelectedDiaryId={setSelectedDiaryId}
+                  setMode={setMode}
+                />
+                <Chatbar />
+              </>
+            )}
           </>
         )}
       </div>
