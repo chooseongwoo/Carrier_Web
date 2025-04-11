@@ -9,6 +9,7 @@ import {
   deleteSchedule,
   patchTodo,
   deleteTodo,
+  patchCategory,
 } from './home.api';
 import { homeKeys } from './home.keys';
 
@@ -82,6 +83,19 @@ export const useCreateCategoryMutation = () => {
 
   return useMutation({
     mutationFn: postCategory,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [homeKeys.CATEGORY_LIST],
+      });
+    },
+  });
+};
+
+export const usePatchCategoryMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: patchCategory,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [homeKeys.CATEGORY_LIST],
