@@ -10,8 +10,8 @@ export const useDiaryQuery = {
     }),
   getDiary: (id: number) =>
     queryOptions({
-      queryKey: [diaryKeys.DIARY],
-      queryFn: () => getDiary(id),
+      queryKey: [diaryKeys.DIARY, id],
+      queryFn: () => (id ? getDiary(id) : Promise.resolve(null)),
     }),
   getSubject: (date: string) =>
     queryOptions({
