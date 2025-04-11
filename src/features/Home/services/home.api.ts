@@ -3,6 +3,7 @@ import {
   GetCategoriesRes,
   GetScheduleListReq,
   GetTodoListReq,
+  PatchCategoriesReq,
   PatchScheduleReq,
   PatchTodoReq,
   PostScheduleReq,
@@ -60,6 +61,11 @@ export const postCategory = async (category: {
   color: string;
 }) => {
   const { data } = await customAxios.post('/categories', category);
+  return data;
+};
+
+export const patchCategory = async (params: PatchCategoriesReq) => {
+  const { data } = await customAxios.patch(`/categories`, params);
   return data;
 };
 
