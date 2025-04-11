@@ -114,27 +114,26 @@ const Categories = () => {
               activeState={category.active}
               id={category.id}
             />
-            <div className={s.categoryItemTitle}>
-              {editId === category.id ? (
-                <input
-                  className={`${s.categoryItemTitle} ${s.categoryItemInput}`}
-                  value={editCategoryName}
-                  onChange={(e) => setEditCategoryName(e.currentTarget.value)}
-                  onKeyDown={(e) => activeEnter(e, 'update', category.id)}
-                  autoFocus
-                  onFocus={(e) => e.target.select()}
-                />
-              ) : (
-                <div
-                  onClick={() => {
-                    setEditCategoryName(category.name);
-                    setEditId(category.id);
-                  }}
-                >
-                  {category.name}
-                </div>
-              )}
-            </div>
+            {editId === category.id ? (
+              <input
+                className={s.categoryItemInput}
+                value={editCategoryName}
+                onChange={(e) => setEditCategoryName(e.currentTarget.value)}
+                onKeyDown={(e) => activeEnter(e, 'update', category.id)}
+                autoFocus
+                onFocus={(e) => e.target.select()}
+              />
+            ) : (
+              <div
+                className={s.categoryItemTitle}
+                onClick={() => {
+                  setEditCategoryName(category.name);
+                  setEditId(category.id);
+                }}
+              >
+                {category.name}
+              </div>
+            )}
           </div>
         ))}
         {isModalOpen && (
