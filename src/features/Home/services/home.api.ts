@@ -63,7 +63,7 @@ export const postCategory = async (category: {
   return data;
 };
 
-export const patchCategory = async (id: number) => {
+export const patchCategoryState = async (id: number) => {
   const { data } = await customAxios.patch(`/categories/change/${id}`);
   return data;
 };
