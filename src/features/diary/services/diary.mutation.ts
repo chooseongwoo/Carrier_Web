@@ -1,4 +1,4 @@
-import { deleteDiary, postDiary } from './diary.api.ts';
+import { deleteDiary, editDiary, postDiary } from './diary.api.ts';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { diaryKeys } from './diary.keys.ts';
 import { useDiaryData } from 'features/diary/hooks/useDiaryData.ts';
@@ -7,6 +7,10 @@ interface addDiaryReq {
   title: string;
   content: string;
   emoji: string;
+}
+
+interface editDiaryReq extends addDiaryReq {
+  id: number;
 }
 
 export const useDiaryAddMutation = (
@@ -25,6 +29,26 @@ export const useDiaryAddMutation = (
     },
     onError: (error) => {
       alert(`일기 저장에 실패했습니다: ${error.message}`);
+    },
+  });
+};
+
+export const useDiaryEditMutation = (
+  setSelectedDiaryId: (id: number) => void
+) => {
+  const queryClient = useQueryClient();
+  const { refetch } = useDiaryData();
+  return useMutation({
+    mutationFn: (diaryData: editDiaryReq) => editDiary(diaryData),
+    onSuccess: (newDiaryId) => {
+      queryClient.invalidateQueries({
+        queryKey: [diaryKeys.DIARY_LIST],
+      });
+      setSelectedDiaryId(newDiaryId);
+      refetch();
+    },
+    onError: (error) => {
+      alert(`일기 수정에 실패했습니다: ${error.message}`);
     },
   });
 };
