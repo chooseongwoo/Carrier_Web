@@ -10,17 +10,19 @@ import {
 } from 'entities/calendar/remote';
 import { Schedule, EVENT_TYPE, Todo } from 'entities/calendar/type';
 import { toQueryString } from 'shared/lib/queryString';
+import { PRIORITY_VALUE } from 'entities/calendar/model';
 
 export const getTodoList = async (params: GetTodoListReq) => {
   const { data } = await customAxios.get<Todo[]>(
     `/todos?${toQueryString(params)}`
   );
 
-  return data.map(({ id, title, memo, isDone, date }) => ({
+  return data.map(({ id, title, memo, isDone, date, priority }) => ({
     type: EVENT_TYPE.Todo,
     eventId: id,
     title,
     memo,
+    priority: PRIORITY_VALUE[priority],
     isRepeat: false,
     start: `${date}T00:00:00`,
     end: `${date}T23:59:59`,
