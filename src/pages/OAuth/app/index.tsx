@@ -6,6 +6,8 @@ import { userQuery } from 'features/user/services/user.query';
 import { Storage } from 'shared/lib/storage';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { TOKEN } from 'shared/constants';
+import { DotLoader } from 'react-spinners';
+import theme from 'shared/styles/theme.css';
 
 const OAuthApp = () => {
   const [searchParams] = useSearchParams();
@@ -49,9 +51,13 @@ const OAuthApp = () => {
   return (
     <Suspense>
       <main className={s.container}>
-        <button onClick={handleOpenApp} className={s.toAppButton}>
-          {userInfo?.email || ''} 으로 계속
-        </button>
+        {userInfo?.email ? (
+          <button onClick={handleOpenApp} className={s.toAppButton}>
+            {userInfo?.email || ''} 으로 계속
+          </button>
+        ) : (
+          <DotLoader color={theme.blue[500]} size={60} />
+        )}
       </main>
     </Suspense>
   );

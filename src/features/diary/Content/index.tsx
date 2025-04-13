@@ -1,26 +1,73 @@
 import * as s from './style.css';
 import { EmojiIcon } from 'features/diary/ui';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useDiaryAddMutation } from 'features/diary/services/diary.mutation.ts';
+import {
+  useDiaryAddMutation,
+  useDiaryEditMutation,
+} from 'features/diary/services/diary.mutation.ts';
 import EmojiPicker from 'emoji-picker-react';
 import { emojiPickerCategories } from 'features/diary/constants/emojiCategories.ts';
+import { useQuery } from '@tanstack/react-query';
+import { useDiaryQuery } from 'features/diary/services/diary.query';
 
 interface ContentProps {
   setSelectedDiaryId: Dispatch<SetStateAction<number | null>>;
+  setMode: Dispatch<SetStateAction<'create' | 'edit' | 'read'>>;
+  mode: 'create' | 'edit';
+  diaryId?: number;
 }
 
-const Content = ({ setSelectedDiaryId }: ContentProps) => {
+const Content = ({
+  setSelectedDiaryId,
+  setMode,
+  mode,
+  diaryId,
+}: ContentProps) => {
   const [isEmojiClicked, setIsEmojiClicked] = useState(false);
   const [diary, setDiary] = useState({ title: '', content: '', emoji: '' });
-  const [isDiaryFormValid, setIsDiaryFromValid] = useState(false);
-  const { mutate: addDiaryMutate } = useDiaryAddMutation(setSelectedDiaryId);
+  const [isDiaryFormValid, setIsDiaryFormValid] = useState(false);
+
+  const isEditMode = mode === 'edit';
+
+  const { mutate: addDiaryMutate } = useDiaryAddMutation(
+    (newDiaryId: number) => {
+      setSelectedDiaryId(newDiaryId);
+      setMode('read');
+    }
+  );
+
+  const { mutate: editDiaryMutate } = useDiaryEditMutation(
+    (diaryId: number) => {
+      setSelectedDiaryId(diaryId);
+      setMode('read');
+    }
+  );
+
+  const { data: writtendDiaryData } = useQuery({
+    ...useDiaryQuery.getDiary(diaryId ?? 0),
+    enabled: isEditMode && !!diaryId,
+  });
 
   useEffect(() => {
-    setIsDiaryFromValid(!!(diary.title && diary.content && diary.emoji));
+    if (isEditMode && writtendDiaryData) {
+      setDiary({
+        title: writtendDiaryData.title,
+        content: writtendDiaryData.content,
+        emoji: writtendDiaryData.emoji,
+      });
+    }
+  }, [isEditMode, writtendDiaryData]);
+
+  useEffect(() => {
+    setIsDiaryFormValid(!!(diary.title && diary.content && diary.emoji));
   }, [diary.title, diary.content, diary.emoji]);
 
-  const onAddDiaryBtnClick = () => {
-    if (isDiaryFormValid) {
+  const onSubmitClick = () => {
+    if (!isDiaryFormValid) return;
+
+    if (isEditMode && diaryId) {
+      editDiaryMutate({ id: diaryId, ...diary });
+    } else {
       addDiaryMutate(diary);
     }
   };
@@ -85,9 +132,9 @@ const Content = ({ setSelectedDiaryId }: ContentProps) => {
         </div>
         <button
           className={s.saveDiaryBtn({ isWrite: isDiaryFormValid })}
-          onClick={onAddDiaryBtnClick}
+          onClick={onSubmitClick}
         >
-          작성 완료
+          {isEditMode ? '수정 완료' : '작성 완료'}
         </button>
       </div>
     </div>
