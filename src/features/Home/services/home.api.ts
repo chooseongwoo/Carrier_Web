@@ -18,12 +18,13 @@ export const getTodoList = async (params: GetTodoListReq) => {
     `/todos?${toQueryString(params)}`
   );
 
-  return data.map(({ id, title, memo, isDone, date, priority }) => ({
+  return data.map(({ id, title, memo, isDone, date, priority, location }) => ({
     type: EVENT_TYPE.Todo,
     eventId: id,
     title,
     memo,
     priority: PRIORITY_VALUE[priority],
+    location,
     isRepeat: false,
     start: `${date}T00:00:00`,
     end: `${date}T23:59:59`,
