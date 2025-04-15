@@ -12,3 +12,9 @@ export const CATEGORY_COLORS_VALUE = {
   BROWN: '#B26C1B',
   ROSE: '#D63881',
 };
+
+export const PRIORITY_VALUE: Record<string, number> = {
+  LOW: 1,
+  MEDIUM: 2,
+  HIGH: 3,
+};

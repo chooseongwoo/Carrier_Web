@@ -54,6 +54,8 @@ export interface Todo {
   title: string;
   id: number;
   memo: string | null;
+  location: string | null;
+  priority: string;
   isDone: boolean;
   date: string;
 }
