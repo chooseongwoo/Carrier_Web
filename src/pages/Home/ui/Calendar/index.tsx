@@ -208,8 +208,8 @@ const Calendar = () => {
       handleModalOpen({
         eventId: props.eventId,
         title: info.event.title,
-        start: info.event.startStr,
-        end: info.event.endStr,
+        start: props.startDate,
+        end: props.endDate,
         startEditable: true,
         isRepeat: props.isRepeat,
         memo: props.memo,
