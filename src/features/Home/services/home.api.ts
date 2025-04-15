@@ -11,6 +11,7 @@ import {
 } from 'entities/calendar/remote';
 import { Schedule, EVENT_TYPE, Todo } from 'entities/calendar/type';
 import { toQueryString } from 'shared/lib/queryString';
+import { getNextDateISO } from 'shared/lib/date';
 
 export const getTodoList = async (params: GetTodoListReq) => {
   const { data } = await customAxios.get<Todo[]>(
@@ -103,7 +104,7 @@ export const getScheduleList = async (params: GetScheduleListReq) => {
       location,
 
       start: startDate,
-      end: endDate || startDate,
+      end: getNextDateISO(endDate || startDate),
       allDay: true,
       startEditable: true,
       durationEditable: true,
