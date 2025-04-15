@@ -11,6 +11,7 @@ import {
   usePatchScheduleMutation,
   usePatchTodoMutation,
 } from 'features/Home/services/home.mutation';
+import { toISOStringKST } from 'shared/lib/date';
 
 interface UseEventStateProps {
   event?: CalendarEvent;
@@ -69,7 +70,11 @@ export const useEventState = ({ event }: UseEventStateProps) => {
     isRepeat: Boolean(state.repeat),
     categoryId: state.category,
     startDate: state.startDate,
-    endDate: Boolean(state.isAllDay) ? state.startDate : state.endDate,
+    endDate: state.isAllDay
+      ? state.startDate
+      : !state.endDate || state.startDate >= state.endDate
+        ? state.startDate
+        : state.endDate,
     location: state.location,
   };
 
@@ -186,7 +191,7 @@ export const useInputHandlers = (
     date: Date | null
   ) => {
     if (!date) return;
-    updateState({ [name]: date.toISOString() });
+    updateState({ [name]: toISOStringKST(date) });
   };
 
   return {
