@@ -48,7 +48,7 @@ const ProceedContent = () => {
       const seconds = duration % 60;
       const formattedTime = `${minutes.toString().padStart(2, '0')}.${seconds
         .toString()
-        .padStart(2, '0')}초`;
+        .padStart(2, '0')}분`;
 
       postProceedMutation.mutate(
         {
