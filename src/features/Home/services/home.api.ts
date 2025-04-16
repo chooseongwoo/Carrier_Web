@@ -11,6 +11,7 @@ import {
 } from 'entities/calendar/remote';
 import { Schedule, EVENT_TYPE, Todo } from 'entities/calendar/type';
 import { toQueryString } from 'shared/lib/queryString';
+import { getNextDateISO } from 'shared/lib/date';
 import { PRIORITY_VALUE } from 'entities/calendar/model';
 
 export const getTodoList = async (params: GetTodoListReq) => {
@@ -99,11 +100,14 @@ export const getScheduleList = async (params: GetScheduleListReq) => {
       title,
       memo,
       isAllDay: allDay,
+      startDate,
+      endDate: endDate || startDate,
       isRepeat,
-      start: startDate,
-      end: allDay && !endDate ? startDate : endDate || '',
       category: category.id,
       location,
+
+      start: startDate,
+      end: getNextDateISO(endDate || startDate),
       allDay: true,
       startEditable: true,
       durationEditable: true,

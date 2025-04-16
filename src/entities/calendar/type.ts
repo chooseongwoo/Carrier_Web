@@ -25,17 +25,20 @@ export interface CalendarEvent {
   eventId?: number;
   title: string;
   memo: string | null;
+  startDate?: string;
+  endDate?: string;
   isRepeat: boolean;
-  start: string;
-  end: string;
   location?: string | null;
   isAllDay?: boolean;
-  allDay?: boolean;
   category?: number;
   priority?: number;
   isDone?: boolean;
+
+  start: string;
+  end: string;
   startEditable?: boolean;
   durationEditable?: boolean;
+  allDay?: boolean;
 }
 
 export interface Schedule {

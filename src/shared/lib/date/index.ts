@@ -1,3 +1,5 @@
+import { addDays } from 'date-fns';
+
 const today = new Date();
 const year = today.getFullYear();
 const month = ('0' + (today.getMonth() + 1)).slice(-2);
@@ -56,4 +58,11 @@ export const toISOStringKST = (date: Date): string => {
   const seconds = date.getSeconds().toString().padStart(2, '0');
 
   return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+};
+
+export const getNextDateISO = (dateStr: string, days: number = 1): string => {
+  const date = new Date(dateStr);
+  const nextDate = addDays(date, days);
+
+  return toISOStringKST(nextDate);
 };
