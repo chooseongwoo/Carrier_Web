@@ -12,8 +12,11 @@ import { Storage } from 'shared/lib/storage';
 import { isElectron } from 'shared/lib/isElectron';
 import Download from 'pages/Login/ui/Download';
 import { getDownloadUrl } from 'pages/Login/utils/getDownloadUrl';
+import Modal from './components/Modal';
+import { useEffect, useState } from 'react';
 
 const Login = () => {
+  const [unverifiedState, setUnverifiedState] = useState(false);
   const queryClient = useQueryClient();
 
   const handleLogin = async () => {
@@ -58,12 +61,27 @@ const Login = () => {
     document.body.removeChild(link);
   };
 
+  useEffect(() => {
+    const state = localStorage.getItem('UnverifiedState');
+    if (state === 'true') {
+      setUnverifiedState(true);
+    }
+  }, []);
+
+  const handleCloseModal = (dontShowAgain: boolean) => {
+    if (dontShowAgain) {
+      localStorage.setItem('UnverifiedState', 'true');
+    }
+    setUnverifiedState(true);
+  };
+
   return (
     <main className={s.container}>
       <img src={LandingAsterisk} className={`${s.shape} ${s.Asterisk}`} />
       <img src={LandingCube} className={`${s.shape} ${s.Cube}`} />
       <img src={LandingSphere} className={`${s.shape} ${s.Sphere}`} />
       <img src={LandingMobiusStrip} className={`${s.shape} ${s.MobiusStrip}`} />
+      {!unverifiedState && <Modal onClose={handleCloseModal} />}
       <div className={s.center}>
         <AppTitle />
         <p className={s.explain}>오늘의 작은 계획이 내일의 큰 꿈으로,</p>
