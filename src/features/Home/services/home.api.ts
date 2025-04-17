@@ -29,6 +29,9 @@ export const getTodoList = async (params: GetTodoListReq) => {
     isRepeat: false,
     start: `${date}T00:00:00`,
     end: `${date}T23:59:59`,
+
+    startDate: `${date}T00:00:00`,
+    endDate: `${date}T23:59:59`,
     isDone: isDone,
     startEditable: true,
     durationEditable: false,
