@@ -33,7 +33,7 @@ import {
   usePatchScheduleMutation,
   usePatchTodoMutation,
 } from 'features/Home/services/home.mutation';
-import { toISOStringKST } from 'shared/lib/date';
+import { getadjustDateISO, toISOStringKST } from 'shared/lib/date';
 import { PRIORITY } from 'entities/calendar/model';
 
 const EventContent = memo(({ event }: { event: EventImpl }) => {
@@ -244,9 +244,9 @@ const Calendar = () => {
         isRepeat: props.isRepeat,
         memo: props.memo ?? null,
         startDate: `${info.event.startStr}T00:00:00`,
-        endDate: info.event.endStr
-          ? `${info.event.endStr}T23:30:00`
-          : `${info.event.startStr}T23:30:00`,
+        endDate:
+          getadjustDateISO(`${info.event.endStr}T23:30:00`, -1) ||
+          `${info.event.startStr}T23:30:00`,
         categoryId: props.category!,
         location: props.location ?? null,
       };
