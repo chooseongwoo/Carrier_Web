@@ -30,7 +30,8 @@ export const useLogoutMutation = () => {
       window.location.reload();
     },
     onSettled: () => {
-      Storage.clear();
+      Storage.delItem(TOKEN.ACCESS);
+      Storage.delItem(TOKEN.REFRESH);
     },
   });
 };
