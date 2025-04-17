@@ -14,6 +14,7 @@ import Download from 'pages/Login/ui/Download';
 import { getDownloadUrl } from 'pages/Login/utils/getDownloadUrl';
 import Modal from './components/Modal';
 import { useEffect, useState } from 'react';
+import { TOKEN } from 'shared/constants';
 
 const Login = () => {
   const [unverifiedState, setUnverifiedState] = useState(false);
@@ -21,7 +22,8 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      Storage.clear();
+      Storage.delItem(TOKEN.ACCESS);
+      Storage.delItem(TOKEN.REFRESH);
 
       const isInApp = isElectron();
       const redirect = isInApp
