@@ -77,69 +77,83 @@ const TipsModal = ({
           <>
             <div className={s.TipsModal_CategoryTodo}>
               <div className={s.TipsModal_Category}>
-                {Tips?.schedules?.map((item: SchedulesProps) => {
-                  return (
-                    <div
-                      className={s.Category_Content}
-                      style={{ backgroundColor: item?.categoryColor }}
-                    >
-                      <div className={s.Category_Color} />
+                {Tips.schedules.length > 0 ? (
+                  Tips?.schedules?.map((item: SchedulesProps) => {
+                    return (
                       <div
-                        className={s.Category_Title}
-                        style={{
-                          backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                          color: item?.categoryColor,
-                        }}
+                        className={s.Category_Content}
+                        style={{ backgroundColor: item?.categoryColor }}
                       >
-                        {item.title}
+                        <div className={s.Category_Color} />
+                        <div
+                          className={s.Category_Title}
+                          style={{
+                            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                            color: item?.categoryColor,
+                          }}
+                        >
+                          {item.title}
 
-                        {item.startDate && item.endDate && (
-                          <div>
-                            {new Date(item?.startDate).toLocaleTimeString()} ~{' '}
-                            {new Date(item?.endDate).toLocaleTimeString()}
-                          </div>
-                        )}
+                          {item.startDate && item.endDate && (
+                            <div>
+                              {new Date(item?.startDate).toLocaleTimeString()} ~{' '}
+                              {new Date(item?.endDate).toLocaleTimeString()}
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })
+                ) : (
+                  <p className={s.None_Of_Tips}>일정이 없습니다</p>
+                )}
               </div>
               <div className={s.TipsModal_Todo}>
                 <ul className={s.Todo_Content}>
-                  {Tips?.todos?.map((item: TodoProps) => {
-                    return <li className={s.Todo_Title}>{item.title}</li>;
-                  })}
+                  {Tips.todos.length > 0 ? (
+                    Tips?.todos?.map((item: TodoProps) => {
+                      return <li className={s.Todo_Title}>{item.title}</li>;
+                    })
+                  ) : (
+                    <p className={s.None_Of_Tips}>해야할 일이 없습니다</p>
+                  )}
                 </ul>
               </div>
             </div>
 
             <div className={s.TipsModal_Eamil}>
               <div className={s.Email_Title}>Email ✉️</div>
-              <div className={s.Email_Content_Container}>
-                {Tips?.mails?.map((item: EmailData) => {
-                  return (
-                    <div
-                      className={s.Email_Content}
-                      style={{
-                        ...(Tips?.mails.indexOf(item) === 0 && {
-                          borderRadius: '12px 12px 0 0',
-                          borderTop: `1px solid ${theme.gray[100]}`,
-                        }),
-                        ...(Tips?.mails.indexOf(item) ===
-                          Tips?.mails.length - 1 && {
-                          borderRadius: '0 0 12px 12px',
-                          borderBottom: `1px solid ${theme.gray[100]}`,
-                        }),
-                      }}
-                    >
-                      <div className={s.Email_From}>{item.from}</div>
-                      <div className={s.Email_Header}>{item.subject}</div>
-                      <div className={s.Email_Date}>
-                        {new Date(item?.date).toLocaleTimeString()}
+              <div
+                className={`${s.Email_Content_Container} ${Tips.mails.length <= 0 && s.Email_Content_Container_Empty}`}
+              >
+                {Tips.mails.length > 0 ? (
+                  Tips?.mails?.map((item: EmailData) => {
+                    return (
+                      <div
+                        className={s.Email_Content}
+                        style={{
+                          ...(Tips?.mails.indexOf(item) === 0 && {
+                            borderRadius: '12px 12px 0 0',
+                            borderTop: `1px solid ${theme.gray[100]}`,
+                          }),
+                          ...(Tips?.mails.indexOf(item) ===
+                            Tips?.mails.length - 1 && {
+                            borderRadius: '0 0 12px 12px',
+                            borderBottom: `1px solid ${theme.gray[100]}`,
+                          }),
+                        }}
+                      >
+                        <div className={s.Email_From}>{item.from}</div>
+                        <div className={s.Email_Header}>{item.subject}</div>
+                        <div className={s.Email_Date}>
+                          {new Date(item?.date).toLocaleTimeString()}
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })
+                ) : (
+                  <p className={s.None_Of_Tips}>업무 이메일 알림이 없습니다</p>
+                )}
               </div>
             </div>
 
