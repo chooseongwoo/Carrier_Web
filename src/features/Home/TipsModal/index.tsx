@@ -82,6 +82,7 @@ const TipsModal = ({
                     return (
                       <div
                         className={s.Category_Content}
+                        key={item.title + item.startDate}
                         style={{ backgroundColor: item?.categoryColor }}
                       >
                         <div className={s.Category_Color} />
@@ -112,7 +113,11 @@ const TipsModal = ({
                 <ul className={s.Todo_Content}>
                   {Tips.todos.length > 0 ? (
                     Tips?.todos?.map((item: TodoProps) => {
-                      return <li className={s.Todo_Title}>{item.title}</li>;
+                      return (
+                        <li className={s.Todo_Title} key={item.id + item.title}>
+                          {item.title}
+                        </li>
+                      );
                     })
                   ) : (
                     <p className={s.None_Of_Tips}>해야할 일이 없습니다</p>
@@ -131,6 +136,7 @@ const TipsModal = ({
                     return (
                       <div
                         className={s.Email_Content}
+                        key={item.gmailId}
                         style={{
                           ...(Tips?.mails.indexOf(item) === 0 && {
                             borderRadius: '12px 12px 0 0',
