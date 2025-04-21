@@ -60,7 +60,7 @@ export const toISOStringKST = (date: Date): string => {
   return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
 };
 
-export const getNextDateISO = (dateStr: string, days: number = 1): string => {
+export const getadjustDateISO = (dateStr: string, days: number = 1): string => {
   const date = new Date(dateStr);
   const nextDate = addDays(date, days);
 
