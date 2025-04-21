@@ -146,7 +146,16 @@ const TipsModal = ({
                         <div className={s.Email_From}>{item.from}</div>
                         <div className={s.Email_Header}>{item.subject}</div>
                         <div className={s.Email_Date}>
-                          {new Date(item?.date).toLocaleTimeString()}
+                          {(() => {
+                            const date = new Date(item?.date);
+                            const hours = date.getHours();
+                            const minutes = date.getMinutes();
+                            const isAM = hours < 12;
+                            const displayHour =
+                              hours % 12 === 0 ? 12 : hours % 12;
+                            const displayMinute = minutes.toString();
+                            return `${isAM ? '오전' : '오후'} ${displayHour}시 ${displayMinute}분`;
+                          })()}
                         </div>
                       </div>
                     );
