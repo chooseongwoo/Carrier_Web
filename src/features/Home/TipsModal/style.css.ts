@@ -50,7 +50,7 @@ export const TipsModal_Title = style({
 export const TipsModal_CategoryTodo = style({
   width: '100%',
   minHeight: '10rem',
-  maxHeight: '10  rem',
+  maxHeight: '10rem',
   height: 'auto',
   padding: '12px 28px',
   display: 'flex',
