@@ -49,7 +49,8 @@ export const TipsModal_Title = style({
 
 export const TipsModal_CategoryTodo = style({
   width: '100%',
-  minHeight: '100px',
+  minHeight: '10rem',
+  maxHeight: '10rem',
   height: 'auto',
   padding: '12px 28px',
   display: 'flex',
@@ -59,11 +60,15 @@ export const TipsModal_CategoryTodo = style({
 
 export const TipsModal_Category = style({
   width: 'calc(50% - 4px)',
-  height: '100%',
   display: 'flex',
   flexDirection: 'column',
   gap: '8px',
-  overflow: 'scroll',
+  overflow: 'auto',
+});
+
+export const None_Of_Tips = style({
+  ...font.H5,
+  color: theme.gray[500],
 });
 
 export const Category_Content = style({
@@ -97,8 +102,7 @@ export const Category_Title = style({
 
 export const TipsModal_Todo = style({
   width: 'calc(50% - 4px)',
-  height: '100%',
-  overflow: 'scroll',
+  overflow: 'auto',
 });
 
 export const Todo_Content = style({
@@ -134,43 +138,51 @@ export const Email_Title = style({
 export const Email_Content_Container = style({
   width: '100%',
   height: 'auto',
-  maxHeight: '170px',
-  overflow: 'scroll',
+  minHeight: '9rem',
+  maxHeight: '9rem',
+  overflow: 'auto',
+});
+
+export const Email_Content_Container_Empty = style({
+  border: `1px solid ${theme.gray[100]}`,
+  padding: '20px',
+  borderRadius: '4px',
 });
 
 export const Email_Content = style({
   display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
+  flexDirection: 'column',
   padding: '12px 16px',
   borderLeft: `1px solid ${theme.gray[100]}`,
   borderRight: `1px solid ${theme.gray[100]}`,
   borderBottom: `1px solid ${theme.gray[100]}`,
+  position: 'relative',
 });
 
 export const Email_From = style({
   ...font.H4,
-  marginRight: '28px',
-  minWidth: '52px',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
+  width: '80%',
 });
 
 export const Email_Header = style({
   ...font.p1,
-  width: '526px',
+  width: '100%',
+  display: '-webkit-box',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
+  WebkitBoxOrient: 'vertical',
+  WebkitLineClamp: 2,
 });
 
 export const Email_Date = style({
   ...font.p2,
   color: theme.gray[500],
-  minWidth: '86px',
-  marginLeft: '20px',
+  position: 'absolute',
+  top: '12px',
+  right: '16px',
 });
 
 export const TipsModal_Tips = style({
