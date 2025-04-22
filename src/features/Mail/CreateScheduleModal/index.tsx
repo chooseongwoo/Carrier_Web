@@ -35,7 +35,7 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
     end: today,
     memo: '',
     location: '',
-    isAllDay: false,
+    isAllDay: true,
     isRepeat: false,
     category: 1,
     allDay: true,
@@ -52,7 +52,6 @@ const CreateScheduleModal = ({ toggleModalClose }: MailModalProps) => {
       setEvent((prev) => ({
         ...prev,
         title: mailToScheduleData?.title ?? prev.title,
-        isAllDay: false,
         start: startDate,
         end: endDate,
       }));
