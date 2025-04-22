@@ -133,6 +133,10 @@ export const calendarScheduleContainer = styleVariants(
 
 export const calendarScheduleText = style({
   ...font.p2,
+  width: '100%',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
 });
 
 export const calendarTodoContainer = style({
@@ -140,15 +144,19 @@ export const calendarTodoContainer = style({
   height: '100%',
   alignItems: 'center',
   color: theme.black,
+  minWidth: 0,
 });
 
 export const calendarTodoText = recipe({
   base: {
-    flex: '1 0 0',
+    flex: 1,
     ...font.p2,
     overflow: 'hidden',
     position: 'relative',
     paddingLeft: '0.8em',
+    width: '100%',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
     selectors: {
       '&::before': {
         content: '"•"',
