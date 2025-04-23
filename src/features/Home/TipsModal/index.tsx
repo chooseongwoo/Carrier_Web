@@ -87,18 +87,23 @@ const TipsModal = ({
                       >
                         <div className={s.Category_Color} />
                         <div
-                          className={s.Category_Title}
+                          className={s.Category_TitleLayout}
                           style={{
                             backgroundColor: 'rgba(255, 255, 255, 0.8)',
                             color: item?.categoryColor,
                           }}
                         >
-                          {item.title}
+                          <div className={s.Category_Title}>{item.title}</div>
 
-                          {item.startDate && item.endDate && (
+                          {item.startDate === item.endDate ? null : (
                             <div>
-                              {new Date(item?.startDate).toLocaleTimeString()} ~{' '}
-                              {new Date(item?.endDate).toLocaleTimeString()}
+                              {new Date(item?.startDate)
+                                .toTimeString()
+                                .slice(0, 5)}{' '}
+                              ~{' '}
+                              {new Date(item?.endDate)
+                                .toTimeString()
+                                .slice(0, 5)}
                             </div>
                           )}
                         </div>

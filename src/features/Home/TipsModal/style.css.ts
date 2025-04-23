@@ -84,11 +84,13 @@ export const Category_Content = style({
 
 export const Category_Color = style({
   width: '4px',
+  minWidth: '4px',
+  maxWidth: '4px',
   height: '100%',
   borderRadius: '6px 0 0 6px',
 });
 
-export const Category_Title = style({
+export const Category_TitleLayout = style({
   ...font.p2,
   width: '100%',
   height: '100%',
@@ -98,6 +100,14 @@ export const Category_Title = style({
   alignItems: 'center',
   borderRadius: '0 6px 6px 0',
   padding: '0 16px 0px 8px ',
+});
+
+export const Category_Title = style({
+  ...font.p2,
+  width: '60%',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
 });
 
 export const TipsModal_Todo = style({
