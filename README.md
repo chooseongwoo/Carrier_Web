@@ -104,6 +104,7 @@ src/
 * `isElectron()` 유틸 함수로 웹/앱 환경을 런타임에 판단
 * Electron 환경에서는 `HashRouter`, 웹 환경에서는 `BrowserRouter`를 동적으로 적용
   → 라우팅 오류 없이 모든 환경에서 동일한 UX 제공
+[![image.png](https://i.postimg.cc/yN4Gpf3W/image.png)](https://postimg.cc/hXsMf1rq)
 
 #### 회고 : 브라우저와 Electron의 라우팅 차이를 고려한 설계 필요성 인식
 
